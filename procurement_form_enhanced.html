@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced ART Model - Open Requirements Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 900px; /* Slightly wider for more content */
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        .form-section {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .form-section label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .form-section input[type="checkbox"],
+        .form-section input[type="radio"] {
+            margin-right: 10px;
+            vertical-align: top;
+            margin-top: 2px;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #000;
+            color: #fff;
+            padding: 8px;
+            text-decoration: none;
+            z-index: 1000;
+            border-radius: 0 0 4px 4px;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+        input:focus,
+        textarea:focus,
+        button:focus {
+            outline: 2px solid #005fcc;
+            outline-offset: 2px;
+        }
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 25px;
+            background-color: #f9f9f9;
+        }
+        legend {
+            font-weight: bold;
+            color: #0056b3;
+            padding: 0 10px;
+            font-size: 1.1em;
+        }
+        .form-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            font-weight: normal;
+            line-height: 1.4;
+            margin-bottom: 0;
+        }
+        .form-group input[type="checkbox"],
+        .form-group input[type="radio"] {
+            flex-shrink: 0;
+            margin-right: 10px;
+            margin-top: 2px;
+        }
+        .form-section p {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            font-weight: normal; /* Override bold for individual checkbox/radio labels */
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #e2eafc;
+            border: 1px solid #c2d9f7;
+            border-radius: 8px;
+            white-space: pre-wrap; /* Preserves formatting of the generated text */
+            font-family: 'Courier New', monospace; /* Monospace for code-like output */
+            font-size: 0.9em;
+            color: #000;
+        }
+        #output h2 {
+            color: #0056b3;
+        }
+        #output pre {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #dcdcdc;
+            overflow-x: auto; /* For horizontal scrolling if content is wide */
+        }
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+            display: none; /* Hidden by default */
+        }
+        input:invalid:not(:placeholder-shown) {
+            border-color: red;
+        }
+        
+        /* Procurement Officer Guidance Section */
+        .procurement-guidance {
+            background-color: #e7f3ff;
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .procurement-guidance h3 {
+            margin-top: 0;
+            color: #1e40af;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        
+        .procurement-guidance h4 {
+            color: #1e40af;
+            margin-bottom: 5px;
+            margin-top: 10px;
+        }
+        
+        .procurement-guidance p {
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .procurement-guidance ul {
+            margin-bottom: 8px;
+            padding-left: 20px;
+        }
+        
+        .procurement-guidance li {
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+        
+        .procurement-guidance .important-note {
+            margin-bottom: 0;
+            font-style: italic;
+            color: #1e40af;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div class="container">
+        <h1>Enhanced ICT Accessibility Requirements Generator</h1>
+        <p>Generate clear, actionable accessibility requirements based on the <a href="https://github.com/CivicActions/open-practice/blob/main/open-requirements-library/accessibility.md" target="_blank">Open Requirements Library</a> and best practices for government procurement.</p>
+
+        <main id="main-content">
+
+        <form id="procurementForm">
+            <fieldset>
+                <legend>Project Information</legend>
+                <label for="projectName">Project Name: <span style="color:red;" aria-label="required">*</span></label>
+                <input type="text" id="projectName" name="projectName" placeholder="Enter project name" required style="width: 100%; padding: 8px; box-sizing: border-box;" aria-describedby="projectNameError">
+                <div class="error-message" id="projectNameError" role="alert">Project Name is required.</div>
+            </fieldset>
+
+            <div class="form-section">
+                <h2>Solicitation Phase</h2>
+                <p>Select one of the options below:</p>
+                <div class="form-group">
+                    <input type="radio" id="phasePlanning" name="solicitationPhase" value="projectPlanning" checked>
+                    <label for="phasePlanning">Project Planning<br><em>I want to identify the applicable Section 508 standards I need to address during project planning</em></label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="phaseMarketResearch" name="solicitationPhase" value="marketResearch">
+                    <label for="phaseMarketResearch">Market Research<br><em>I want to obtain product documentation and/or capability statements to determine the availability of accessible products and services using a Request for information (RFI).</em></label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="phaseDevelopment" name="solicitationPhase" value="solicitationDevelopment">
+                    <label for="phaseDevelopment">Solicitation Development<br><em>I want to obtain Section 508 requirements to include in my statement of work</em></label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>ICT Type</h2>
+                <p>What type of ICT do you have? Please select all that apply.</p>
+                <div class="form-group">
+                    <input type="checkbox" id="ictProduct" name="ictType" value="products">
+                    <label for="ictProduct">ICT Products (example: web and non-web-based electronic content, software, licenses, hardware)</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="ictService" name="ictType" value="services">
+                    <label for="ictService">ICT Services (example: cloud services; contractor services to develop, modify, install, configure, integrate, maintain, or host ICT)</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="ictNone" name="ictType" value="none">
+                    <label for="ictNone">None of the above</label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Exemptions & Exceptions</h2>
+                <div class="form-group">
+                    <input type="radio" id="exemptionNone" name="exemption" value="none" checked>
+                    <label for="exemptionNone">No exemptions apply</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="exemptionDontKnow" name="exemption" value="dontKnow">
+                    <label for="exemptionDontKnow">I don’t have one / I don’t know</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="nationalSecurity" name="exemption" value="nationalSecurity">
+                    <label for="nationalSecurity">National Security Exemption<br><em>Check if your system qualifies as a national security system</em></label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="ictFunctions" name="exemption" value="ictFunctions">
+                    <label for="ictFunctions">ICT Functions Located in Maintenance and Monitoring Spaces Exception</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="fundamentalAlteration" name="exemption" value="fundamentalAlteration">
+                    <label for="fundamentalAlteration">Fundamental Alteration Exception</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="federalContracts" name="exemption" value="federalContracts">
+                    <label for="federalContracts">Federal Contracts Exception<br><em>This is not a common exception applied to procurements</em></label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="undueBurden" name="exemption" value="undueBurden">
+                    <label for="undueBurden">Undue Burden Exception</label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Electronic Content</h2>
+                <p>Does your solicitation include electronic content?</p>
+                <p>I.e. Electronic forms, surveys, web, multimedia, document templates, etc.</p>
+                <div class="form-group">
+                    <input type="radio" id="eContentYes" name="eContent" value="yes" checked>
+                    <label for="eContentYes">Yes</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="eContentNo" name="eContent" value="no">
+                    <label for="eContentNo">No</label>
+                </div>
+
+                <div class="form-group" id="webContentQuestion" style="display: none;">
+                    <p>Will this electronic content be made available through a website?</p>
+                    <input type="radio" id="webContentYes" name="webContent" value="yes">
+                    <label for="webContentYes">Yes</label>
+                    <input type="radio" id="webContentNo" name="webContent" value="no">
+                    <label for="webContentNo">No</label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Software</h2>
+                <p>Does the software meet any of the following criteria?</p>
+                <div class="form-group">
+                    <input type="checkbox" id="softwareNoUI" name="softwareCriteria" value="noUI">
+                    <label for="softwareNoUI">Does not have an end-user interface (i.e. user screens)</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="softwareAT" name="softwareCriteria" value="assistiveTech">
+                    <label for="softwareAT">Principal function is assistive technology</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="softwareDontKnow" name="softwareCriteria" value="dontKnow">
+                    <label for="softwareDontKnow">I don’t know</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="softwareNone" name="softwareCriteria" value="none">
+                    <label for="softwareNone">None of the above</label>
+                </div>
+
+                <div id="softwarePurchaseQuestion">
+                    <p>Are you purchasing any software items, deliverables, or licenses?</p>
+                    <p><em>Programs, procedures, rules, and related data and documentation that direct the use and operation of ICT and instruct it to perform a given task or function. Software includes, but is not limited to, applications, non-Web software, and platform software.</em></p>
+                    <p>(Check all that apply)</p>
+                    <div class="form-group">
+                        <input type="checkbox" id="appWebDesktopServer" name="softwarePurchaseType" value="webDesktopServer">
+                        <label for="appWebDesktopServer">Web, desktop, server, mobile client applications (e.g., Time and attendance software, DHS productivity applications, Web forms/applications, Call Center Support applications, Workflow applications, Content management systems, Learning management systems)</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="appAuthoringTools" name="softwarePurchaseType" value="authoringTools">
+                        <label for="appAuthoringTools">Software authoring tools and platforms (e.g., Microsoft Office, Adobe Acrobat Professional, Adobe InDesign, PDF Generators and Converters, Graphing and Charting Programs)</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="appInfrastructure" name="softwarePurchaseType" value="infrastructure">
+                        <label for="appInfrastructure">Software Infrastructure (e.g., Operating Systems, Browsers, Systems/network administration software, Remote access software, User authentication software, Virtual meeting tools)</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="appOther" name="softwarePurchaseType" value="other">
+                        <label for="appOther">Other</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="appNone" name="softwarePurchaseType" value="none">
+                        <label for="appNone">None of the above</label>
+                    </div>
+                </div>
+
+                <div id="cloudServiceQuestion" style="display: none;">
+                    <p>Will the software be provided through any of the following types of cloud services agreements? (Check all that apply)</p>
+                    <div class="form-group">
+                        <input type="checkbox" id="cloudSaaS" name="cloudServiceType" value="SaaS">
+                        <label for="cloudSaaS">Software as a Service (SaaS)</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="cloudPaaS" name="cloudServiceType" value="PaaS">
+                        <label for="cloudPaaS">Platform as a Service (PaaS)</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="cloudOther" name="cloudServiceType" value="other">
+                        <label for="cloudOther">Other Cloud Services arrangement</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="cloudDontKnow" name="cloudServiceType" value="dontKnow">
+                        <label for="cloudDontKnow">I don't know</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="cloudNone" name="cloudServiceType" value="none">
+                        <label for="cloudNone">None of the above</label>
+                    </div>
+                </div>
+
+                <div id="webBrowserSoftwareQuestion" style="display: none;">
+                    <p>Will this software be accessible through a web browser?</p>
+                    <div class="form-group">
+                        <input type="radio" id="softwareWebBrowserYes" name="softwareWebBrowser" value="yes">
+                        <label for="softwareWebBrowserYes">Yes</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="radio" id="softwareWebBrowserNo" name="softwareWebBrowser" value="no">
+                        <label for="softwareWebBrowserNo">No</label>
+                    </div>
+                </div>
+
+                <div id="authoringToolQuestion" style="display: none;">
+                    <p>Will this software be used to create electronic content (e.g. an authoring tool that is used to create HTML pages, reports, surveys, charts, dashboards, etc.)?</p>
+                    <div class="form-group">
+                        <input type="radio" id="authoringToolYes" name="authoringTool" value="yes">
+                        <label for="authoringToolYes">Yes</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="radio" id="authoringToolNo" name="authoringTool" value="no">
+                        <label for="authoringToolNo">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Hardware</h2>
+                <p>Are you purchasing any hardware items, deliverables, or licenses?</p>
+                <p>Where components of ICT are hardware and transmit information or have a user interface, such components shall conform to the requirements in Chapter 4. Hardware is considered a tangible device, equipment, or physical component of ICT, such as telephones, computers, multifunction copy machines, and keyboards.</p>
+                <p>Please select all that apply.</p>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwareComputers" name="hardwareType" value="computers">
+                    <label for="hardwareComputers">Computers and laptops</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwareTablet" name="hardwareType" value="tablet">
+                    <label for="hardwareTablet">Tablet</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwarePrinters" name="hardwareType" value="printers">
+                    <label for="hardwarePrinters">Printers, Scanners, or Copiers</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwareMultiFunction" name="hardwareType" value="multiFunction">
+                    <label for="hardwareMultiFunction">Multi-function office machines</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwarePeripheral" name="hardwareType" value="peripheral">
+                    <label for="hardwarePeripheral">Peripheral Equipment (i.e. keyboard, mouse)</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwareKiosks" name="hardwareType" value="kiosks">
+                    <label for="hardwareKiosks">Information kiosks and transaction machines</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwareMobile" name="hardwareType" value="mobile">
+                    <label for="hardwareMobile">Mobile phones</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwareVideoConf" name="hardwareType" value="videoConf">
+                    <label for="hardwareVideoConf">Video Teleconference Equipment</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwareVideoDisplay" name="hardwareType" value="videoDisplay">
+                    <label for="hardwareVideoDisplay">Video Displays or Monitors</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwareServers" name="hardwareType" value="servers">
+                    <label for="hardwareServers">Servers</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwareOther" name="hardwareType" value="other">
+                    <label for="hardwareOther">Other</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwareNone" name="hardwareType" value="none">
+                    <label for="hardwareNone">None of the above</label>
+                </div>
+
+                <div class="form-group" id="serverInstallationQuestion" style="display: none;">
+                    <p>Will the server require physical installation or is provided through an Infrastructure as a Service (IaaS) agreement?</p>
+                    <input type="radio" id="serverInstallationYes" name="serverInstallation" value="yes">
+                    <label for="serverInstallationYes">Yes</label>
+                    <input type="radio" id="serverInstallationNo" name="serverInstallation" value="no">
+                    <label for="serverInstallationNo">No</label>
+                    <input type="radio" id="serverInstallationDontKnow" name="serverInstallation" value="dontKnow">
+                    <label for="serverInstallationDontKnow">I don't know</label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Support Documentation & Services</h2>
+                <p>What ICT support documentation or service are your procuring?</p>
+                <div class="form-group">
+                    <input type="checkbox" id="supportSelfService" name="supportType" value="selfService">
+                    <label for="supportSelfService">Automated self-service & Technical support</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="supportHelpDesk" name="supportType" value="helpDesk">
+                    <label for="supportHelpDesk">Help Desk or Call service center</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="supportProductDoc" name="supportType" value="productDoc">
+                    <label for="supportProductDoc">Product documentation</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="supportTraining" name="supportType" value="training">
+                    <label for="supportTraining">Training Service</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="supportNone" name="supportType" value="none">
+                    <label for="supportNone">None of the above</label>
+                </div>
+            </div>
+
+            <button type="submit">Generate Section 508 Requirements</button>
+        </form>
+
+        <div id="output" role="region" aria-live="polite" aria-label="Generated requirements">
+            <p style="text-align: center; color: #666;">Fill out the form and click "Generate Section 508 Requirements" to see the output.</p>
+        </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('procurementForm');
+            const outputDiv = document.getElementById('output');
+            const projectNameInput = document.getElementById('projectName');
+            const projectNameError = document.getElementById('projectNameError');
+
+            // Get references to conditionally displayed questions
+            const webContentQuestion = document.getElementById('webContentQuestion');
+            const eContentRadios = document.querySelectorAll('input[name="eContent"]');
+
+            const cloudServiceQuestion = document.getElementById('cloudServiceQuestion');
+            const webBrowserSoftwareQuestion = document.getElementById('webBrowserSoftwareQuestion');
+            const authoringToolQuestion = document.getElementById('authoringToolQuestion');
+            const softwarePurchaseTypes = document.querySelectorAll('input[name="softwarePurchaseType"]');
+
+            const serverInstallationQuestion = document.getElementById('serverInstallationQuestion');
+            const hardwareTypeCheckboxes = document.querySelectorAll('input[name="hardwareType"]');
+
+            // --- Initial State and Event Listeners for Conditional Questions ---
+
+            // Function to update visibility of webContentQuestion
+            function updateWebContentVisibility() {
+                const selectedEContent = document.querySelector('input[name="eContent"]:checked');
+                const webContentFieldset = document.getElementById('webContentQuestion');
+                if (selectedEContent && selectedEContent.value === 'yes') {
+                    webContentFieldset.style.display = 'block';
+                } else {
+                    webContentFieldset.style.display = 'none';
+                    // Reset radio selection when hidden
+                    document.querySelectorAll('input[name="webContent"]').forEach(radio => radio.checked = false);
+                }
+            }
+
+            // Function to update visibility of software-related conditional questions
+            function updateSoftwareQuestionsVisibility() {
+                const selectedSoftwareTypes = Array.from(softwarePurchaseTypes)
+                                                .filter(cb => cb.checked && cb.value !== 'none')
+                                                .map(cb => cb.value);
+
+                const hasSoftwarePurchase = selectedSoftwareTypes.length > 0;
+                const isAuthoringToolSelected = selectedSoftwareTypes.includes('authoringTools');
+                const isWebOrAuthoringSoftwareSelected = selectedSoftwareTypes.includes('webDesktopServer') || isAuthoringToolSelected || selectedSoftwareTypes.includes('infrastructure');
+
+
+                cloudServiceQuestion.style.display = hasSoftwarePurchase ? 'block' : 'none';
+                if (!hasSoftwarePurchase) document.querySelectorAll('input[name="cloudServiceType"]').forEach(cb => cb.checked = false);
+
+                webBrowserSoftwareQuestion.style.display = isWebOrAuthoringSoftwareSelected ? 'block' : 'none';
+                if (!isWebOrAuthoringSoftwareSelected) document.querySelectorAll('input[name="softwareWebBrowser"]').forEach(radio => radio.checked = false);
+
+                authoringToolQuestion.style.display = isAuthoringToolSelected ? 'block' : 'none';
+                if (!isAuthoringToolSelected) document.querySelectorAll('input[name="authoringTool"]').forEach(radio => radio.checked = false);
+            }
+
+            // Function to update visibility of serverInstallationQuestion
+            function updateServerInstallationVisibility() {
+                const isServerSelected = Array.from(hardwareTypeCheckboxes).some(cb => cb.checked && cb.value === 'servers');
+                if (isServerSelected) {
+                    serverInstallationQuestion.style.display = 'block';
+                } else {
+                    serverInstallationQuestion.style.display = 'none';
+                    // Reset radio selection when hidden
+                    document.querySelectorAll('input[name="serverInstallation"]').forEach(radio => radio.checked = false);
+                }
+            }
+
+            // Add event listeners
+            eContentRadios.forEach(radio => {
+                radio.addEventListener('change', updateWebContentVisibility);
+            });
+            softwarePurchaseTypes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateSoftwareQuestionsVisibility);
+            });
+            hardwareTypeCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateServerInstallationVisibility);
+            });
+
+            // Initialize visibility state on page load
+            updateWebContentVisibility();
+            updateSoftwareQuestionsVisibility();
+            updateServerInstallationVisibility();
+
+            // Function to handle "None of the above" selections
+            function handleNoneSelection(noneCheckbox, groupName) {
+                const groupCheckboxes = document.querySelectorAll(`input[name="${groupName}"]`);
+                
+                if (noneCheckbox.checked) {
+                    // If "None" is checked, uncheck all other options
+                    groupCheckboxes.forEach(checkbox => {
+                        if (checkbox !== noneCheckbox) {
+                            checkbox.checked = false;
+                        }
+                    });
+                } else {
+                    // If "None" is unchecked, do nothing (allow other selections)
+                }
+            }
+
+            // Function to handle regular checkbox selections (uncheck "None" if other items are selected)
+            function handleRegularSelection(checkbox, groupName) {
+                const noneCheckbox = document.querySelector(`input[name="${groupName}"][value="none"]`);
+                
+                if (checkbox.checked && noneCheckbox && noneCheckbox.checked) {
+                    // If another option is checked and "None" was previously checked, uncheck "None"
+                    noneCheckbox.checked = false;
+                }
+            }
+
+            // Add event listeners for "None of the above" functionality
+            function setupNoneHandling() {
+                // ICT Type
+                const ictNone = document.getElementById('ictNone');
+                const ictCheckboxes = document.querySelectorAll('input[name="ictType"]');
+                
+                if (ictNone) {
+                    ictNone.addEventListener('change', () => handleNoneSelection(ictNone, 'ictType'));
+                    ictCheckboxes.forEach(checkbox => {
+                        if (checkbox !== ictNone) {
+                            checkbox.addEventListener('change', () => handleRegularSelection(checkbox, 'ictType'));
+                        }
+                    });
+                }
+
+                // Hardware Type
+                const hardwareNone = document.getElementById('hardwareNone');
+                const hardwareCheckboxes = document.querySelectorAll('input[name="hardwareType"]');
+                
+                if (hardwareNone) {
+                    hardwareNone.addEventListener('change', () => handleNoneSelection(hardwareNone, 'hardwareType'));
+                    hardwareCheckboxes.forEach(checkbox => {
+                        if (checkbox !== hardwareNone) {
+                            checkbox.addEventListener('change', () => handleRegularSelection(checkbox, 'hardwareType'));
+                        }
+                    });
+                }
+
+                // Software Purchase Type
+                const softwareNone = document.querySelector('input[name="softwarePurchaseType"][value="none"]');
+                const softwareCheckboxes = document.querySelectorAll('input[name="softwarePurchaseType"]');
+                
+                if (softwareNone) {
+                    softwareNone.addEventListener('change', () => handleNoneSelection(softwareNone, 'softwarePurchaseType'));
+                    softwareCheckboxes.forEach(checkbox => {
+                        if (checkbox !== softwareNone) {
+                            checkbox.addEventListener('change', () => handleRegularSelection(checkbox, 'softwarePurchaseType'));
+                        }
+                    });
+                }
+
+                // Support Type
+                const supportNone = document.getElementById('supportNone');
+                const supportCheckboxes = document.querySelectorAll('input[name="supportType"]');
+                
+                if (supportNone) {
+                    supportNone.addEventListener('change', () => handleNoneSelection(supportNone, 'supportType'));
+                    supportCheckboxes.forEach(checkbox => {
+                        if (checkbox !== supportNone) {
+                            checkbox.addEventListener('change', () => handleRegularSelection(checkbox, 'supportType'));
+                        }
+                    });
+                }
+            }
+
+            // Call the setup function
+            setupNoneHandling();
+
+
+            // --- Form Submission Logic ---
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                const projectName = projectNameInput.value.trim();
+
+                // Project Name Validation
+                if (!projectName) {
+                    projectNameError.style.display = 'block'; // Show error message
+                    projectNameError.setAttribute('aria-live', 'assertive');
+                    projectNameInput.focus(); // Focus on the field for the user
+                    projectNameInput.setAttribute('aria-invalid', 'true');
+                    outputDiv.innerHTML = `<p style="text-align: center; color: #666;">Please fill out the required fields.</p>`; // Clear output or show a prompt
+                    return; // Stop the function if validation fails
+                } else {
+                    projectNameError.style.display = 'none'; // Hide error if valid
+                    projectNameInput.setAttribute('aria-invalid', 'false');
+                }
+
+                let outputText = ``;
+
+                // Get the selected solicitation phase
+                const solicitationPhase = document.querySelector('input[name="solicitationPhase"]:checked')?.value;
+
+                // Enhanced Header with Open Requirements approach
+                outputText += `Accessibility Requirements for Government ICT Procurement\n\n`;
+                outputText += `These requirements establish clear accessibility expectations that meet federal compliance standards while promoting best practices for inclusive design.\n\n`;
+                
+                // Core Accessibility Standards Section
+                outputText += `CORE ACCESSIBILITY STANDARDS\n\n`;
+                outputText += `1. Legal Compliance Foundation\n`;
+                outputText += `All deliverables must comply with Section 508 of the Rehabilitation Act (29 U.S.C. §794d) as detailed at https://www.access-board.gov/ict/\n\n`;
+                
+                outputText += `2. Best Practice Standards\n`;
+                outputText += `For web-based deliverables, contractor shall target compliance with the latest WCAG recommendations (currently WCAG 2.2 Level AA) available at https://www.w3.org/TR/WCAG22/\n\n`;
+                
+                outputText += `3. Accessibility Conformance Reporting\n`;
+                outputText += `Contractor must provide Accessibility Conformance Reports (ACRs) using the OpenACR Editor (https://acreditor.section508.gov/) for all digital deliverables.\n\n`;
+
+                outputText += `PROJECT-SPECIFIC REQUIREMENTS\n\n`;
+                outputText += `Section 508 of the Rehabilitation Act, as amended by the Workforce Investment Act of 1998 (P.L. 105-220) requires that when Federal agencies develop, procure, maintain, or use information and communication technology (ICT), it shall be accessible to people with disabilities. Federal employees and members of the public who have disabilities must have access to, and use of, information and data that is comparable to people without disabilities.\n`;
+                outputText += `\n\nItem that contains ICT: ${projectName}\n\n`;
+                outputText += `${projectName}\n`; // The second instance of the project name
+
+                // Get form responses
+                const ictTypeProducts = document.getElementById('ictProduct').checked;
+                const ictTypeServices = document.getElementById('ictService').checked;
+                const eContentAnswer = document.querySelector('input[name="eContent"]:checked')?.value;
+                const webContentAnswer = document.querySelector('input[name="webContent"]:checked')?.value;
+
+                // Electronic Content Requirements
+                if (eContentAnswer === 'yes') {
+                    outputText += `Electronic Content Accessibility\n`;
+                    outputText += `Contractor must ensure all electronic content (forms, documents, multimedia, templates) meets WCAG 2.2 Level AA standards and Section 508 requirements detailed at https://www.access-board.gov/ict/#E205\n\n`;
+                    
+                    outputText += `Specific Requirements:\n`;
+                    outputText += `• All public-facing content must be fully accessible\n`;
+                    outputText += `• Official communications (notifications, decisions, announcements, surveys, forms, training materials) must meet accessibility standards\n`;
+                    outputText += `• Content must be compatible with assistive technologies\n`;
+                    outputText += `• Alternative formats must be provided when requested\n\n`;
+                    
+                    if (webContentAnswer === 'yes') {
+                        outputText += `Web Content Enhancement:\n`;
+                        outputText += `For web-delivered content, contractor should target the latest WCAG recommendations (currently 2.2) to ensure future-ready accessibility beyond minimum compliance.\n\n`;
+                    }
+                }
+
+                // E206 Hardware
+                const selectedHardwareTypes = Array.from(document.querySelectorAll('input[name="hardwareType"]:checked'))
+                                                .map(cb => cb.value)
+                                                .filter(val => val !== 'none');
+                const serverInstallationAnswer = document.querySelector('input[name="serverInstallation"]:checked')?.value;
+
+                if (selectedHardwareTypes.length > 0) {
+                    outputText += `E206 Hardware\n`;
+                    outputText += `E206.1 General. Where components of ICT are hardware and transmit information or have a user interface, such components shall conform to the requirements in Chapter 4.\n\n`;
+
+                    // Chapter 4 sections - carefully define conditions
+                    outputText += `401 General\n`;
+                    outputText += `401.1 Scope. The requirements of Chapter 4 shall apply to ICT that is hardware where required by 508 Chapter 2 (Scoping Requirements), 255 Chapter 2 (Scoping Requirements), and where otherwise referenced in any other chapter of the Revised 508 Standards or Revised 255 Guidelines.\n`;
+                    outputText += `Exception from E401.1 Scope: Hardware that is assistive technology shall not be required to conform to the requirements of this chapter.\n\n`;
+
+                    const hasDisplayScreenHardware = selectedHardwareTypes.includes('computers') || selectedHardwareTypes.includes('tablet') || selectedHardwareTypes.includes('printers') || selectedHardwareTypes.includes('multiFunction') || selectedHardwareTypes.includes('informationKiosks') || selectedHardwareTypes.includes('videoDisplay') || selectedHardwareTypes.includes('videoConf');
+                    const hasOperablePartsHardware = selectedHardwareTypes.includes('computers') || selectedHardwareTypes.includes('tablet') || selectedHardwareTypes.includes('printers') || selectedHardwareTypes.includes('multiFunction') || selectedHardwareTypes.includes('peripheral') || selectedHardwareTypes.includes('informationKiosks') || selectedHardwareTypes.includes('mobile') || selectedHardwareTypes.includes('videoConf') || selectedHardwareTypes.includes('videoDisplay');
+                    const hasTwoWayVoiceHardware = selectedHardwareTypes.includes('mobile') || selectedHardwareTypes.includes('videoConf') || selectedHardwareTypes.includes('informationKiosks'); // Kiosks can have voice comm
+
+                    if (hasOperablePartsHardware) {
+                        outputText += `407 Operable Parts\n`;
+                        outputText += `407.1 General. Where provided, operable parts used in the normal operation of ICT shall conform to 407.\n`;
+                        outputText += `407.2 Contrast. Where provided, keys and controls shall contrast visually from background surfaces. Characters and symbols shall contrast visually from background surfaces with either light characters or symbols on a dark background or dark characters or symbols on a light background.\n`;
+                        outputText += `407.3 Input Controls. At least one input control conforming to 407.3 shall be provided for each function.\n`;
+                        outputText += `Exception from E407.3 Input Controls: Devices for personal use with input controls that are audibly discernable without activation and operable by touch shall not be required to conform to 407.3.\n`;
+                        outputText += `407.3.1 Tactilely Discernible. Input controls shall be operable by touch and tactilely discernible without activation.\n`;
+                        outputText += `407.3.2 Alphabetic Keys. Where provided, individual alphabetic keys shall be arranged in a QWERTY-based keyboard layout and the “F” and “J” keys shall be tactilely distinct from the other keys.\n`;
+                        outputText += `407.3.3 Numeric Keys. Where provided, numeric keys shall be arranged in a 12-key ascending or descending keypad layout. The number five key shall be tactilely distinct from the other keys. Where the ICT provides an alphabetic overlay on numeric keys, the relationships between letters and digits shall conform to ITU-T Recommendation E.161 (incorporated by reference, see 702.7.1).\n`;
+                        outputText += `407.4 Key Repeat. Where a keyboard with key repeat is provided, the delay before the key repeat feature is activated shall be fixed at, or adjustable to, 2 seconds minimum.\n`;
+                        outputText += `407.5 Timed Response. Where a timed response is required, the user shall be alerted visually, as well as by touch or sound, and shall be given the opportunity to indicate that more time is needed.\n`;
+                        outputText += `407.6 Operation. At least one mode of operation shall be operable with one hand and shall not require tight grasping, pinching, or twisting of the wrist. The force required to activate operable parts shall be 5 pounds (22.2 N) maximum.\n`;
+                        outputText += `407.7 Tickets, Fare Cards, and Keycards. Where tickets, fare cards, or keycards are provided, they shall have an orientation that is tactilely discernible if orientation is important to further use of the ticket, fare card, or keycard.\n`;
+                        outputText += `407.8 Reach Height and Depth. At least one of each type of operable part of stationary ICT shall be at a height conforming to 407.8.2 or 407.8.3 according to its position established by the vertical reference plane specified in 407.8.1 for a side reach or a forward reach. Operable parts used with speech output required by 402.2 shall not be the only type of operable part complying with 407.8 unless that part is the only operable part of its type.\n\n`;
+                        outputText += `407.8.1 Vertical Reference Plane. Operable parts shall be positioned for a side reach or a forward reach determined with respect to a vertical reference plane. The vertical reference plane shall be located in conformance to 407.8.2 or 407.8.3.407.8.1.1 Vertical Plane for Side Reach. Where a side reach is provided, the vertical reference plane shall be 48 inches (1220 mm) long minimum.\n`;
+                        outputText += `407.8.1.2 Vertical Plane for Forward Reach. Where a forward reach is provided, the vertical reference plane shall be 30 inches (760 mm) long minimum.\n`;
+                        outputText += `407.8.2 Side Reach. Operable parts of ICT providing a side reach shall conform to 407.8.2.1 or 407.8.2.2. The vertical reference plane shall be centered on the operable part and placed at the leading edge of the maximum protrusion of the ICT within the length of the vertical reference plane. Where a side reach requires a reach over a portion of the ICT, the height of that portion of the ICT shall be 34 inches (865 mm) maximum.407.8.2.1 Unobstructed Side Reach. Where the operable part is located 10 inches (255 mm) or less beyond the vertical reference plane, the operable part shall be 48 inches (1220 mm) high maximum and 15 inches (380 mm) high minimum above the floor.\n`;
+                        outputText += `407.8.2.2 Obstructed Side Reach. Where the operable part is located more than 10 inches (255 mm), but not more than 24 inches (610 mm), beyond the vertical reference plane, the height of the operable part shall be 46 inches (1170 mm) high maximum and 15 inches (380 mm) high minimum above the floor. The operable part shall not be located more than 24 inches (610 mm) beyond the vertical reference plane.\n`;
+                        outputText += `407.8.3 Forward Reach. Operable parts of ICT providing a forward reach shall conform to 407.8.3.1 or 407.8.3.2. The vertical reference plane shall be centered, and intersect with, the operable part. Where a forward reach allows a reach over a portion of the ICT, the height of that portion of the ICT shall be 34 inches (865 mm) maximum.407.8.3.1 Unobstructed Forward Reach. Where the operable part is located at the leading edge of the maximum protrusion within the length of the vertical reference plane of the ICT, the operable part shall be 48 inches (1220 mm) high maximum and 15 inches (380 mm) high minimum above the floor.\n`;
+                        outputText += `407.8.3.2 Obstructed Forward Reach. Where the operable part is located beyond the leading edge of the maximum protrusion within the length of the vertical reference plane, the operable part shall conform to 407.8.3.2. The maximum allowable forward reach to an operable part shall be 25 inches (635 mm).407.8.3.2.1 Operable Part Height for ICT with Obstructed Forward Reach. The height of the operable part shall conform to Table 407.8.3.2.1.\n`;
+                        outputText += `407.8.3.2.2 Knee and Toe Space under ICT with Obstructed Forward Reach. Knee and toe space under ICT shall be 27 inches (685 mm) high minimum, 25 inches (635 mm) deep maximum, and 30 inches (760 mm) wide minimum and shall be clear of obstructions.\n\n`;
+                    }
+
+                    if (hasDisplayScreenHardware) {
+                        outputText += `408 Display Screens\n`;
+                        outputText += `408.1 General. Where provided, display screens shall conform to 408.\n`;
+                        outputText += `408.2 Visibility. Where stationary ICT provides one or more display screens, at least one of each type of display screen shall be visible from a point located 40 inches (1015 mm) above the floor space where the display screen is viewed.\n`;
+                        outputText += `408.3 Flashing. Where ICT emits lights in flashes, there shall be no more than three flashes in any one-second period.\n`;
+                        outputText += `Exception from E408.3 Flashing: Flashes that do not exceed the general flash and red flash thresholds defined in WCAG 2.0 (incorporated by reference, see 702.10.1) are not required to conform to 408.3.\n\n`;
+                    }
+
+                    if (selectedHardwareTypes.includes('informationKiosks') || selectedHardwareTypes.includes('multiFunction') || selectedHardwareTypes.includes('printers')) { // Add other closed functionality devices
+                        outputText += `402 Closed Functionality\n`;
+                        outputText += `402.1 General. ICT with closed functionality shall be operable without requiring the user to attach or install assistive technology other than personal headsets or other audio couplers, and shall conform to 402.\n`;
+                        outputText += `402.2 Speech-Output Enabled. ICT with a display screen shall be speech-output enabled for full and independent use by individuals with vision impairments.\n`;
+                        outputText += `Exceptions from E402.2:\n`;
+                        outputText += `1. Variable message signs conforming to 402.5 shall not be required to be speech-output enabled.\n`;
+                        outputText += `2. Speech output shall not be required where ICT display screens only provide status indicators and those indicators conform to 409.\n`;
+                        outputText += `3. Where speech output cannot be supported due to constraints in available memory or processor capability, ICT shall be permitted to conform to 409 in lieu of 402.2.\n`;
+                        outputText += `4. Audible tones shall be permitted instead of speech output where the content of user input is not displayed as entered for security purposes, including, but not limited to, asterisks representing personal identification numbers.\n`;
+                        outputText += `5. Speech output shall not be required for: the machine location; date and time of transaction; customer account number; and the machine identifier or label.\n`;
+                        outputText += `6. Speech output shall not be required for advertisements and other similar information unless they convey information that can be used for the transaction being conducted.\n`;
+                        outputText += `402.2.1 Information Displayed On-Screen. Speech output shall be provided for all information displayed on-screen.\n`;
+                        outputText += `402.2.2 Transactional Outputs. Where transactional outputs are provided, the speech output shall audibly provide all information necessary to verify a transaction.\n`;
+                        outputText += `402.2.3 Speech Delivery Type and Coordination. Speech output shall be delivered through a mechanism that is readily available to all users, including, but not limited to, an industry standard connector or a telephone handset. Speech shall be recorded or digitized human, or synthesized. Speech output shall be coordinated with information displayed on the screen.\n`;
+                        outputText += `402.2.4 User Control. Speech output for any single function shall be automatically interrupted when a transaction is selected. Speech output shall be capable of being repeated and paused.\n`;
+                        outputText += `402.2.5 Braille Instructions. Where speech output is required by 402.2, braille instructions for initiating the speech mode of operation shall be provided. Braille shall be contracted and shall conform to 36 CFR part 1191, Appendix D, Section 703.3.1.\n`;
+                        outputText += `Exception from E402.2.5 Braille Instructions: Devices for personal use shall not be required to conform to 402.2.5.\n`;
+                        outputText += `402.3 Volume. ICT that delivers sound, including speech output required by 402.2, shall provide volume control and output amplification conforming to 402.3.\n`;
+                        outputText += `402.3.1 Private Listening. Where ICT provides private listening, it shall provide a mode of operation for controlling the volume. Where ICT delivers output by an audio transducer typically held up to the ear, a means for effective magnetic wireless coupling to hearing technologies shall be provided.\n`;
+                        outputText += `402.3.2 Non-private Listening. Where ICT provides non-private listening, incremental volume control shall be provided with output amplification up to a level of at least 65 dB. A function shall be provided to automatically reset the volume to the default level after every use.\n`;
+                        outputText += `402.4 Characters on Display Screens. At least one mode of characters displayed on the screen shall be in a sans serif font. Where ICT does not provide a screen enlargement feature, characters shall be 3/16 inch (4.8 mm) high minimum based on the uppercase letter “I”. Characters shall contrast with their background with either light characters on a dark background or dark characters on a light background.\n`;
+                        outputText += `402.5 Characters on Variable Message Signs. Characters on variable message signs shall conform to section 703.7 Variable Message Signs of ICC A117.1-2009 (incorporated by reference, see 702.6.1).\n\n`;
+                    }
+
+                    if (hasTwoWayVoiceHardware) {
+                        outputText += `412 ICT with Two-Way Voice Communication\n`;
+                        outputText += `412.1 General. ICT that provides two-way voice communication shall conform to 412.\n`;
+                        outputText += `412.2 Volume Gain. ICT that provides two-way voice communication shall conform to 412.2.1 or 412.2.2.\n`;
+                        outputText += `Exception from E412.2 Volume Gain: ICT conforming to 412.2 shall not be required to conform to 402.3.\n`;
+                        outputText += `412.2.1 Volume Gain for Wireline Telephones. Volume gain conforming to 47 CFR 68.317 shall be provided on analog and digital wireline telephones.\n`;
+                        outputText += `412.2.2 Volume Gain for Non-Wireline ICT. A method for increasing volume shall be provided for non-wireline ICT.\n`;
+                        outputText += `412.3 Interference Reduction and Magnetic Coupling. Where ICT delivers output by a handset or other type of audio transducer that is typically held up to the ear, ICT shall reduce interference with hearing technologies and provide a means for effective magnetic wireless coupling in conformance with 412.3.1 or 412.3.2.\n\n`;
+                        outputText += `412.3.1 Wireless Handsets. ICT in the form of wireless handsets shall conform to ANSI/IEEE C63.19-2011 (incorporated by reference, see 702.5.1).\n`;
+                        outputText += `412.3.2 Wireline Handsets. ICT in the form of wireline handsets, including cordless handsets, shall conform to TIA-1083-B (incorporated by reference, see702.9.1).\n`;
+                        outputText += `412.4 Digital Encoding of Speech. ICT in IP-based networks shall transmit and receive speech that is digitally encoded in the manner specified by ITU-T Recommendation G.722.2 (incorporated by reference, see 702.7.2) or IETF RFC 6716 (incorporated by reference, see 702.8.1).\n`;
+                        outputText += `412.5 Real-Time Text Functionality. [Reserved].\n`;
+                        outputText += `412.6 Caller ID. Where provided, caller identification and similar telecommunications functions shall be visible and audible.\n`;
+                        outputText += `412.7 Video Communication. Where ICT provides real-time video functionality, the quality of the video shall be sufficient to support communication using sign language.\n\n`;
+                    }
+
+                    if (selectedHardwareTypes.includes('videoConf') || selectedHardwareTypes.includes('videoDisplay')) {
+                        outputText += `413 Closed Caption Processing Technologies\n`;
+                        outputText += `413.1 General. Where ICT displays or processes video with synchronized audio, ICT shall provide closed caption processing technology that conforms to 413.1.1 or 413.1.2.\n`;
+                        outputText += `413.1.1 Decoding and Display of Closed Captions. Players and displays shall decode closed caption data and support display of captions.\n`;
+                        outputText += `413.1.2 Pass-Through of Closed Caption Data. Cabling and ancillary equipment shall pass through caption data.\n`;
+                        outputText += `414 Audio Description Processing Technologies\n`;
+                        outputText += `414.1 General. Where ICT displays or processes video with synchronized audio, ICT shall provide audio description processing technology conforming to 414.1.1 or 414.1.2.\n`;
+                        outputText += `414.1.1 Digital Television Tuners. Digital television tuners shall provide audio description processing that conforms to ATSC A/53 Digital Television Standard, Part 5 (2014) (incorporated by reference, see 702.2.1). Digital television tuners shall provide processing of audio description when encoded as a Visually Impaired (VI) associated audio service that is provided as a complete program mix containing audio description according to the ATSC A/53 standard.\n`;
+                        outputText += `414.1.2 Other ICT. ICT other than digital television tuners shall provide audio description processing.\n`;
+                        outputText += `415 User Controls for Captions and Audio Descriptions\n`;
+                        outputText += `415.1 General. Where ICT displays video with synchronized audio, ICT shall provide user controls for closed captions and audio descriptions conforming to 415.1.\n`;
+                        outputText += `Exception from E415.1 General: Devices for personal use shall not be required to conform to 415.1 provided that captions and audio descriptions can be enabled through system-wide platform settings.\n`;
+                        outputText += `415.1.1 Caption Controls. Where ICT provides operable parts for volume control, ICT shall also provide operable parts for caption selection.\n`;
+                        outputText += `415.1.2 Audio Description Controls. Where ICT provides operable parts for program selection, ICT shall also provide operable parts for the selection of audio description.\n\n`;
+                    }
+                    // These generally apply if any hardware is selected, as they are broad principles.
+                    outputText += `403 Biometrics\n`;
+                    outputText += `403.1 General. Where provided, biometrics shall not be the only means for user identification or control.\n`;
+                    outputText += `Exception from E403.1 General: Where at least two biometric options that use different biological characteristics are provided, ICT shall be permitted to use biometrics as the only means for user identification or control.\n\n`;
+                    outputText += `404 Preservation of Information Provided for Accessibility\n`;
+                    outputText += `404.1 General. ICT that transmits or converts information or communication shall not remove non-proprietary information provided for accessibility or shall restore it upon delivery.\n\n`;
+                    outputText += `405 Privacy\n`;
+                    outputText += `405.1 General. The same degree of privacy of input and output shall be provided to all individuals. When speech output required by 402.2 is enabled, the screen shall not blank automatically.\n\n`;
+                    outputText += `406 Standard Connections\n`;
+                    outputText += `406.1 General. Where data connections used for input and output are provided, at least one of each type of connection shall conform to industry standard non-proprietary formats.\n\n`;
+                    outputText += `409 Status Indicators\n`;
+                    outputText += `409.1 General. Where provided, status indicators shall be discernible visually and by touch or sound.\n\n`;
+                    outputText += `410 Color Coding\n`;
+                    outputText += `410.1 General. Where provided, color coding shall not be used as the only means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.\n\n`;
+                    outputText += `411 Audible Signals\n`;
+                    outputText += `411.1 General. Where provided, audible signals or cues shall not be used as the only means of conveying information, indicating an action, or prompting a response\n\n`;
+                }
+
+
+                // Software Requirements
+                const selectedSoftwareCriteria = Array.from(document.querySelectorAll('input[name="softwareCriteria"]:checked'))
+                                                        .map(cb => cb.value);
+                const selectedSoftwarePurchaseTypes = Array.from(document.querySelectorAll('input[name="softwarePurchaseType"]:checked'))
+                                                            .map(cb => cb.value)
+                                                            .filter(val => val !== 'none');
+                const softwareWebBrowserAnswer = document.querySelector('input[name="softwareWebBrowser"]:checked')?.value;
+                const authoringToolAnswer = document.querySelector('input[name="authoringTool"]:checked')?.value;
+
+                if (selectedSoftwarePurchaseTypes.length > 0 && !selectedSoftwareCriteria.includes('assistiveTech')) {
+                    outputText += `Software Accessibility Requirements\n`;
+                    outputText += `Contractor must ensure all software with user interfaces meets Section 508 software standards detailed at https://www.access-board.gov/ict/#E207\n\n`;
+                    
+                    outputText += `Core Software Requirements:\n`;
+                    outputText += `• All user interfaces must comply with WCAG 2.2 Level AA standards\n`;
+                    outputText += `• Software must be compatible with assistive technologies\n`;
+                    outputText += `• Platform accessibility features must be preserved and enhanced\n`;
+                    outputText += `• User preferences for accessibility settings must be supported\n\n`;
+
+                    if (softwareWebBrowserAnswer === 'yes') {
+                        outputText += `Web-Based Software Enhancement:\n`;
+                        outputText += `For web-accessible software, contractor should target the latest WCAG recommendations to ensure future compatibility and enhanced user experience.\n\n`;
+                    }
+
+                    if (authoringToolAnswer === 'yes' || selectedSoftwarePurchaseTypes.includes('authoringTools')) {
+                        outputText += `Authoring Tools Requirements:\n`;
+                        outputText += `Content creation tools must:\n`;
+                        outputText += `• Enable creation of accessible content that meets WCAG 2.2 standards\n`;
+                        outputText += `• Provide accessibility guidance and prompts to content creators\n`;
+                        outputText += `• Include accessible templates and preserve accessibility features during format conversion\n`;
+                        outputText += `• Support PDF/UA export when PDF functionality is provided\n\n`;
+                    }
+
+                    if (selectedSoftwarePurchaseTypes.includes('webDesktopServer') || selectedSoftwarePurchaseTypes.includes('infrastructure')) {
+                        outputText += `Integration & Performance Requirements:\n`;
+                        outputText += `• Maintain accessibility performance across different devices and platforms\n`;
+                        outputText += `• Ensure accessibility features work reliably in production environments\n`;
+                        outputText += `• Provide automated accessibility testing capabilities where feasible\n\n`;
+                    }
+                }
+
+                // E208 Support Documentation and Services
+                const selectedSupportTypes = Array.from(document.querySelectorAll('input[name="supportType"]:checked'))
+                                                .map(cb => cb.value)
+                                                .filter(val => val !== 'none');
+
+                if (selectedSupportTypes.length > 0) {
+                    outputText += `E208 Support Documentation and Services\n`;
+                    outputText += `E208.1 General. Where an agency provides support documentation or services for ICT, such documentation and services shall conform to the requirements in Chapter 6.\n\n`;
+
+                    if (selectedSupportTypes.includes('productDoc') || selectedSupportTypes.includes('selfService')) {
+                        outputText += `602 Support Documentation\n`;
+                        outputText += `602.1 General. Documentation that supports the use of ICT shall conform to 602.\n`;
+                        outputText += `602.2 Accessibility and Compatibility Features. Documentation shall list and explain how to use the accessibility and compatibility features required by Chapters 4 and 5. Documentation shall include accessibility features that are built-in and accessibility features that provide compatibility with assistive technology.\n`;
+                        outputText += `602.3 Electronic Support Documentation. Documentation in electronic format, including Web-based self-service support, shall conform to Level A and Level AA Success Criteria and Conformance Requirements in WCAG 2.0 (incorporated by reference, see 702.10.1).\n`;
+                        outputText += `602.4 Alternate Formats for Non-Electronic Support Documentation. Where support documentation is only provided in non-electronic formats, alternate formats usable by individuals with disabilities shall be provided upon request.\n\n`;
+                    }
+                    if (selectedSupportTypes.includes('helpDesk') || selectedSupportTypes.includes('training') || selectedSupportTypes.includes('selfService')) {
+                        outputText += `603 Support Services\n`;
+                        outputText += `603.1 General. ICT support services including, but not limited to, help desks, call centers, training services, and automated self-service technical support, shall conform to 603.\n`;
+                        outputText += `603.2 Information on Accessibility and Compatibility Features. ICT support services shall include information on the accessibility and compatibility features required by 602.2.\n`;
+                        outputText += `603.3 Accommodation of Communication Needs. Support services shall be provided directly to the user or through a referral to a point of contact. Such ICT support services shall accommodate the communication needs of individuals with disabilities.\n\n`;
+                    }
+                }
+
+                // E301 General (Functional Performance Criteria)
+                // This section generally applies if ICT products are involved and specific functional needs are identified.
+                // Include if any ICT product (hardware/software/electronic content) is selected OR if ICT Services are selected, as services can involve products.
+                if (ictTypeProducts || ictTypeServices || eContentAnswer === 'yes' || selectedSoftwarePurchaseTypes.length > 0 || selectedHardwareTypes.length > 0) {
+                    outputText += `Functional Performance Criteria Requirements\n`;
+                    outputText += `All ICT must meet the Functional Performance Criteria detailed in Section 508 Standards Chapter 3 (https://www.access-board.gov/ict/#chapter-3-functional-performance-criteria) to ensure usability by individuals with disabilities across all functional capabilities including:\n\n`;
+                    outputText += `• Vision capabilities (with or without vision, with limited vision, without color perception)\n`;
+                    outputText += `• Hearing capabilities (with or without hearing, with limited hearing)\n`;
+                    outputText += `• Speech capabilities (with or without speech)\n`;
+                    outputText += `• Motor capabilities (with limited manipulation, with limited reach and strength)\n`;
+                    outputText += `• Cognitive capabilities (with limited language, cognitive, and learning abilities)\n\n`;
+                }
+
+                // Enhanced Procurement and Lifecycle Management Requirements
+                // Include these enhanced requirements for all ICT procurements
+                if (ictTypeProducts || ictTypeServices || eContentAnswer === 'yes' || selectedSoftwarePurchaseTypes.length > 0 || selectedHardwareTypes.length > 0 || selectedSupportTypes.length > 0) {
+                    outputText += `VENDOR ACCOUNTABILITY AND PROCUREMENT EXCELLENCE\n\n`;
+                    
+                    outputText += `Evaluation Criteria – Accessibility and Inclusive Design\n\n`;
+                    outputText += `Proposals submitted under this contract will be evaluated on how well they:\n`;
+                    outputText += `• Demonstrate a comprehensive understanding of, and commitment to, the latest WCAG recommendations and applicable Section 508 standards\n`;
+                    outputText += `• Outline a detailed plan for integrating accessibility throughout the entire project lifecycle, from initial design and development to rigorous testing, secure deployment, and ongoing maintenance\n`;
+                    outputText += `• Provide compelling evidence of extensive experience in designing, developing, and testing accessible ICT, including direct engagement and usability testing with individuals with diverse disabilities\n`;
+                    outputText += `• Describe robust methodologies for continuous monitoring, proactive identification, and timely remediation of accessibility issues, including the use of both automated tools and expert manual review\n`;
+                    outputText += `• Detail comprehensive strategies for providing accessible user support, documentation, and training, ensuring information is available in multiple accessible formats\n`;
+                    outputText += `• Present internal organizational policies, staff training programs, and quality assurance processes that demonstrate a sustained commitment to digital accessibility\n`;
+                    outputText += `• Vendors may be required to demonstrate the use of their product with assistive technologies prior to a final decision being made. \n\n`;
+
+
+                    outputText += `Accessibility Deliverables\n\n`;
+                    outputText += `Required deliverables for ICT projects under this contract include:\n`;
+                    outputText += `• An Accessibility Conformance Report (ACR) for all new or significantly modified ICT, completed using the latest version of OpenACR, demonstrating conformance with the latest WAI WCAG recommendations at Level AA\n`;
+                    outputText += `• Detailed accessibility testing documentation, including results from automated and manual testing, and usability testing with individuals with disabilities\n`;
+                    outputText += `• All user-facing documentation, training materials, and support resources must be provided in accessible formats\n`;
+                    outputText += `• A plan for ongoing accessibility maintenance, including regular audits, monitoring tools, and remediation processes\n`;
+                    outputText += `• Documentation of any third-party components used and their accessibility status\n`;
+                    outputText += `• Where open source components are used, documentation of contributions of accessibility-related improvements to the relevant upstream open source projects. Information on this should be covered in regular reporting.\n\n`;
+                    
+                    outputText += `Ongoing Accessibility Compliance and Maintenance\n\n`;
+                    outputText += `The Contractor must:\n`;
+                    outputText += `• Proactively monitor newly released accessibility standards, guidelines, and best practices, adapting processes as necessary to maintain compliance with evolving requirements (e.g., It is a best practice to build to the latest WCAG recommendations from the Web Accessibility Initiative.)\n`;
+                    outputText += `• Establish and adhere to a process for promptly identifying, reporting, documenting, and prioritizing accessibility barriers, including regressions caused by code changes, and remediating them based on their impact\n`;
+                    outputText += `• Provide training to project personnel on accessibility principles, development techniques, and testing methodologies relevant to their roles\n`;
+                    outputText += `• Maintain clear documentation of accessibility features, known issues, and planned remediation efforts\n`;
+                    outputText += `• Ensure that all updates, upgrades, and changes to the ICT maintain or improve its accessibility conformance\n`;
+                    outputText += `• If COTS software (including open source software) is used, ensure that accessibility bugs and patches are contributed back upstream.\n\n`;
+                }
+
+                // Display the generated output with edit capability
+                displayOutput(outputText);
+            });
+
+            // Store previous criteria for comparison
+            let previousCriteria = null;
+
+            // Function to get current form criteria
+            function getCurrentCriteria() {
+                const criteria = {
+                    projectName: document.getElementById('projectName').value.trim(),
+                    ictProducts: document.getElementById('ictProduct').checked,
+                    ictServices: document.getElementById('ictService').checked,
+                    eContent: document.querySelector('input[name="eContent"]:checked')?.value,
+                    webContent: document.querySelector('input[name="webContent"]:checked')?.value,
+                    hardwareTypes: Array.from(document.querySelectorAll('input[name="hardwareType"]:checked')).map(cb => cb.value).filter(val => val !== 'none'),
+                    softwarePurchaseTypes: Array.from(document.querySelectorAll('input[name="softwarePurchaseType"]:checked')).map(cb => cb.value).filter(val => val !== 'none'),
+                    softwareCriteria: Array.from(document.querySelectorAll('input[name="softwareCriteria"]:checked')).map(cb => cb.value),
+                    supportTypes: Array.from(document.querySelectorAll('input[name="supportType"]:checked')).map(cb => cb.value).filter(val => val !== 'none'),
+                    authoringTool: document.querySelector('input[name="authoringTool"]:checked')?.value,
+                    serverInstallation: document.querySelector('input[name="serverInstallation"]:checked')?.value
+                };
+                return criteria;
+            }
+
+            // Function to generate criteria summary
+            function generateCriteriaSummary(criteria, changes = null) {
+                let summary = '<div style="background-color: #f8f9fa; padding: 15px; border: 1px solid #dee2e6; border-radius: 5px; margin-bottom: 15px;">';
+                summary += '<h3 style="margin-top: 0; color: #495057;">Requirements Generated Based On:</h3>';
+                summary += '<ul style="margin-bottom: 10px;">';
+                
+                // Project details
+                summary += `<li><strong>Project:</strong> ${criteria.projectName}</li>`;
+                
+                // ICT Type
+                const ictTypes = [];
+                if (criteria.ictProducts) ictTypes.push('ICT Products');
+                if (criteria.ictServices) ictTypes.push('ICT Services');
+                if (ictTypes.length > 0) {
+                    const isChanged = changes && (changes.ictProducts || changes.ictServices);
+                    summary += `<li><strong>ICT Type:</strong> ${ictTypes.join(', ')} ${isChanged ? '<span style="color: #dc3545; font-weight: bold;">(CHANGED)</span>' : ''}</li>`;
+                }
+                
+                // Electronic Content
+                if (criteria.eContent === 'yes') {
+                    const isChanged = changes && changes.eContent;
+                    summary += `<li><strong>Electronic Content:</strong> Yes${criteria.webContent ? ` (${criteria.webContent === 'yes' ? 'Web-based' : 'Non-web-based'})` : ''} ${isChanged ? '<span style="color: #dc3545; font-weight: bold;">(CHANGED)</span>' : ''}</li>`;
+                }
+                
+                // Hardware
+                if (criteria.hardwareTypes.length > 0) {
+                    const isChanged = changes && changes.hardwareTypes;
+                    const hardwareLabels = {
+                        'computers': 'Computers/Laptops',
+                        'tablet': 'Tablets',
+                        'printers': 'Printers/Scanners/Copiers',
+                        'multiFunction': 'Multi-function Office Machines',
+                        'peripheral': 'Peripheral Equipment',
+                        'kiosks': 'Information Kiosks',
+                        'mobile': 'Mobile Phones',
+                        'videoConf': 'Video Conference Equipment',
+                        'videoDisplay': 'Video Displays/Monitors',
+                        'servers': 'Servers',
+                        'other': 'Other Hardware'
+                    };
+                    const hardwareList = criteria.hardwareTypes.map(type => hardwareLabels[type] || type).join(', ');
+                    summary += `<li><strong>Hardware:</strong> ${hardwareList} ${isChanged ? '<span style="color: #dc3545; font-weight: bold;">(CHANGED)</span>' : ''}</li>`;
+                }
+                
+                // Software
+                if (criteria.softwarePurchaseTypes.length > 0) {
+                    const isChanged = changes && changes.softwarePurchaseTypes;
+                    const softwareLabels = {
+                        'webDesktopServer': 'Web/Desktop/Server Software',
+                        'authoringTools': 'Authoring Tools',
+                        'infrastructure': 'Infrastructure Software',
+                        'mobile': 'Mobile Software'
+                    };
+                    const softwareList = criteria.softwarePurchaseTypes.map(type => softwareLabels[type] || type).join(', ');
+                    summary += `<li><strong>Software:</strong> ${softwareList} ${isChanged ? '<span style="color: #dc3545; font-weight: bold;">(CHANGED)</span>' : ''}</li>`;
+                }
+                
+                // Support Services
+                if (criteria.supportTypes.length > 0) {
+                    const isChanged = changes && changes.supportTypes;
+                    const supportLabels = {
+                        'selfService': 'Self-Service Support',
+                        'helpDesk': 'Help Desk/Call Center',
+                        'productDoc': 'Product Documentation',
+                        'training': 'Training Services'
+                    };
+                    const supportList = criteria.supportTypes.map(type => supportLabels[type] || type).join(', ');
+                    summary += `<li><strong>Support Documentation & Services:</strong> ${supportList} ${isChanged ? '<span style="color: #dc3545; font-weight: bold;">(CHANGED)</span>' : ''}</li>`;
+                }
+                
+                summary += '</ul>';
+                
+                if (changes && Object.values(changes).some(changed => changed)) {
+                    summary += '<p style="color: #dc3545; font-weight: bold; margin-bottom: 5px;"><em>Items marked as CHANGED reflect updates from your previous generation.</em></p>';
+                }
+                
+                summary += '</div>';
+                return summary;
+            }
+
+            // Function to compare criteria and detect changes
+           
+            function detectChanges(current, previous) {
+                if (!previous) return null;
+                
+                const changes = {};
+                changes.ictProducts = current.ictProducts !== previous.ictProducts;
+                changes.ictServices = current.ictServices !== previous.ictServices;
+                changes.eContent = current.eContent !== previous.eContent || current.webContent !== previous.webContent;
+                changes.hardwareTypes = JSON.stringify(current.hardwareTypes.sort()) !== JSON.stringify(previous.hardwareTypes.sort());
+                changes.softwarePurchaseTypes = JSON.stringify(current.softwarePurchaseTypes.sort()) !== JSON.stringify(previous.softwarePurchaseTypes.sort());
+                changes.supportTypes = JSON.stringify(current.supportTypes.sort()) !== JSON.stringify(previous.supportTypes.sort());
+                
+                return changes;
+            }
+
+            // Function to display output with edit capability
+            function displayOutput(text) {
+                const currentCriteria = getCurrentCriteria();
+                const changes = detectChanges(currentCriteria, previousCriteria);
+                const criteriaSummary = generateCriteriaSummary(currentCriteria, changes);
+                
+                // Get the selected solicitation phase for procurement officer guidance
+                const solicitationPhase = document.querySelector('input[name="solicitationPhase"]:checked')?.value;
+                
+                let phaseGuidance = '';
+                if (solicitationPhase === 'projectPlanning') {
+                    phaseGuidance = `
+                        <h4>Project Planning Phase Guidance</h4>
+                        <p>Use these requirements to:</p>
+                        <ul>
+                            <li>Establish accessibility budget and timeline expectations</li>
+                            <li>Identify required team expertise and roles</li>
+                            <li>Plan for ongoing accessibility testing and validation</li>
+                            <li>Understand compliance scope for your ICT procurement</li>
+                        </ul>`;
+                } else if (solicitationPhase === 'marketResearch') {
+                    phaseGuidance = `
+                        <h4>Market Research Phase Guidance</h4>
+                        <p>Include these criteria in RFI/market research to:</p>
+                        <ul>
+                            <li>Evaluate vendor accessibility capabilities and experience</li>
+                            <li>Request current Accessibility Conformance Reports (ACRs)</li>
+                            <li>Assess marketplace availability of accessible solutions</li>
+                            <li>Identify potential accessibility implementation challenges</li>
+                        </ul>`;
+                } else {
+                    phaseGuidance = `
+                        <h4>Solicitation Development Guidance</h4>
+                        <p>Copy the requirements below into your Statement of Work (SOW), Performance Work Statement (PWS), or Statement of Objectives (SOO).</p>
+                        <p><strong>Note:</strong> These requirements are designed to be vendor-agnostic and establish clear performance expectations. Customize based on your agency's specific needs.</p>`;
+                }
+                
+                outputDiv.innerHTML = `
+                    <h2>Generated Section 508 Requirements</h2>
+                    ${criteriaSummary}
+                    
+                    <div class="procurement-guidance">
+                        <h3>For Procurement Officers</h3>
+                        
+                        <h4>Why is this important?</h4>
+                        <p>By including Section 508 requirements in the solicitation, you are ensuring potential Offerors know which Section 508 standards apply to commercially available technology products required to be offered by the vendor in their proposals, as well as requirements to ensure technology services provided will support the agency's ability to comply with the Section 508 law.</p>
+                        
+                        ${phaseGuidance}
+                        
+                        <h4>Procurement Process Requirements</h4>
+                        <p>Procurement processes must:</p>
+                        <ul>
+                            <li>Integrate clear and measurable accessibility requirements directly into all solicitation documents, statements of work, and performance specifications</li>
+                            <li>Require prospective vendors to thoroughly describe their organizational capabilities, policies, and processes for designing, developing, and delivering accessible ICT solutions, along with providing Accessibility Conformance Reports (ACRs) in OpenACR format (both HTML and YAML)</li>
+                            <li>Vendors may be asked to provide video evidence that the ICT integrates seamlessly with diverse assistive technologies and does not create barriers for individuals with disabilities</li>
+                            <li>Establish mechanisms for post-award verification of accessibility conformance and continuous monitoring of procured ICT throughout its lifecycle. Annual ACR submissions should be expected in projects with maintenance requirements</li>
+                            <li>Document any exceptions or waivers to accessibility requirements, with clear justification, as per agency policy and federal regulations</li>
+                        </ul>
+                        
+                        <h4>Instructions</h4>
+                        <p><strong>Copy and paste the requirements text below into your procurement document</strong></p>
+                        
+                        <ul>
+                            <li>Include the Section 508 Requirements generated by ART in your Statement of Work, Performance Work Statement, or Statement of Objectives. These requirements apply to the specific technology products and services you are buying.</li>
+                            <li>The ART output can be included as a separate document labeled as your 508 requirements or as part of your requirements sections of your contract.</li>
+                            <li>If you copied and pasted Section 508 language from an earlier contract or solicitation, remove this old language in its entirety and replace it with the language generated by ART.</li>
+                            <li>Review the Section 508 requirements. If you have any questions about the requirements, contact your agency 508 program manager.</li>
+                        </ul>
+                        
+                        <h4>Government Oversight Responsibilities</h4>
+                        <p>As the procurement officer, you must ensure ongoing compliance by:</p>
+                        <ul>
+                            <li>Regularly reviewing and validating ACR submissions for accuracy and completeness</li>
+                            <li>Conducting periodic accessibility audits using both automated tools and expert evaluation</li>
+                            <li>Monitoring contractor performance against accessibility milestones and deliverables</li>
+                            <li>Ensuring timely remediation of identified accessibility issues</li>
+                            <li>Documenting accessibility compliance status in all project reports and reviews</li>
+                            <li>Escalating persistent accessibility non-compliance through appropriate contract management channels</li>
+                        </ul>
+                        
+                        <p class="important-note">Important: Do not copy these instructions into the solicitation - only copy the requirements text below.</p>
+                    </div>
+                    
+                    <label for="outputText">Review the requirements below. You can edit the text directly in the textarea.</label>
+                    <textarea id="outputText" aria-describedby="output-instructions" style="width: 100%; height: 400px; padding: 10px; font-family: 'Courier New', monospace; font-size: 0.9em; border: 1px solid #ccc; border-radius: 5px; resize: vertical;">${text}</textarea>
+                    <div id="output-instructions" style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                        <strong>Note:</strong> "Update Requirements from Form" will regenerate the requirements based on your current form selections above. Any manual edits to the text will be lost.
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <button type="button" id="copyToClipboard" style="margin-right: 10px;">Copy to Clipboard</button>
+                        <button type="button" id="regenerateOutput" title="Re-run the form logic if you've changed any selections above">Update Requirements from Form</button>
+                    </div>
+                    <div id="copyStatus" style="margin-top: 10px; color: green; display: none;" role="status" aria-live="polite">Copied to clipboard!</div>
+                `;
+                
+                // Store current criteria for next comparison
+                previousCriteria = currentCriteria;
+
+                // Add event listeners for the new buttons
+                document.getElementById('copyToClipboard').addEventListener('click', function() {
+                    const textArea = document.getElementById('outputText');
+                    textArea.select();
+                    document.execCommand('copy');
+                    
+                    const copyStatus = document.getElementById('copyStatus');
+                    copyStatus.style.display = 'block';
+                    setTimeout(() => {
+                        copyStatus.style.display = 'none';
+                    }, 2000);
+                });
+
+                document.getElementById('regenerateOutput').addEventListener('click', function() {
+                    // Trigger form submission again to regenerate with current form values
+                    form.dispatchEvent(new Event('submit'));
+                });
+            }
+        });
+    </script>
+</body>
+</html>
