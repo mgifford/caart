@@ -160,10 +160,12 @@
         .procurement-guidance {
             background-color: #e7f3ff;
             border-left: 4px solid #2563eb;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 5px;
+    max-width: 800px; /* Adjust this value as desired */
+    margin-left: auto; /* Centers the block if it's narrower than its container */
+    margin-right: auto; /* Centers the block */
+
         }
+
         
         .procurement-guidance h3 {
             margin-top: 0;
@@ -199,6 +201,30 @@
             color: #1e40af;
             font-weight: bold;
         }
+
+        fieldset[aria-labelledby="websiteQuestion"] {
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap to the next line if needed */
+    align-items: center; /* Vertically aligns items in the center */
+}
+
+/* Adjust margin for spacing if necessary */
+fieldset[aria-labelledby="websiteQuestion"] .form-check-inline {
+    margin-right: 15px; /* Adds some space between Yes/No and input */
+}
+
+fieldset[aria-labelledby="websiteQuestion"] #websiteInputContainer {
+    flex-grow: 1; /* Allows the input container to take up available space */
+    margin-left: 10px; /* Space between No and the input field */
+    min-width: 200px; /* Ensure input field has a reasonable minimum width */
+}
+
+/* To ensure the question text itself doesn't interfere with the flex layout */
+fieldset[aria-labelledby="websiteQuestion"] .question-text {
+    flex-basis: 100%; /* Makes the question take full width */
+    margin-bottom: 10px; /* Adds space below the question */
+}
+
     </style>
 </head>
 <body>
@@ -296,13 +322,21 @@
                     <label for="eContentNo">No</label>
                 </div>
 
-                <div class="form-group" id="webContentQuestion" style="display: none;">
-                    <p>Will this electronic content be made available through a website?</p>
-                    <input type="radio" id="webContentYes" name="webContent" value="yes">
-                    <label for="webContentYes">Yes</label>
-                    <input type="radio" id="webContentNo" name="webContent" value="no">
-                    <label for="webContentNo">No</label>
-                </div>
+<fieldset class="form-group" aria-labelledby="websiteQuestion">
+    <legend id="websiteQuestion" class="question-text">Will this electronic content be made available through a website?</legend>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="websiteRadio" id="websiteYes" value="yes">
+        <label class="form-check-label" for="websiteYes">Yes</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="websiteRadio" id="websiteNo" value="no">
+        <label class="form-check-label" for="websiteNo">No</label>
+    </div>
+    <div id="websiteInputContainer" style="display: none;">
+        <label for="websiteURL" class="sr-only">Website URL</label>
+        <input type="url" class="form-control mt-2" id="websiteURL" placeholder="Enter website URL">
+    </div>
+</fieldset>
             </div>
 
             <div class="form-section">
