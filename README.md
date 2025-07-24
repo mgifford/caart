@@ -1,6 +1,5 @@
 # caart
-This is both a "clone" and a "hope" for the GSA's ART
+This is both a rough "clone" and a "hope" for the [GSA's ART](https://www.section508.gov/art/). 
 
-Sorta [what exists now](procurement_form.html).
-
-[What I am suggesting](procurement_form_enhanced.html). 
+- A simplified version of [what exists now](procurement_form.html), more or less.
+- An evolving vision of [what I am suggesting](procurement_form_enhanced.html). 
