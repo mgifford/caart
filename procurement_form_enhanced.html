@@ -516,7 +516,12 @@
                 </div>
             </div>
 
-            <button type="submit">Generate Section 508 Requirements</button>
+            <div class="form-section" style="text-align: center; padding: 20px;">
+                <button type="submit" style="margin-right: 10px;">Generate Section 508 Requirements</button>
+                <button type="button" id="saveDataBtn" style="margin-right: 10px; background-color: #28a745;">Save Form Data</button>
+                <button type="button" id="loadDataBtn" style="background-color: #6c757d;">Load Form Data</button>
+                <input type="file" id="fileInput" accept=".json" style="display: none;">
+            </div>
         </form>
 
         <div id="output" role="region" aria-live="polite" aria-label="Generated requirements">
@@ -610,6 +615,531 @@
                     }
                 }
             }
+
+            // --- Save and Load Form Data Functions ---
+            const saveDataBtn = document.getElementById('saveDataBtn');
+            const loadDataBtn = document.getElementById('loadDataBtn');
+            const fileInput = document.getElementById('fileInput');
+
+            // Function to collect all form data
+            function collectFormData() {
+                // Helper function to map solicitation phase values
+                function getSolicitationPhaseValue() {
+                    const selected = document.querySelector('input[name="solicitationPhase"]:checked')?.value;
+                    const mapping = {
+                        'projectPlanning': 'red', // Use official ART color values
+                        'marketResearch': 'blue', 
+                        'solicitationDevelopment': 'green'
+                    };
+                    return mapping[selected] || selected;
+                }
+
+                const timestamp = Date.now().toString();
+                const formData = {
+                    name: projectNameInput.value.trim(),
+                    langKeyWords: {
+                        "sol-type": {
+                            "sol-type": getSolicitationPhaseValue() || ""
+                        },
+                        "ict-group": {},
+                        "ict-mark-research-group": {},
+                        "exemptions-group": {},
+                        "excep-nbr": "",
+                        "elec-group": {
+                            "elec-group": document.querySelector('input[name="eContent"]:checked')?.value ? 
+                                `elec-${document.querySelector('input[name="eContent"]:checked').value}` : ""
+                        },
+                        "elec-web-group": {
+                            "elec-web-group": document.querySelector('input[name="websiteRadio"]:checked')?.value ? 
+                                `content-website-${document.querySelector('input[name="websiteRadio"]:checked').value}` : ""
+                        },
+                        "content-group": {
+                            "websiteURL": document.getElementById('websiteURL')?.value || ""
+                        },
+                        "agency-comm": {},
+                        "soft-criteria-group": {},
+                        "software-group": {},
+                        "soft-serv-group": {},
+                        "soft-web-group": {
+                            "soft-web-group": document.querySelector('input[name="softwareWebBrowser"]:checked')?.value ? 
+                                `soft-web-${document.querySelector('input[name="softwareWebBrowser"]:checked').value}` : ""
+                        },
+                        "soft-create-group": {
+                            "soft-create-group": document.querySelector('input[name="authoringTool"]:checked')?.value ? 
+                                `soft-create-${document.querySelector('input[name="authoringTool"]:checked').value}` : ""
+                        },
+                        "hardware-group": {},
+                        "server-iaas-group": {},
+                        "support-doc-group": {}
+                    },
+                    timeStamp: timestamp
+                };
+
+                // Handle ICT Type checkboxes
+                document.querySelectorAll('input[name="ictType"]').forEach(checkbox => {
+                    let value = checkbox.value;
+                    if (value === 'products') value = 'prod';
+                    else if (value === 'services') value = 'serv';
+                    
+                    const key = `it-${value}-${timestamp}-0`;
+                    formData.langKeyWords["ict-group"][key] = checkbox.checked ? true : null;
+                });
+
+                // Handle Exemptions radio buttons - convert to proper values
+                const selectedExemption = document.querySelector('input[name="exemption"]:checked');
+                if (selectedExemption) {
+                    let value = selectedExemption.value;
+                    // Map form values to JSON values
+                    const exemptionMapping = {
+                        'none': 'none',
+                        'dontKnow': 'idk',
+                        'nationalSecurity': 'nat-sec',
+                        'ictFunctions': 'mon-spa',
+                        'fundamentalAlteration': 'alter',
+                        'federalContracts': 'fed-con',
+                        'undueBurden': 'und-bur'
+                    };
+                    value = exemptionMapping[value] || value;
+                    
+                    const key = `excep-${value}-${timestamp}-0`;
+                    formData.langKeyWords["exemptions-group"][key] = true;
+                }
+
+                // Handle Software Criteria checkboxes
+                document.querySelectorAll('input[name="softwareCriteria"]').forEach(checkbox => {
+                    let value = checkbox.value;
+                    // Map form values to JSON values
+                    const softwareMapping = {
+                        'noUI': 'no-user-interface',
+                        'assistiveTech': 'assistive',
+                        'dontKnow': 'idk',
+                        'none': 'none'
+                    };
+                    value = softwareMapping[value] || value;
+                    
+                    const key = `soft-${value}-${timestamp}-0`;
+                    formData.langKeyWords["soft-criteria-group"][key] = checkbox.checked ? true : null;
+                });
+
+                // Handle Software Purchase Type checkboxes
+                document.querySelectorAll('input[name="softwarePurchaseType"]').forEach(checkbox => {
+                    let value = checkbox.value;
+                    if (value === 'webDesktopServer') value = 'web-app';
+                    else if (value === 'authoringTools') value = 'auth-tool';
+                    else if (value === 'infrastructure') value = 'infra';
+                    
+                    const key = `software-${value}-${timestamp}-0`;
+                    formData.langKeyWords["software-group"][key] = checkbox.checked ? true : null;
+                });
+
+                // Handle Cloud Service Type checkboxes
+                document.querySelectorAll('input[name="cloudServiceType"]').forEach(checkbox => {
+                    let value = checkbox.value;
+                    if (value === 'SaaS') value = 'saas';
+                    else if (value === 'PaaS') value = 'paas';
+                    else if (value === 'dontKnow') value = 'idk';
+                    
+                    const key = `soft-serv-${value}-${timestamp}-0`;
+                    formData.langKeyWords["soft-serv-group"][key] = checkbox.checked ? true : null;
+                });
+
+                // Handle Hardware Type checkboxes
+                document.querySelectorAll('input[name="hardwareType"]').forEach(checkbox => {
+                    let value = checkbox.value;
+                    // Map form values to JSON values
+                    const hardwareMapping = {
+                        'computers': 'computer',
+                        'tablet': 'tablet',
+                        'printers': 'printer',
+                        'multiFunction': 'multi-func',
+                        'peripheral': 'peripheral',
+                        'kiosks': 'kiosk',
+                        'mobile': 'mobile',
+                        'videoConf': 'video-telecon',
+                        'videoDisplay': 'video-monitor',
+                        'servers': 'server',
+                        'other': 'other',
+                        'none': 'none'
+                    };
+                    value = hardwareMapping[value] || value;
+                    
+                    const key = `hardware-${value}-${timestamp}-0`;
+                    formData.langKeyWords["hardware-group"][key] = checkbox.checked ? true : null;
+                });
+
+                // Handle Support Type checkboxes
+                document.querySelectorAll('input[name="supportType"]').forEach(checkbox => {
+                    let value = checkbox.value;
+                    if (value === 'selfService') value = 'tech';
+                    else if (value === 'helpDesk') value = 'call';
+                    else if (value === 'productDoc') value = 'doc';
+                    else if (value === 'training') value = 'train';
+                    
+                    const key = `support-${value}-${timestamp}-0`;
+                    formData.langKeyWords["support-doc-group"][key] = checkbox.checked ? true : null;
+                });
+
+                return formData;
+            }
+
+            // Function to populate form from loaded data
+            function populateFormFromData(data) {
+                // Clear all form fields first to avoid conflicts
+                document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+                document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+                
+                // Set project name
+                if (data.name) {
+                    projectNameInput.value = data.name;
+                }
+
+                // Set solicitation phase - handle both old and new formats
+                if (data.langKeyWords["sol-type"] && data.langKeyWords["sol-type"]["sol-type"]) {
+                    const solPhase = data.langKeyWords["sol-type"]["sol-type"];
+                    // Reverse mapping for solicitation phase
+                    const solPhaseMapping = {
+                        'proj-plan': 'projectPlanning',
+                        'mark-research': 'marketResearch',
+                        'solic-dev': 'solicitationDevelopment',
+                        'red': 'projectPlanning', // Handle legacy "red" value
+                        'blue': 'marketResearch', // Handle official ART "blue" value
+                        'green': 'solicitationDevelopment' // Handle official ART "green" value
+                    };
+                    const mappedValue = solPhaseMapping[solPhase] || solPhase;
+                    const solRadio = document.querySelector(`input[name="solicitationPhase"][value="${mappedValue}"]`);
+                    if (solRadio) solRadio.checked = true;
+                }
+
+                // Set electronic content
+                if (data.langKeyWords["elec-group"] && data.langKeyWords["elec-group"]["elec-group"]) {
+                    const elecValue = data.langKeyWords["elec-group"]["elec-group"].replace('elec-', '');
+                    const elecRadio = document.querySelector(`input[name="eContent"][value="${elecValue}"]`);
+                    if (elecRadio) elecRadio.checked = true;
+                }
+
+                // Set website content
+                if (data.langKeyWords["elec-web-group"] && data.langKeyWords["elec-web-group"]["elec-web-group"]) {
+                    const webValue = data.langKeyWords["elec-web-group"]["elec-web-group"].replace('content-website-', '');
+                    const webRadio = document.querySelector(`input[name="websiteRadio"][value="${webValue}"]`);
+                    if (webRadio) webRadio.checked = true;
+                }
+
+                // Set website URL
+                if (data.langKeyWords["content-group"] && data.langKeyWords["content-group"]["websiteURL"]) {
+                    const urlInput = document.getElementById('websiteURL');
+                    if (urlInput) urlInput.value = data.langKeyWords["content-group"]["websiteURL"];
+                }
+
+                // Set ICT Type checkboxes
+                if (data.langKeyWords["ict-group"]) {
+                    console.log('Loading ICT types:', data.langKeyWords["ict-group"]);
+                    Object.keys(data.langKeyWords["ict-group"]).forEach(key => {
+                        const match = key.match(/it-([a-zA-Z-]+)-\d+/);
+                        if (match && data.langKeyWords["ict-group"][key] === true) {
+                            let value = match[1];
+                            console.log('Found ICT type value:', value);
+                            // Reverse mapping
+                            if (value === 'prod') value = 'products';
+                            else if (value === 'serv') value = 'services';
+                            console.log('Mapped ICT type value:', value);
+                            
+                            const checkbox = document.querySelector(`input[name="ictType"][value="${value}"]`);
+                            if (checkbox) {
+                                checkbox.checked = true;
+                                console.log('Set ICT type checkbox:', value);
+                                // Do NOT trigger change event during loading
+                            } else {
+                                console.log('ICT type checkbox not found:', value);
+                            }
+                        }
+                    });
+                }
+
+                // Set Exemptions - handle both radio and checkbox patterns
+                if (data.langKeyWords["exemptions-group"]) {
+                    console.log('Loading exemptions:', data.langKeyWords["exemptions-group"]);
+                    Object.keys(data.langKeyWords["exemptions-group"]).forEach(key => {
+                        const match = key.match(/excep-([a-zA-Z-]+)-\d+/);
+                        if (match && data.langKeyWords["exemptions-group"][key] === true) {
+                            let value = match[1];
+                            console.log('Found exemption value:', value);
+                            // Reverse mapping for exemptions
+                            const exemptionReverseMapping = {
+                                'none': 'none',
+                                'idk': 'dontKnow',
+                                'nat-sec': 'nationalSecurity',
+                                'mon-spa': 'ictFunctions',
+                                'alter': 'fundamentalAlteration',
+                                'fed-con': 'federalContracts',
+                                'und-bur': 'undueBurden'
+                            };
+                            value = exemptionReverseMapping[value] || value;
+                            console.log('Mapped exemption value:', value);
+                            
+                            const radio = document.querySelector(`input[name="exemption"][value="${value}"]`);
+                            if (radio) {
+                                radio.checked = true;
+                                console.log('Set exemption radio:', value);
+                            } else {
+                                console.log('Exemption radio not found:', value);
+                            }
+                        }
+                    });
+                }
+
+                // Set Software Criteria checkboxes
+                if (data.langKeyWords["soft-criteria-group"]) {
+                    console.log('Loading software criteria:', data.langKeyWords["soft-criteria-group"]);
+                    let hasAnyTrueValue = false;
+                    Object.keys(data.langKeyWords["soft-criteria-group"]).forEach(key => {
+                        const match = key.match(/soft-([a-zA-Z-]+)-\d+/);
+                        if (match && data.langKeyWords["soft-criteria-group"][key] === true) {
+                            hasAnyTrueValue = true;
+                            let value = match[1];
+                            console.log('Found software criteria value:', value);
+                            // Reverse mapping for software criteria
+                            const softwareReverseMapping = {
+                                'no-user-interface': 'noUI',
+                                'assistive': 'assistiveTech',
+                                'idk': 'dontKnow',
+                                'none': 'none'
+                            };
+                            value = softwareReverseMapping[value] || value;
+                            console.log('Mapped software criteria value:', value);
+                            
+                            const checkbox = document.querySelector(`input[name="softwareCriteria"][value="${value}"]`);
+                            if (checkbox) {
+                                checkbox.checked = true;
+                                console.log('Set software criteria checkbox:', value);
+                                // Do NOT trigger change event during loading to avoid none handling interference
+                            } else {
+                                console.log('Software criteria checkbox not found:', value);
+                            }
+                        }
+                    });
+                    
+                    // If no true values found, check "none" option
+                    if (!hasAnyTrueValue) {
+                        console.log('No software criteria selected in JSON, setting none option');
+                        const noneCheckbox = document.querySelector(`input[name="softwareCriteria"][value="none"]`);
+                        if (noneCheckbox) {
+                            noneCheckbox.checked = true;
+                            console.log('Set software criteria none checkbox');
+                        }
+                    }
+                }
+
+                // Set Software Purchase Type checkboxes
+                if (data.langKeyWords["software-group"]) {
+                    console.log('Loading software purchase types:', data.langKeyWords["software-group"]);
+                    let hasAnyTrueValue = false;
+                    Object.keys(data.langKeyWords["software-group"]).forEach(key => {
+                        const match = key.match(/software-([a-zA-Z-]+)-\d+/);
+                        if (match && data.langKeyWords["software-group"][key] === true) {
+                            hasAnyTrueValue = true;
+                            let value = match[1];
+                            console.log('Found software purchase type value:', value);
+                            if (value === 'web-app') value = 'webDesktopServer';
+                            else if (value === 'auth-tool') value = 'authoringTools';
+                            else if (value === 'infra') value = 'infrastructure';
+                            console.log('Mapped software purchase type value:', value);
+                            
+                            const checkbox = document.querySelector(`input[name="softwarePurchaseType"][value="${value}"]`);
+                            if (checkbox) {
+                                checkbox.checked = true;
+                                console.log('Set software purchase type checkbox:', value);
+                                // Do NOT trigger change event during loading
+                            } else {
+                                console.log('Software purchase type checkbox not found:', value);
+                            }
+                        }
+                    });
+                    
+                    // If no true values found, check "none" option
+                    if (!hasAnyTrueValue) {
+                        console.log('No software purchase types selected in JSON, setting none option');
+                        const noneCheckbox = document.querySelector(`input[name="softwarePurchaseType"][value="none"]`);
+                        if (noneCheckbox) {
+                            noneCheckbox.checked = true;
+                            console.log('Set software purchase type none checkbox');
+                        }
+                    }
+                }
+
+                // Set Cloud Service Type checkboxes
+                if (data.langKeyWords["soft-serv-group"]) {
+                    Object.keys(data.langKeyWords["soft-serv-group"]).forEach(key => {
+                        const match = key.match(/soft-serv-(\w+)-/);
+                        if (match && data.langKeyWords["soft-serv-group"][key] === true) {
+                            let value = match[1];
+                            if (value === 'saas') value = 'SaaS';
+                            else if (value === 'paas') value = 'PaaS';
+                            else if (value === 'idk') value = 'dontKnow';
+                            
+                            const checkbox = document.querySelector(`input[name="cloudServiceType"][value="${value}"]`);
+                            if (checkbox) checkbox.checked = true;
+                        }
+                    });
+                }
+
+                // Set software web browser
+                if (data.langKeyWords["soft-web-group"] && data.langKeyWords["soft-web-group"]["soft-web-group"]) {
+                    const webValue = data.langKeyWords["soft-web-group"]["soft-web-group"].replace('soft-web-', '');
+                    const webRadio = document.querySelector(`input[name="softwareWebBrowser"][value="${webValue}"]`);
+                    if (webRadio) webRadio.checked = true;
+                }
+
+                // Set authoring tool
+                if (data.langKeyWords["soft-create-group"] && data.langKeyWords["soft-create-group"]["soft-create-group"]) {
+                    const createValue = data.langKeyWords["soft-create-group"]["soft-create-group"].replace('soft-create-', '');
+                    const createRadio = document.querySelector(`input[name="authoringTool"][value="${createValue}"]`);
+                    if (createRadio) createRadio.checked = true;
+                }
+
+                // Set Hardware Type checkboxes
+                if (data.langKeyWords["hardware-group"]) {
+                    console.log('Loading hardware:', data.langKeyWords["hardware-group"]);
+                    let hasAnyTrueValue = false;
+                    Object.keys(data.langKeyWords["hardware-group"]).forEach(key => {
+                        const match = key.match(/hardware-([a-zA-Z-]+)-\d+/);
+                        if (match && data.langKeyWords["hardware-group"][key] === true) {
+                            hasAnyTrueValue = true;
+                            let value = match[1];
+                            console.log('Found hardware value:', value);
+                            // Reverse mapping for hardware
+                            const hardwareReverseMapping = {
+                                'computer': 'computers',
+                                'tablet': 'tablet',
+                                'printer': 'printers',
+                                'multi-func': 'multiFunction',
+                                'peripheral': 'peripheral',
+                                'kiosk': 'kiosks',
+                                'mobile': 'mobile',
+                                'video-telecon': 'videoConf',
+                                'video-monitor': 'videoDisplay',
+                                'server': 'servers',
+                                'other': 'other',
+                                'none': 'none'
+                            };
+                            value = hardwareReverseMapping[value] || value;
+                            console.log('Mapped hardware value:', value);
+                            
+                            const checkbox = document.querySelector(`input[name="hardwareType"][value="${value}"]`);
+                            if (checkbox) {
+                                checkbox.checked = true;
+                                console.log('Set hardware checkbox:', value);
+                                // Do NOT trigger change event during loading
+                            } else {
+                                console.log('Hardware checkbox not found:', value);
+                            }
+                        }
+                    });
+                    
+                    // If no true values found, check "none" option
+                    if (!hasAnyTrueValue) {
+                        console.log('No hardware selected in JSON, setting none option');
+                        const noneCheckbox = document.querySelector(`input[name="hardwareType"][value="none"]`);
+                        if (noneCheckbox) {
+                            noneCheckbox.checked = true;
+                            console.log('Set hardware none checkbox');
+                        }
+                    }
+                }
+
+                // Set server installation (if server-iaas-group has data)
+                if (data.langKeyWords["server-iaas-group"] && data.langKeyWords["server-iaas-group"]["server-iaas-group"]) {
+                    const serverValue = data.langKeyWords["server-iaas-group"]["server-iaas-group"].replace('server-iaas-', '');
+                    const serverRadio = document.querySelector(`input[name="serverInstallation"][value="${serverValue}"]`);
+                    if (serverRadio) serverRadio.checked = true;
+                }
+
+                // Set Support Type checkboxes
+                if (data.langKeyWords["support-doc-group"]) {
+                    Object.keys(data.langKeyWords["support-doc-group"]).forEach(key => {
+                        const match = key.match(/support-(\w+)-/);
+                        if (match && data.langKeyWords["support-doc-group"][key] === true) {
+                            let value = match[1];
+                            if (value === 'tech') value = 'selfService';
+                            else if (value === 'call') value = 'helpDesk';
+                            else if (value === 'doc') value = 'productDoc';
+                            else if (value === 'train') value = 'training';
+                            
+                            const checkbox = document.querySelector(`input[name="supportType"][value="${value}"]`);
+                            if (checkbox) checkbox.checked = true;
+                        }
+                    });
+                }
+
+                // Update conditional visibility after loading data
+                updateWebContentVisibility();
+                updateSoftwareQuestionsVisibility();
+                updateServerInstallationVisibility();
+                
+                // Debug: Log final state of all form sections
+                console.log('=== FINAL FORM STATE ===');
+                console.log('Exemptions checked:', document.querySelector('input[name="exemption"]:checked')?.value);
+                console.log('Software criteria checked:', Array.from(document.querySelectorAll('input[name="softwareCriteria"]:checked')).map(cb => cb.value));
+                console.log('Software purchase types checked:', Array.from(document.querySelectorAll('input[name="softwarePurchaseType"]:checked')).map(cb => cb.value));
+                console.log('Hardware types checked:', Array.from(document.querySelectorAll('input[name="hardwareType"]:checked')).map(cb => cb.value));
+                console.log('Cloud service question visible:', cloudServiceQuestion.style.display !== 'none');
+                console.log('Web browser software question visible:', webBrowserSoftwareQuestion.style.display !== 'none');
+                console.log('Authoring tool question visible:', authoringToolQuestion.style.display !== 'none');
+            }
+
+            // Save form data to JSON file
+            saveDataBtn.addEventListener('click', function() {
+                const formData = collectFormData();
+                const dataStr = JSON.stringify(formData, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                
+                // Create filename using project name
+                const projectName = projectNameInput.value.trim();
+                const sanitizedProjectName = projectName.replace(/[^a-zA-Z0-9\-_]/g, '_'); // Replace invalid filename characters
+                const filename = projectName ? `ART-${sanitizedProjectName}.json` : `ART-form-data-${new Date().toISOString().split('T')[0]}.json`;
+                
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = filename;
+                link.click();
+                
+                URL.revokeObjectURL(link.href);
+                alert('Form data saved successfully!');
+            });
+
+            // Load form data from JSON file
+            loadDataBtn.addEventListener('click', function() {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file && file.type === 'application/json') {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            console.log('Loading JSON data:', data);
+                            populateFormFromData(data);
+                            console.log('Form populated, updating visibility...');
+                            // Force update conditional visibility after a short delay
+                            setTimeout(() => {
+                                updateWebContentVisibility();
+                                updateSoftwareQuestionsVisibility();
+                                updateServerInstallationVisibility();
+                                console.log('Conditional visibility updated');
+                            }, 100);
+                            alert('Form data loaded successfully!');
+                        } catch (error) {
+                            alert('Error loading JSON file: ' + error.message);
+                        }
+                    };
+                    reader.readAsText(file);
+                } else {
+                    alert('Please select a valid JSON file.');
+                }
+                // Reset file input
+                fileInput.value = '';
+            });
 
             // --- Initial State and Event Listeners for Conditional Questions ---
 
