@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced EN 301 549 - Global ICT Accessibility Requirements</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 10px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 900px; /* Slightly wider for more content */
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+            margin-block-start: 0;
+            margin-block-end: 0;
+        }
+        .form-section {
+            margin-bottom: 20px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .form-section label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .form-section input[type="checkbox"],
+        .form-section input[type="radio"] {
+            margin-right: 10px;
+            vertical-align: top;
+            margin-top: 2px;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #000;
+            color: #fff;
+            padding: 8px;
+            text-decoration: none;
+            z-index: 1000;
+            border-radius: 0 0 4px 4px;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+        input:focus,
+        textarea:focus,
+        button:focus {
+            outline: 2px solid #005fcc;
+            outline-offset: 2px;
+        }
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 12px;
+            background-color: #f9f9f9;
+        }
+        legend {
+            font-weight: bold;
+            color: #0056b3;
+            padding: 0 10px;
+            font-size: 1.1em;
+        }
+        .form-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .form-group label {
+            font-weight: normal;
+            line-height: 1.4;
+            margin-bottom: 0;
+        }
+        .form-group input[type="checkbox"],
+        .form-group input[type="radio"] {
+            flex-shrink: 0;
+            margin-right: 10px;
+            margin-top: 2px;
+        }
+        .form-section p {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .form-group {
+            margin-bottom: 12px;
+        }
+        .form-group label {
+            font-weight: normal; /* Override bold for individual checkbox/radio labels */
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #e2eafc;
+            border: 1px solid #c2d9f7;
+            white-space: pre-wrap; /* Preserves formatting of the generated text */
+            font-family: 'Courier New', monospace; /* Monospace for code-like output */
+            font-size: 0.9em;
+            color: #000;
+        }
+        #output h2 {
+            color: #0056b3;
+        }
+        #output pre {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #dcdcdc;
+            overflow-x: auto; /* For horizontal scrolling if content is wide */
+        }
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+            display: none; /* Hidden by default */
+        }
+        input:invalid:not(:placeholder-shown) {
+            border-color: red;
+        }
+        /* Procurement Officer Guidance Section */
+        .procurement-guidance {
+            background-color: #e7f3ff;
+            border-left: 4px solid #2563eb;
+            max-width: 800px; /* Adjust this value as desired */
+            margin: 15px auto; /* Reduced top/bottom margins */
+            padding: 15px; /* Added padding inside the guidance box */
+        }
+        .procurement-guidance h3 {
+            margin-top: 0;
+            margin-bottom: 1px; /* Reduced bottom margin */
+            margin-block-start: 0; /* Override browser default */
+            margin-block-end: 0; /* Override browser default */
+            color: #1e40af;
+            font-size: 1.2em;
+        }
+        .procurement-guidance h4 {
+            color: #1e40af;
+            margin-top: 1px; /* Reduced top margin */
+            margin-bottom: 1px; /* Reduced bottom margin */
+            margin-block-start: 0; /* Override browser default */
+            margin-block-end: 0; /* Override browser default */
+        }
+        .procurement-guidance p {
+            line-height: 1.4;
+            margin-top: 0;
+            margin-bottom: 1px; /* Reduced bottom margin */
+        }
+        .procurement-guidance ul {
+            padding-left: 20px;
+            margin-top: 0;
+            margin-bottom: 1px; /* Reduced bottom margin */
+        }
+        .procurement-guidance li {
+            line-height: 1.3;
+            margin-bottom: 1px; /* Reduced spacing between list items */
+        }
+        .procurement-guidance .important-note {
+            margin-bottom: 0;
+            font-style: italic;
+            color: #1e40af;
+            font-weight: bold;
+        }
+        fieldset[aria-labelledby="websiteQuestion"] {
+            display: flex;
+            flex-wrap: wrap; /* Allows items to wrap to the next line if needed */
+            align-items: center; /* Vertically aligns items in the center */
+        }
+        /* Adjust margin for spacing if necessary */
+        fieldset[aria-labelledby="websiteQuestion"] .form-check-inline {
+            margin-right: 15px; /* Adds some space between Yes/No and input */
+        }
+        fieldset[aria-labelledby="websiteQuestion"] #websiteInputContainer {
+            flex-grow: 1; /* Allows the input container to take up available space */
+            margin-left: 10px; /* Space between No and the input field */
+            min-width: 200px; /* Ensure input field has a reasonable minimum width */
+        }
+        /* To ensure the question text itself doesn't interfere with the flex layout */
+        fieldset[aria-labelledby="websiteQuestion"] .question-text {
+            flex-basis: 100%; /* Makes the question take full width */
+            margin-bottom: 1px; /* Adds space below the question */
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div class="container">
+        <h1>Enhanced EN 301 549 - Global ICT Accessibility Requirements Generator</h1>
+        <p>Generate clear, actionable accessibility requirements based on <a href="https://accessible.canada.ca/creating-accessibility-standards/canasc-en-301-5492024-accessibility-requirements-ict-products-and-services" target="_blank">EN 301 549 v3.2.1 (2021)</a> for European and Canadian procurement. This tool helps ensure ICT products and services meet international accessibility standards.</p>
+
+        <main id="main-content">
+        <form id="procurementForm">
+            <!-- Project Name -->
+            <div class="form-section">
+                <label for="projectName">Project Name <span style="color:red;">*</span></label>
+                <input type="text" id="projectName" name="projectName" required placeholder="Enter project name" style="width:100%;max-width:400px;">
+                <div id="projectNameError" class="error-message">Project Name is required.</div>
+            </div>
+
+            <!-- Procurement Phase -->
+            <div class="form-section">
+                <label>Procurement Phase <span style="color:red;">*</span></label>
+                <div class="form-group">
+                    <input type="radio" id="phasePlanning" name="procurementPhase" value="projectPlanning">
+                    <label for="phasePlanning">Requirements Planning</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="phaseResearch" name="procurementPhase" value="marketResearch">
+                    <label for="phaseResearch">Market Research</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="phaseTender" name="procurementPhase" value="tenderDevelopment">
+                    <label for="phaseTender">Tender Development</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="phaseEvaluation" name="procurementPhase" value="evaluation">
+                    <label for="phaseEvaluation">Evaluation & Testing</label>
+                </div>
+            </div>
+
+            <!-- ICT Type -->
+            <div class="form-section">
+                <label>ICT Type <span style="color:red;">*</span></label>
+                <div class="form-group">
+                    <input type="checkbox" id="ictWebSoftware" name="ictType" value="webSoftware">
+                    <label for="ictWebSoftware">Web Content / Software</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="ictDocuments" name="ictType" value="documents">
+                    <label for="ictDocuments">Electronic Documents</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="ictHardware" name="ictType" value="hardware">
+                    <label for="ictHardware">Hardware</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="ictTelecom" name="ictType" value="telecom">
+                    <label for="ictTelecom">Telecommunications / Video</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="ictSupport" name="ictType" value="support">
+                    <label for="ictSupport">Support & Documentation</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="ictNone" name="ictType" value="none">
+                    <label for="ictNone">None of the above</label>
+                </div>
+            </div>
+
+            <!-- Exemption/Exception -->
+            <div class="form-section">
+                <label>Exemption/Exception <span style="color:red;">*</span></label>
+                <div class="form-group">
+                    <input type="radio" id="exemptionNone" name="exemption" value="none">
+                    <label for="exemptionNone">No Exemption</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="exemptionLegacy" name="exemption" value="legacy">
+                    <label for="exemptionLegacy">Legacy System</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="exemptionCommercial" name="exemption" value="commercial">
+                    <label for="exemptionCommercial">Commercial Off-the-Shelf (COTS)</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="exemptionOther" name="exemption" value="other">
+                    <label for="exemptionOther">Other</label>
+                </div>
+            </div>
+
+            <!-- Web Content -->
+            <div class="form-section">
+                <label>Does your procurement include web content or electronic documents? <span style="color:red;">*</span></label>
+                <div class="form-group">
+                    <input type="radio" id="webContentYes" name="webContent" value="yes">
+                    <label for="webContentYes">Yes</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="webContentNo" name="webContent" value="no">
+                    <label for="webContentNo">No</label>
+                </div>
+            </div>
+
+            <!-- WCAG Level (conditional) -->
+            <div class="form-section" id="wcagLevelSection" style="display:none;">
+                <label>WCAG Conformance Level <span style="color:red;">*</span></label>
+                <div class="form-group">
+                    <input type="radio" id="wcagAA" name="wcagLevel" value="AA">
+                    <label for="wcagAA">WCAG 2.1 Level AA</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="wcagAAA" name="wcagLevel" value="AAA">
+                    <label for="wcagAAA">WCAG 2.1 Level AAA</label>
+                </div>
+            </div>
+
+            <!-- Public Website (conditional) -->
+            <fieldset class="form-section" aria-labelledby="websiteQuestion" id="publicWebsiteSection" style="display:none;">
+                <legend id="websiteQuestion" class="question-text">Is this a public-facing website or service? <span style="color:red;">*</span></legend>
+                <div class="form-check-inline">
+                    <input type="radio" id="publicWebsiteYes" name="publicWebsite" value="yes">
+                    <label for="publicWebsiteYes">Yes</label>
+                </div>
+                <div class="form-check-inline">
+                    <input type="radio" id="publicWebsiteNo" name="publicWebsite" value="no">
+                    <label for="publicWebsiteNo">No</label>
+                </div>
+                <div id="websiteInputContainer" style="display:none;">
+                    <label for="websiteURL" class="sr-only">Website URL</label>
+                    <input type="url" id="websiteURL" name="websiteURL" placeholder="Enter website URL (optional)" style="width:100%;max-width:400px;">
+                </div>
+            </fieldset>
+
+            <!-- Software Application Types -->
+            <div class="form-section">
+                <label>Software Application Types <span style="color:red;">*</span></label>
+                <div class="form-group">
+                    <input type="checkbox" id="softwareWeb" name="softwareType" value="web">
+                    <label for="softwareWeb">Web Application</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="softwareDesktop" name="softwareType" value="desktop">
+                    <label for="softwareDesktop">Desktop Application</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="softwareMobile" name="softwareType" value="mobile">
+                    <label for="softwareMobile">Mobile Application</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="softwareAuthoring" name="softwareType" value="authoring">
+                    <label for="softwareAuthoring">Authoring Tool</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="softwareNone" name="softwareType" value="none">
+                    <label for="softwareNone">None of the above</label>
+                </div>
+            </div>
+
+            <!-- Authoring Tool Requirements (conditional) -->
+            <div class="form-section" id="authoringToolRequirements" style="display:none;">
+                <label>Authoring Tool Accessibility Capability</label>
+                <div class="form-group">
+                    <input type="radio" id="authoringAccessible" name="authoringCapability" value="accessible">
+                    <label for="authoringAccessible">Produces accessible content by default</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="authoringPrompt" name="authoringCapability" value="prompt">
+                    <label for="authoringPrompt">Prompts users to provide accessibility information</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="authoringCheck" name="authoringCapability" value="check">
+                    <label for="authoringCheck">Includes accessibility checking and repair features</label>
+                </div>
+            </div>
+
+            <!-- Hardware/Telecom Types -->
+            <div class="form-section">
+                <label>Hardware or Telecommunications Types <span style="color:red;">*</span></label>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwareDesktop" name="hardwareCategory" value="desktop">
+                    <label for="hardwareDesktop">Desktop Computer</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwareMobile" name="hardwareCategory" value="mobile">
+                    <label for="hardwareMobile">Mobile Device</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwarePeripheral" name="hardwareCategory" value="peripheral">
+                    <label for="hardwarePeripheral">Peripheral Device</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwareTelecom" name="hardwareCategory" value="telecom">
+                    <label for="hardwareTelecom">Telecommunications Equipment</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="hardwareNone" name="hardwareCategory" value="none">
+                    <label for="hardwareNone">None of the above</label>
+                </div>
+            </div>
+
+            <!-- Closed Functionality (conditional) -->
+            <div class="form-section" id="closedFunctionalityQuestion" style="display:none;">
+                <label>Does the hardware include closed functionality?</label>
+                <div class="form-group">
+                    <input type="radio" id="closedFunctionalityYes" name="closedFunctionality" value="yes">
+                    <label for="closedFunctionalityYes">Yes</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="closedFunctionalityNo" name="closedFunctionality" value="no">
+                    <label for="closedFunctionalityNo">No</label>
+                </div>
+            </div>
+
+            <!-- Video/Audio Content Types -->
+            <div class="form-section">
+                <label>Video/Audio Content Types <span style="color:red;">*</span></label>
+                <div class="form-group">
+                    <input type="checkbox" id="videoLive" name="videoType" value="live">
+                    <label for="videoLive">Live Video/Audio</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="videoPreRecorded" name="videoType" value="preRecorded">
+                    <label for="videoPreRecorded">Pre-recorded Video/Audio</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="videoNone" name="videoType" value="none">
+                    <label for="videoNone">None of the above</label>
+                </div>
+            </div>
+
+            <!-- Captioning/Media Requirements (conditional) -->
+            <div class="form-section" id="captioningRequirements" style="display:none;">
+                <label>Media Accessibility Requirements</label>
+                <div class="form-group">
+                    <input type="checkbox" id="mediaCaptions" name="mediaRequirements" value="captions">
+                    <label for="mediaCaptions">Captions for video content</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="mediaAudioDescription" name="mediaRequirements" value="audioDescription">
+                    <label for="mediaAudioDescription">Audio description for video content</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="mediaTranscripts" name="mediaRequirements" value="transcripts">
+                    <label for="mediaTranscripts">Text transcripts for audio content</label>
+                </div>
+            </div>
+
+            <!-- Support & Documentation Types -->
+            <div class="form-section">
+                <label>Support & Documentation Types <span style="color:red;">*</span></label>
+                <div class="form-group">
+                    <input type="checkbox" id="supportDocumentation" name="supportType" value="documentation">
+                    <label for="supportDocumentation">Documentation</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="supportRelay" name="supportType" value="relayServices">
+                    <label for="supportRelay">Relay Services</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="supportAccessibility" name="supportType" value="accessibilitySupport">
+                    <label for="supportAccessibility">Accessibility Support</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="supportNone" name="supportType" value="none">
+                    <label for="supportNone">None of the above</label>
+                </div>
+            </div>
+
+            <!-- Save/Load Buttons -->
+            <div class="form-section">
+                <button type="button" id="saveDataBtn">Save Form Data</button>
+                <button type="button" id="loadDataBtn">Load Form Data</button>
+                <input type="file" id="fileInput" accept="application/json" style="display:none;">
+            </div>
+
+            <!-- Generate Button -->
+            <div class="form-section">
+                <button type="submit" id="generateBtn">Generate EN 301 549 Requirements</button>
+            </div>
+
+            <div id="output" role="region" aria-live="polite" aria-label="Generated requirements">
+                <p style="text-align: center; color: #666;">Fill out the form and click "Generate EN 301 549 Requirements" to see the output.</p>
+            </div>
+        </form>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('procurementForm');
+            const outputDiv = document.getElementById('output');
+            const projectNameInput = document.getElementById('projectName');
+            const projectNameError = document.getElementById('projectNameError');
+
+            // Get references to conditionally displayed sections
+            const authoringToolRequirements = document.getElementById('authoringToolRequirements');
+            const closedFunctionalityQuestion = document.getElementById('closedFunctionalityQuestion');
+            const captioningRequirements = document.getElementById('captioningRequirements');
+            const websiteInputContainer = document.getElementById('websiteInputContainer');
+
+            // Function to handle "none" checkbox behavior
+            function handleNoneCheckbox(groupName) {
+                const checkboxes = document.querySelectorAll(`input[name="${groupName}"]`);
+                const noneCheckbox = document.querySelector(`input[name="${groupName}"][value="none"]`);
+                
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        if (this.value === 'none' && this.checked) {
+                            // If "none" is checked, uncheck all others
+                            checkboxes.forEach(cb => {
+                                if (cb.value !== 'none') cb.checked = false;
+                            });
+                        } else if (this.value !== 'none' && this.checked) {
+                            // If any other option is checked, uncheck "none"
+                            if (noneCheckbox) noneCheckbox.checked = false;
+                        }
+                        
+                        // Update conditional displays
+                        updateConditionalDisplays();
+                    });
+                });
+            }
+
+            // Function to update conditional question displays
+            function updateConditionalDisplays() {
+                // Show authoring tool requirements if authoring tools are selected
+                const authoringSelected = document.querySelector('input[name="softwareType"][value="authoring"]')?.checked;
+                authoringToolRequirements.style.display = authoringSelected ? 'block' : 'none';
+
+                // Show closed functionality question if hardware is selected
+                const hardwareSelected = Array.from(document.querySelectorAll('input[name="hardwareCategory"]:checked'))
+                    .some(cb => cb.value !== 'none');
+                closedFunctionalityQuestion.style.display = hardwareSelected ? 'block' : 'none';
+
+                // Show captioning requirements if video/audio is selected
+                const mediaSelected = Array.from(document.querySelectorAll('input[name="videoType"]:checked'))
+                    .some(cb => cb.value !== 'none');
+                captioningRequirements.style.display = mediaSelected ? 'block' : 'none';
+
+                // Show website URL input if public website is selected
+                const publicWebsite = document.querySelector('input[name="publicWebsite"][value="yes"]')?.checked;
+                websiteInputContainer.style.display = publicWebsite ? 'block' : 'none';
+
+                // Show WCAG and public website sections if web content is selected
+                const webContentSelected = document.querySelector('input[name="webContent"][value="yes"]')?.checked;
+                const wcagSection = document.getElementById('wcagLevelSection');
+                const publicWebsiteSection = document.getElementById('publicWebsiteSection');
+                
+                if (wcagSection) wcagSection.style.display = webContentSelected ? 'block' : 'none';
+                if (publicWebsiteSection) publicWebsiteSection.style.display = webContentSelected ? 'block' : 'none';
+            }
+
+            // Initialize "none" checkbox behavior for all relevant groups
+            ['ictType', 'softwareType', 'hardwareCategory', 'videoType', 'supportType'].forEach(groupName => {
+                handleNoneCheckbox(groupName);
+            });
+
+            // Add event listeners for radio buttons that affect conditional displays
+            document.querySelectorAll('input[name="publicWebsite"]').forEach(radio => {
+                radio.addEventListener('change', updateConditionalDisplays);
+            });
+
+            // Add event listeners for web content to show/hide conditional sections
+            document.querySelectorAll('input[name="webContent"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const wcagSection = document.getElementById('wcagLevelSection');
+                    const publicWebsiteSection = document.getElementById('publicWebsiteSection');
+                    
+                    if (this.value === 'yes') {
+                        wcagSection.style.display = 'block';
+                        publicWebsiteSection.style.display = 'block';
+                    } else {
+                        wcagSection.style.display = 'none';
+                        publicWebsiteSection.style.display = 'none';
+                    }
+                });
+            });
+
+            // Project name validation
+            projectNameInput.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    projectNameError.style.display = 'none';
+                    this.style.borderColor = '';
+                } else {
+                    projectNameError.style.display = 'block';
+                    this.style.borderColor = 'red';
+                }
+            });
+
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                let hasError = false;
+                let errorMessages = [];
+
+                // Validate Project Name
+                if (!projectNameInput.value.trim()) {
+                    projectNameError.style.display = 'block';
+                    projectNameInput.style.borderColor = 'red';
+                    projectNameInput.focus();
+                    hasError = true;
+                    errorMessages.push('Project Name is required.');
+                } else {
+                    projectNameError.style.display = 'none';
+                    projectNameInput.style.borderColor = '';
+                }
+
+                // Validate Procurement Phase
+                if (!document.querySelector('input[name="procurementPhase"]:checked')) {
+                    hasError = true;
+                    errorMessages.push('Please select a Procurement Phase.');
+                }
+
+                // Validate ICT Type
+                if (!document.querySelector('input[name="ictType"]:checked')) {
+                    hasError = true;
+                    errorMessages.push('Please select at least one ICT Type.');
+                }
+
+                // Validate Exemption
+                if (!document.querySelector('input[name="exemption"]:checked')) {
+                    hasError = true;
+                    errorMessages.push('Please select an Exemption/Exception.');
+                }
+
+                // Validate Web Content
+                if (!document.querySelector('input[name="webContent"]:checked')) {
+                    hasError = true;
+                    errorMessages.push('Please specify if your procurement includes web content or electronic documents.');
+                }
+
+                // Validate WCAG Level if web content is yes
+                const webContentValue = document.querySelector('input[name="webContent"]:checked')?.value;
+                if (webContentValue === 'yes') {
+                    if (!document.querySelector('input[name="wcagLevel"]:checked')) {
+                        hasError = true;
+                        errorMessages.push('Please select a WCAG conformance level.');
+                    }
+                    
+                    // Validate Public Website if web content is yes
+                    if (!document.querySelector('input[name="publicWebsite"]:checked')) {
+                        hasError = true;
+                        errorMessages.push('Please specify if this is a public-facing website or service.');
+                    }
+                }
+
+                // Validate at least one Software Type
+                if (!document.querySelector('input[name="softwareType"]:checked')) {
+                    hasError = true;
+                    errorMessages.push('Please select at least one Software Application type.');
+                }
+
+                // Validate at least one Hardware Category
+                if (!document.querySelector('input[name="hardwareCategory"]:checked')) {
+                    hasError = true;
+                    errorMessages.push('Please select at least one Hardware or Telecommunications type.');
+                }
+
+                // Validate at least one Video Type
+                if (!document.querySelector('input[name="videoType"]:checked')) {
+                    hasError = true;
+                    errorMessages.push('Please select at least one Video/Audio Content type.');
+                }
+
+                // Validate at least one Support Type
+                if (!document.querySelector('input[name="supportType"]:checked')) {
+                    hasError = true;
+                    errorMessages.push('Please select at least one Support & Documentation type.');
+                }
+
+                // Show error messages if any
+                let errorDiv = document.getElementById('formErrorMessages');
+                if (!errorDiv) {
+                    errorDiv = document.createElement('div');
+                    errorDiv.id = 'formErrorMessages';
+                    errorDiv.style.color = 'red';
+                    errorDiv.style.margin = '10px 0';
+                    errorDiv.setAttribute('role', 'alert');
+                    form.insertBefore(errorDiv, form.firstChild);
+                }
+                if (hasError) {
+                    errorDiv.innerHTML = '<ul>' + errorMessages.map(msg => `<li>${msg}</li>`).join('') + '</ul>';
+                    outputDiv.innerHTML = '<p style="color:red;">Please correct the errors above before generating requirements.</p>';
+                    return;
+                } else {
+                    errorDiv.innerHTML = '';
+                }
+
+                generateRequirements();
+            });
+
+            function generateRequirements() {
+                const formData = collectFormData();
+                const requirements = buildEN301549Requirements(formData);
+                displayRequirements(requirements);
+            }
+
+            function collectFormData() {
+                return {
+                    projectName: projectNameInput.value.trim(),
+                    procurementPhase: document.querySelector('input[name="procurementPhase"]:checked')?.value,
+                    ictTypes: Array.from(document.querySelectorAll('input[name="ictType"]:checked')).map(cb => cb.value),
+                    exemption: document.querySelector('input[name="exemption"]:checked')?.value,
+                    webContent: document.querySelector('input[name="webContent"]:checked')?.value,
+                    wcagLevel: document.querySelector('input[name="wcagLevel"]:checked')?.value,
+                    publicWebsite: document.querySelector('input[name="publicWebsite"]:checked')?.value,
+                    websiteURL: document.getElementById('websiteURL')?.value,
+                    softwareTypes: Array.from(document.querySelectorAll('input[name="softwareType"]:checked')).map(cb => cb.value),
+                    authoringCapability: document.querySelector('input[name="authoringCapability"]:checked')?.value,
+                    hardwareCategories: Array.from(document.querySelectorAll('input[name="hardwareCategory"]:checked')).map(cb => cb.value),
+                    closedFunctionality: document.querySelector('input[name="closedFunctionality"]:checked')?.value,
+                    videoTypes: Array.from(document.querySelectorAll('input[name="videoType"]:checked')).map(cb => cb.value),
+                    mediaRequirements: Array.from(document.querySelectorAll('input[name="mediaRequirements"]:checked')).map(cb => cb.value),
+                    supportTypes: Array.from(document.querySelectorAll('input[name="supportType"]:checked')).map(cb => cb.value)
+                };
+            }
+
+            function buildEN301549Requirements(data) {
+                let requirements = {
+                    header: `Generated EN 301 549 Requirements`,
+                    summary: buildRequirementsSummary(data),
+                    procurementGuidance: buildProcurementGuidance(data),
+                    rfpRequirements: buildRFPRequirements(data)
+                };
+
+                return requirements;
+            }
+
+            function buildRequirementsSummary(data) {
+                return {
+                    projectName: data.projectName,
+                    procurementPhase: getPhaseLabel(data.procurementPhase),
+                    ictTypes: data.ictTypes.filter(type => type !== 'none').map(type => getICTTypeLabel(type)),
+                    exemption: getExemptionLabel(data.exemption),
+                    webContent: data.webContent === 'yes' ? `Yes (WCAG ${data.wcagLevel} required)` : 'No',
+                    publicWebsite: data.publicWebsite === 'yes' ? 'Yes (Public-facing)' : data.publicWebsite === 'no' ? 'No (Internal)' : 'Not specified',
+                    softwareTypes: data.softwareTypes.filter(type => type !== 'none').map(type => getSoftwareTypeLabel(type)),
+                    hardwareCategories: data.hardwareCategories.filter(cat => cat !== 'none').map(cat => getHardwareCategoryLabel(cat)),
+                    videoTypes: data.videoTypes.filter(type => type !== 'none').map(type => getVideoTypeLabel(type)),
+                    supportTypes: data.supportTypes.filter(type => type !== 'none').map(type => getSupportTypeLabel(type))
+                };
+            }
+
+            function buildProcurementGuidance(data) {
+                const phase = getProcurementPhaseGuidance(data.procurementPhase);
+                let guidance = {
+                    phase: phase,
+                    importance: buildImportanceText(),
+                    processRequirements: buildProcessRequirements(),
+                    oversightResponsibilities: buildOversightResponsibilities(),
+                    specificGuidance: generateSpecificGuidance(data)
+                };
+                return guidance;
+            }
+
+            function buildRFPRequirements(data) {
+                return {
+                    title: "Accessibility Requirements for Information and Communication Technology (ICT) Procurement",
+                    coreStandards: buildCoreStandards(),
+                    projectSpecific: buildProjectSpecificRequirements(data),
+                    evaluation: buildEvaluationCriteria(),
+                    deliverables: buildDeliverables(),
+                    compliance: buildComplianceRequirements()
+                };
+            }
+
+            function buildCoreStandards() {
+                return {
+                    title: "Core Accessibility Standards",
+                    content: `All ICT deliverables, development, and support services under this contract must meet these foundational standards:
+
+**Legal Compliance:** All deliverables shall comply with EN 301 549 v3.2.1 (2021) "Accessibility requirements for ICT products and services."
+
+**Reference:** https://accessible.canada.ca/creating-accessibility-standards/canasc-en-301-5492024-accessibility-requirements-ict-products-and-services
+
+**Best Practice Standards:** For all web-based ICT and electronic content, the Contractor shall meet the Web Content Accessibility Guidelines (WCAG) 2.1 Level AA conformance.
+
+**Reference:** https://www.w3.org/TR/WCAG21/
+
+**Accessibility Conformance Reporting:** The Contractor shall provide Accessibility Conformance Reports (ACRs) for all digital deliverables using the OpenACR Editor or equivalent reporting format.
+
+**Reference:** https://acreditor.section508.gov/ (for format reference)
+
+**Submission Requirement:** Both machine-readable and human-readable versions of accessibility conformance documentation must be included in submissions.`
+                };
+            }
+
+            function buildProjectSpecificRequirements(data) {
+                let requirements = [];
+                
+                if (data.webContent === 'yes' || data.ictTypes.includes('webSoftware')) {
+                    requirements.push({
+                        title: "Web Content & Software Accessibility",
+                        clause: "EN 301 549 Clause 9 & 11",
+                        content: `The Contractor shall ensure all web content and software with user interfaces meet WCAG 2.1 Level ${data.wcagLevel || 'AA'} standards and the following EN 301 549 requirements:
+
+**Web Content:** Compliance with EN 301 549 Clause 9 - Web content accessibility.
+**Software:** Compliance with EN 301 549 Clause 11 - Software accessibility.
+
+**Key expectations:** 
+• All public-facing content must be fully accessible and compatible with assistive technologies
+• Alternative formats must be provided upon request
+• Accessibility performance must be maintained across devices and platforms
+• Software must preserve platform accessibility features
+
+**Reference:** https://accessible.canada.ca/creating-accessibility-standards/canasc-en-301-5492024-accessibility-requirements-ict-products-and-services#9`
+                    });
+                }
+
+                if (data.ictTypes.includes('documents')) {
+                    requirements.push({
+                        title: "Electronic Documents",
+                        clause: "EN 301 549 Clause 10",
+                        content: `All electronic documents must comply with EN 301 549 Clause 10 requirements:
+
+• Documents must be accessible to assistive technologies
+• Alternative formats (HTML, accessible PDF, etc.) must be available
+• Document structure must support navigation and comprehension
+• All non-text content must have appropriate alternative text
+
+**Reference:** https://accessible.canada.ca/creating-accessibility-standards/canasc-en-301-5492024-accessibility-requirements-ict-products-and-services#10`
+                    });
+                }
+
+                if (data.ictTypes.includes('hardware') || data.hardwareCategories.some(cat => cat !== 'none')) {
+                    requirements.push({
+                        title: "Hardware Accessibility",
+                        clause: "EN 301 549 Clause 8",
+                        content: `Hardware components must comply with EN 301 549 Clause 8 requirements:
+
+• Accessible operation without vision, with limited vision, without hearing, with limited hearing, without vocal capability, with limited manipulation or limited reach and strength
+• Hardware must be operable with assistive technologies
+• Controls and status indicators must be accessible
+• ${data.closedFunctionality === 'yes' ? 'Where closed functionality exists, alternative accessible methods must be provided for all features' : 'All functionality must be open to assistive technologies'}
+
+**Reference:** https://accessible.canada.ca/creating-accessibility-standards/canasc-en-301-5492024-accessibility-requirements-ict-products-and-services#8`
+                    });
+                }
+
+                if (data.ictTypes.includes('telecom') || data.videoTypes.some(type => type !== 'none')) {
+                    let mediaReqs = [];
+                    if (data.mediaRequirements.includes('captions')) mediaReqs.push('Captions for video content');
+                    if (data.mediaRequirements.includes('audioDescription')) mediaReqs.push('Audio description for video content');
+                    if (data.mediaRequirements.includes('transcripts')) mediaReqs.push('Text transcripts for audio content');
+
+                    requirements.push({
+                        title: "Telecommunications & Video Services",
+                        clause: "EN 301 549 Clause 6 & 7",
+                        content: `Communication services must comply with EN 301 549 requirements:
+
+• Real-time text (RTT) functionality where applicable
+• Quality of voice transmission suitable for users with hearing aids
+• Video communication with quality suitable for sign language
+${mediaReqs.length > 0 ? `• ${mediaReqs.join('\n• ')}` : ''}
+
+**Reference:** https://accessible.canada.ca/creating-accessibility-standards/canasc-en-301-5492024-accessibility-requirements-ict-products-and-services#6`
+                    });
+                }
+
+                if (data.softwareTypes.includes('authoring')) {
+                    requirements.push({
+                        title: "Authoring Tools",
+                        clause: "EN 301 549 Clause 11.8",
+                        content: `Authoring tools must comply with EN 301 549 Clause 11.8:
+
+• Enable creation of accessible content that meets WCAG 2.1 Level AA
+• ${data.authoringCapability === 'accessible' ? 'Produce accessible content by default' : 
+                           data.authoringCapability === 'prompt' ? 'Prompt users to provide accessibility information' :
+                           data.authoringCapability === 'check' ? 'Include accessibility checking and repair features' :
+                           'Support accessibility throughout the authoring process'}
+• Provide accessibility guidance to content creators
+• Support repair of accessibility issues
+
+**Reference:** https://accessible.canada.ca/creating-accessibility-standards/canasc-en-301-5492024-accessibility-requirements-ict-products-and-services#11-8`
+                    });
+                }
+
+                if (data.ictTypes.includes('support') || data.supportTypes.some(type => type !== 'none')) {
+                    requirements.push({
+                        title: "Documentation and Support Services",
+                        clause: "EN 301 549 Clause 12",
+                        content: `Support services and documentation must be accessible:
+
+• Documentation available in accessible formats
+• Support services accessible to users with disabilities
+• ${data.supportTypes.includes('relayServices') ? 'Relay services for communication support' : ''}
+• ${data.supportTypes.includes('accessibilitySupport') ? 'Specialized accessibility support services' : ''}
+• Training materials must be accessible
+
+**Reference:** https://accessible.canada.ca/creating-accessibility-standards/canasc-en-301-5492024-accessibility-requirements-ict-products-and-services#12`
+                    });
+                }
+
+                return {
+                    title: "Project-Specific Accessibility Requirements",
+                    projectName: data.projectName,
+                    requirements: requirements
+                };
+            }
+
+            function getProcurementPhaseGuidance(phase) {
+                const phases = {
+                    projectPlanning: {
+                        title: 'Requirements Planning Phase',
+                        guidance: 'Identify applicable EN 301 549 clauses and establish accessibility requirements early in the project lifecycle.'
+                    },
+                    marketResearch: {
+                        title: 'Market Research Phase',
+                        guidance: 'Assess vendor capabilities and market availability of accessible solutions. Request accessibility documentation and conformance statements.'
+                    },
+                    tenderDevelopment: {
+                        title: 'Tender Development Phase',
+                        guidance: 'Include specific EN 301 549 requirements in tender documentation with clear evaluation criteria and testing procedures.'
+                    },
+                    evaluation: {
+                        title: 'Evaluation & Testing Phase',
+                        guidance: 'Develop evaluation criteria and testing procedures to verify EN 301 549 conformance during procurement.'
+                    }
+                };
+                return phases[phase] || phases.projectPlanning;
+            }
+
+            // Helper functions for generating display labels
+            function getPhaseLabel(phase) {
+                const phases = {
+                    projectPlanning: 'Requirements Planning',
+                    marketResearch: 'Market Research',
+                    tenderDevelopment: 'Tender Development',
+                    evaluation: 'Evaluation & Testing'
+                };
+                return phases[phase] || phase;
+            }
+
+            function getICTTypeLabel(type) {
+                const types = {
+                    webSoftware: 'Web Content / Software',
+                    documents: 'Electronic Documents',
+                    hardware: 'Hardware',
+                    telecom: 'Telecommunications / Video',
+                    support: 'Support & Documentation'
+                };
+                return types[type] || type;
+            }
+
+            function getExemptionLabel(exemption) {
+                const exemptions = {
+                    none: 'No Exemption',
+                    legacy: 'Legacy System',
+                    commercial: 'Commercial Off-the-Shelf (COTS)',
+                    other: 'Other'
+                };
+                return exemptions[exemption] || exemption;
+            }
+
+            function getSoftwareTypeLabel(type) {
+                const types = {
+                    web: 'Web Application',
+                    desktop: 'Desktop Application',
+                    mobile: 'Mobile Application',
+                    authoring: 'Authoring Tool'
+                };
+                return types[type] || type;
+            }
+
+            function getHardwareCategoryLabel(category) {
+                const categories = {
+                    desktop: 'Desktop Computer',
+                    mobile: 'Mobile Device',
+                    peripheral: 'Peripheral Device',
+                    telecom: 'Telecommunications Equipment'
+                };
+                return categories[category] || category;
+            }
+
+            function getVideoTypeLabel(type) {
+                const types = {
+                    live: 'Live Video/Audio',
+                    preRecorded: 'Pre-recorded Video/Audio'
+                };
+                return types[type] || type;
+            }
+
+            function getSupportTypeLabel(type) {
+                const types = {
+                    documentation: 'Documentation',
+                    relayServices: 'Relay Services',
+                    accessibilitySupport: 'Accessibility Support'
+                };
+                return types[type] || type;
+            }
+
+            function buildImportanceText() {
+                return "EN 301 549 compliance ensures your procurement meets international accessibility standards, reduces legal risks, and creates inclusive ICT solutions that benefit all users including those with disabilities.";
+            }
+
+            function buildProcessRequirements() {
+                return `<ul>
+<li>Include EN 301 549 requirements in all procurement documentation</li>
+<li>Request vendor accessibility conformance reports during evaluation</li>
+<li>Conduct accessibility testing as part of acceptance criteria</li>
+<li>Establish clear accessibility deliverables and timelines</li>
+<li>Ensure contract terms include ongoing accessibility compliance</li>
+</ul>`;
+            }
+
+            function buildOversightResponsibilities() {
+                return `<ul>
+<li>Review vendor accessibility conformance documentation</li>
+<li>Conduct accessibility testing and validation</li>
+<li>Monitor compliance throughout the contract lifecycle</li>
+<li>Ensure accessibility requirements are met before final acceptance</li>
+<li>Maintain accessibility documentation for audit purposes</li>
+</ul>`;
+            }
+
+            function generateSpecificGuidance(data) {
+                let guidance = [];
+
+                if (data.exemption && data.exemption !== 'none') {
+                    guidance.push('⚠️ Note: Consider carefully whether claimed exemptions are justified and properly documented.');
+                }
+
+                if (data.publicWebsite === 'yes') {
+                    guidance.push('🌐 Public websites require enhanced accessibility compliance and regular monitoring.');
+                }
+
+                if (data.softwareTypes.includes('authoring')) {
+                    guidance.push('✏️ Authoring tools must enable creation of accessible content and provide guidance to users.');
+                }
+
+                if (data.closedFunctionality === 'yes') {
+                    guidance.push('🔒 Closed functionality requires alternative accessible methods for all features.');
+                }
+
+                return guidance;
+            }
+
+            function buildEvaluationCriteria() {
+                return {
+                    title: 'Evaluation Criteria – Accessibility and Inclusive Design',
+                    content: `**Vendor Evaluation:**
+• Accessibility conformance reports (ACRs) must be provided for all deliverables
+• Evidence of accessibility testing and validation processes
+• Demonstration of accessibility features during vendor presentations
+• Track record of delivering accessible ICT solutions
+
+**Technical Evaluation:**
+• Compliance testing against EN 301 549 requirements
+• Assistive technology compatibility testing
+• User testing with people with disabilities (where feasible)
+• Review of accessibility documentation and user guides
+
+**Scoring:** Accessibility compliance shall constitute a minimum of 20% of the total evaluation score.`
+                };
+            }
+
+            function buildDeliverables() {
+                return {
+                    title: 'Accessibility Deliverables',
+                    content: `**Required Deliverables:**
+• Accessibility Conformance Report (ACR) in machine-readable format
+• Accessibility testing results and validation evidence
+• User documentation in accessible formats
+• Accessibility implementation guide for ongoing maintenance
+
+**Timeline:** Accessibility deliverables must be provided at project milestones and final delivery.
+
+**Format:** All documentation must be provided in accessible formats including HTML, accessible PDF, or plain text as appropriate.`
+                };
+            }
+
+            function buildComplianceRequirements() {
+                return {
+                    title: 'Ongoing Accessibility Compliance and Maintenance',
+                    content: `**Maintenance Requirements:**
+• Accessibility must be maintained throughout the product lifecycle
+• Regular accessibility audits and updates as required
+• Prompt resolution of accessibility issues identified post-delivery
+• Training and support for accessibility maintenance
+
+**Warranty:** The Contractor warrants that all deliverables will maintain EN 301 549 compliance for a minimum of 12 months post-delivery.
+
+**Support:** The Contractor shall provide accessibility-related technical support and guidance during the warranty period.`
+                };
+            }
+
+            // Save and Load functionality (similar to original but adapted for EN 301 549)
+            const saveDataBtn = document.getElementById('saveDataBtn');
+            const loadDataBtn = document.getElementById('loadDataBtn');
+            const fileInput = document.getElementById('fileInput');
+
+            saveDataBtn.addEventListener('click', function() {
+                const formData = collectFormData();
+                const dataStr = JSON.stringify(formData, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                
+                const projectName = projectNameInput.value.trim();
+                const sanitizedProjectName = projectName.replace(/[^a-zA-Z0-9\-_]/g, '_');
+                const filename = projectName ? `EN301549-${sanitizedProjectName}.json` : `EN301549-form-data-${new Date().toISOString().split('T')[0]}.json`;
+                
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = filename;
+                link.click();
+                
+                URL.revokeObjectURL(link.href);
+                alert('Form data saved successfully!');
+            });
+
+            loadDataBtn.addEventListener('click', function() {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file && file.type === 'application/json') {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            populateFormFromData(data);
+                            alert('Form data loaded successfully!');
+                        } catch (error) {
+                            alert('Error loading form data: Invalid JSON file');
+                        }
+                    };
+                    reader.readAsText(file);
+                } else {
+                    alert('Please select a valid JSON file');
+                }
+                fileInput.value = '';
+            });
+
+            function populateFormFromData(data) {
+                // Clear all form fields first
+                document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+                document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+                
+                // Set project name
+                if (data.projectName) {
+                    projectNameInput.value = data.projectName;
+                }
+
+                // Set radio button selections
+                const radioGroups = ['procurementPhase', 'exemption', 'webContent', 'wcagLevel', 'publicWebsite', 'authoringCapability', 'closedFunctionality'];
+                radioGroups.forEach(groupName => {
+                    if (data[groupName]) {
+                        const radio = document.querySelector(`input[name="${groupName}"][value="${data[groupName]}"]`);
+                        if (radio) radio.checked = true;
+                    }
+                });
+
+                // Set checkbox selections with robust plural-to-singular mapping
+                const checkboxGroupMap = {
+                    ictTypes: 'ictType',
+                    softwareTypes: 'softwareType',
+                    hardwareCategories: 'hardwareCategory',
+                    videoTypes: 'videoType',
+                    mediaRequirements: 'mediaRequirement',
+                    supportTypes: 'supportType'
+                };
+                Object.entries(checkboxGroupMap).forEach(([groupName, singularName]) => {
+                    if (data[groupName] && Array.isArray(data[groupName])) {
+                        data[groupName].forEach(value => {
+                            const checkbox = document.querySelector(`input[name="${singularName}"][value="${value}"]`);
+                            if (checkbox) checkbox.checked = true;
+                        });
+                    }
+                });
+
+                // Set website URL
+                if (data.websiteURL) {
+                    document.getElementById('websiteURL').value = data.websiteURL;
+                }
+
+                // Update conditional displays
+                updateConditionalDisplays();
+
+                // Automatically trigger requirements generation if all required fields are present
+                setTimeout(() => {
+                    // Check if all required fields are filled (same as form validation)
+                    let hasError = false;
+                    if (!projectNameInput.value.trim()) hasError = true;
+                    if (!document.querySelector('input[name="procurementPhase"]:checked')) hasError = true;
+                    if (!document.querySelector('input[name="ictType"]:checked')) hasError = true;
+                    if (!document.querySelector('input[name="exemption"]:checked')) hasError = true;
+                    if (!document.querySelector('input[name="webContent"]:checked')) hasError = true;
+                    
+                    // Check conditional web content fields
+                    const webContentValue = document.querySelector('input[name="webContent"]:checked')?.value;
+                    if (webContentValue === 'yes') {
+                        if (!document.querySelector('input[name="wcagLevel"]:checked')) hasError = true;
+                        if (!document.querySelector('input[name="publicWebsite"]:checked')) hasError = true;
+                    }
+                    
+                    if (!document.querySelector('input[name="softwareType"]:checked')) hasError = true;
+                    if (!document.querySelector('input[name="hardwareCategory"]:checked')) hasError = true;
+                    if (!document.querySelector('input[name="videoType"]:checked')) hasError = true;
+                    if (!document.querySelector('input[name="supportType"]:checked')) hasError = true;
+                    
+                    if (!hasError) {
+                        generateRequirements();
+                    } else {
+                        outputDiv.innerHTML = '<p style="color:#b00;">Some required fields are missing or incomplete. Please review the form and try again.</p>';
+                    }
+                }, 100);
+            }
+
+            function displayRequirements(requirements) {
+                // Create the guidance section HTML
+                let guidanceHTML = `
+                <div style="background-color: #f8f9fa; border: 2px solid #6c757d; border-radius: 8px; padding: 20px; margin-bottom: 30px;">
+                    <h2 style="color: #495057; margin-top: 0;">📋 For Procurement Officers - Review & Guidance</h2>
+                    
+                    <div style="background-color: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                        <h3 style="margin-top: 0; color: #495057;">Requirements Generated Based On:</h3>
+                        <ul style="margin-bottom: 0;">`;
+                
+                const summary = requirements.summary;
+                guidanceHTML += `<li><strong>Project Name:</strong> ${summary.projectName}</li>`;
+                guidanceHTML += `<li><strong>Procurement Phase:</strong> ${summary.procurementPhase}</li>`;
+                if (summary.ictTypes.length) guidanceHTML += `<li><strong>ICT Type:</strong> ${summary.ictTypes.join(", ")}</li>`;
+                guidanceHTML += `<li><strong>Exemption/Exception:</strong> ${summary.exemption}</li>`;
+                guidanceHTML += `<li><strong>Web Content:</strong> ${summary.webContent}</li>`;
+                guidanceHTML += `<li><strong>Public Website:</strong> ${summary.publicWebsite}</li>`;
+                if (summary.softwareTypes.length) guidanceHTML += `<li><strong>Software Applications:</strong> ${summary.softwareTypes.join(", ")}</li>`;
+                if (summary.hardwareCategories.length) guidanceHTML += `<li><strong>Hardware:</strong> ${summary.hardwareCategories.join(", ")}</li>`;
+                if (summary.videoTypes.length) guidanceHTML += `<li><strong>Video/Audio Content:</strong> ${summary.videoTypes.join(", ")}</li>`;
+                if (summary.supportTypes.length) guidanceHTML += `<li><strong>Support & Documentation:</strong> ${summary.supportTypes.join(", ")}</li>`;
+                guidanceHTML += `</ul></div>`;
+
+                // Why is this important?
+                guidanceHTML += `<h3 style="color: #495057;">💡 Why is this important?</h3>
+                    <p style="background-color: #d1ecf1; padding: 10px; border-radius: 5px;">${requirements.procurementGuidance.importance}</p>`;
+
+                // Phase Guidance
+                guidanceHTML += `<h3 style="color: #495057;">🎯 ${requirements.procurementGuidance.phase.title} Guidance</h3>
+                    <p style="background-color: #d4edda; padding: 10px; border-radius: 5px;">${requirements.procurementGuidance.phase.guidance}</p>`;
+
+                // Process Requirements
+                guidanceHTML += `<h3 style="color: #495057;">📝 Procurement Process Requirements</h3>
+                    <div style="background-color: #fff3cd; padding: 10px; border-radius: 5px;">${requirements.procurementGuidance.processRequirements}</div>`;
+
+                // Oversight Responsibilities
+                guidanceHTML += `<h3 style="color: #495057;">👥 Government Oversight Responsibilities</h3>
+                    <div style="background-color: #f8d7da; padding: 10px; border-radius: 5px;">${requirements.procurementGuidance.oversightResponsibilities}</div>`;
+
+                // Specific Guidance
+                if (requirements.procurementGuidance.specificGuidance.length > 0) {
+                    guidanceHTML += `<h3 style="color: #495057;">⚠️ Additional Guidance</h3>
+                        <div style="background-color: #e2e3e5; padding: 10px; border-radius: 5px;">
+                            <ul style="margin-bottom: 0;">`;
+                    requirements.procurementGuidance.specificGuidance.forEach(g => {
+                        guidanceHTML += `<li>${g}</li>`;
+                    });
+                    guidanceHTML += `</ul></div>`;
+                }
+
+                guidanceHTML += `</div>`;
+
+                // Create the requirements text for copying
+                let requirementsText = `${requirements.rfpRequirements.coreStandards.title}\n\n`;
+                requirementsText += `${requirements.rfpRequirements.coreStandards.content}\n\n`;
+
+                requirementsText += `${requirements.rfpRequirements.projectSpecific.title}\n\n`;
+                requirements.rfpRequirements.projectSpecific.requirements.forEach(req => {
+                    requirementsText += `${req.title}\n`;
+                    requirementsText += `${req.clause}\n\n`;
+                    requirementsText += `${req.content}\n\n`;
+                });
+
+                requirementsText += `${requirements.rfpRequirements.evaluation.title}\n\n`;
+                requirementsText += `${requirements.rfpRequirements.evaluation.content}\n\n`;
+
+                requirementsText += `${requirements.rfpRequirements.deliverables.title}\n\n`;
+                requirementsText += `${requirements.rfpRequirements.deliverables.content}\n\n`;
+
+                requirementsText += `${requirements.rfpRequirements.compliance.title}\n\n`;
+                requirementsText += `${requirements.rfpRequirements.compliance.content}`;
+
+                // Create the copy-paste section HTML
+                let copyPasteHTML = `
+                <div style="background-color: #e7f3ff; border: 3px solid #0056b3; border-radius: 8px; padding: 20px; margin-top: 30px;">
+                    <h2 style="color: #0056b3; margin-top: 0;">📄 Requirements for Copy-Paste into Procurement Documents</h2>
+                    
+                    <div style="background-color: #fff; border: 2px solid #ffc107; border-radius: 5px; padding: 15px; margin-bottom: 20px;">
+                        <h3 style="color: #856404; margin-top: 0;">⚠️ Important Instructions:</h3>
+                        <ul style="color: #856404; margin-bottom: 0;">
+                            <li><strong>Copy the text below</strong> - do not copy the guidance section above</li>
+                            <li><strong>Review and customize</strong> the requirements as needed for your specific procurement</li>
+                            <li><strong>Ensure legal review</strong> of requirements before including in official documents</li>
+                            <li><strong>Update references</strong> to match your organization's standards and procedures</li>
+                        </ul>
+                    </div>
+
+                    <div style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px; padding: 15px; margin-bottom: 20px;">
+                        <h3 style="color: #495057; margin-top: 0;">📝 Output Format:</h3>
+                        <div style="display: flex; gap: 20px; align-items: center;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="radio" name="outputFormat" value="markdown" checked style="margin: 0;" onchange="updateOutputFormat()">
+                                <span>Markdown (with bold/bullets)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="radio" name="outputFormat" value="plaintext" style="margin: 0;" onchange="updateOutputFormat()">
+                                <span>Plain Text (procurement-friendly)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <label for="outputText" style="font-weight: bold; color: #0056b3; display: block; margin-bottom: 10px;">
+                        📝 Review and edit the requirements below. You can modify the text directly in the textarea:
+                    </label>
+                    
+                    <textarea id="outputText" 
+                             aria-describedby="output-instructions" 
+                             style="width: 100%; height: 500px; padding: 15px; font-family: 'Courier New', monospace; font-size: 0.9em; border: 2px solid #0056b3; border-radius: 5px; resize: vertical; background-color: #ffffff;"
+                             placeholder="Generated requirements will appear here...">${requirementsText}</textarea>
+                    
+                    <p id="output-instructions" style="font-size: 0.9em; color: #6c757d; margin-top: 10px; font-style: italic;">
+                        💡 Tip: You can select all text with Ctrl+A (Cmd+A on Mac) and copy with Ctrl+C (Cmd+C on Mac)
+                    </p>
+                    
+                    <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button type="button" onclick="copyToClipboard()" 
+                                style="background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">
+                            📋 Copy Text
+                        </button>
+                        <button type="button" onclick="copyAsHTML()" 
+                                style="background-color: #6f42c1; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">
+                            📝 Copy for Word (HTML)
+                        </button>
+                        <button type="button" onclick="showHTMLPreview()" 
+                                style="background-color: #fd7e14; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">
+                            👁️ Preview HTML
+                        </button>
+                        <button type="button" onclick="downloadAsText()" 
+                                style="background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">
+                            💾 Download as Text
+                        </button>
+                        <button type="button" onclick="downloadAsWord()" 
+                                style="background-color: #17a2b8; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">
+                            � Download as Word
+                        </button>
+                    </div>
+                </div>`;
+
+                // Combine both sections
+                outputDiv.innerHTML = guidanceHTML + copyPasteHTML;
+                
+                // Store requirements data globally for format switching
+                window.currentRequirements = requirements;
+                window.currentRequirementsText = requirementsText;
+            }
+
+            // Function to update output format
+            function updateOutputFormat() {
+                if (!window.currentRequirements) return;
+                
+                const formatType = document.querySelector('input[name="outputFormat"]:checked').value;
+                const outputTextarea = document.getElementById('outputText');
+                
+                if (formatType === 'plaintext') {
+                    // Convert to plain text
+                    let plainText = convertMarkdownToPlainText(window.currentRequirementsText);
+                    outputTextarea.value = plainText;
+                } else {
+                    // Use original markdown format
+                    outputTextarea.value = window.currentRequirementsText;
+                }
+            }
+
+            // Function to convert markdown to plain text
+            function convertMarkdownToPlainText(markdownText) {
+                let plainText = markdownText;
+                
+                // Remove markdown bold formatting
+                plainText = plainText.replace(/\*\*(.*?)\*\*/g, '$1');
+                plainText = plainText.replace(/__(.*?)__/g, '$1');
+                
+                // Convert bullet points from markdown to simple dashes
+                plainText = plainText.replace(/^• /gm, '- ');
+                plainText = plainText.replace(/^\* /gm, '- ');
+                plainText = plainText.replace(/^- /gm, '  - ');
+                
+                // Clean up extra formatting
+                plainText = plainText.replace(/^\s*#+ /gm, '');
+                
+                return plainText;
+            }
+
+            // Function to copy to clipboard
+            function copyToClipboard() {
+                const outputText = document.getElementById('outputText');
+                outputText.select();
+                outputText.setSelectionRange(0, 99999); // For mobile devices
+                
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        alert('Requirements copied to clipboard!');
+                    } else {
+                        throw new Error('Copy command failed');
+                    }
+                } catch (err) {
+                    // Fallback for modern browsers
+                    navigator.clipboard.writeText(outputText.value).then(() => {
+                        alert('Requirements copied to clipboard!');
+                    }).catch(() => {
+                        alert('Failed to copy to clipboard. Please select the text manually and copy with Ctrl+C (Cmd+C on Mac).');
+                    });
+                }
+            }
+
+            // Function to copy as HTML for Word
+            function copyAsHTML() {
+                const outputText = document.getElementById('outputText').value;
+                console.log('Original text:', outputText.substring(0, 200) + '...');
+                
+                const htmlContent = convertTextToHTML(outputText);
+                console.log('Converted HTML:', htmlContent.substring(0, 200) + '...');
+                
+                // Simple approach: try the fallback method directly
+                copyAsHTMLFallback(htmlContent, outputText);
+            }
+            
+            // Fallback method for HTML copying
+            function copyAsHTMLFallback(htmlContent, plainText) {
+                // Try to use the newer navigator.clipboard API with HTML
+                if (navigator.clipboard && window.ClipboardItem) {
+                    try {
+                        const clipboardItem = new ClipboardItem({
+                            'text/html': new Blob([htmlContent], { type: 'text/html' }),
+                            'text/plain': new Blob([plainText], { type: 'text/plain' })
+                        });
+                        
+                        navigator.clipboard.write([clipboardItem]).then(() => {
+                            alert('Requirements copied as HTML! Paste into Word and formatting should be preserved.');
+                        }).catch(() => {
+                            fallbackToManualCopy(htmlContent, plainText);
+                        });
+                        return;
+                    } catch (err) {
+                        console.log('ClipboardItem failed:', err);
+                    }
+                }
+                
+                fallbackToManualCopy(htmlContent, plainText);
+            }
+            
+            function fallbackToManualCopy(htmlContent, plainText) {
+                // Create a temporary element with both HTML and plain text
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = htmlContent;
+                tempDiv.style.position = 'absolute';
+                tempDiv.style.left = '-9999px';
+                tempDiv.style.top = '-9999px';
+                tempDiv.style.width = '1px';
+                tempDiv.style.height = '1px';
+                tempDiv.style.overflow = 'hidden';
+                tempDiv.contentEditable = 'true';
+                document.body.appendChild(tempDiv);
+                
+                try {
+                    // Focus and select the content
+                    tempDiv.focus();
+                    const range = document.createRange();
+                    range.selectNodeContents(tempDiv);
+                    const selection = window.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    
+                    // Try to copy with execCommand
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        alert('Requirements copied with HTML formatting! Paste into Word and formatting should be preserved.');
+                    } else {
+                        throw new Error('execCommand copy failed');
+                    }
+                } catch (err) {
+                    console.log('HTML copy failed, trying plain text:', err);
+                    // Final fallback: copy as plain text
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(plainText).then(() => {
+                            alert('HTML copy failed, copied as plain text. In Word, use Find & Replace: **text** → bold formatting, • → bullet points.');
+                        }).catch(() => {
+                            showManualCopyInstructions(plainText);
+                        });
+                    } else {
+                        showManualCopyInstructions(plainText);
+                    }
+                } finally {
+                    // Clean up
+                    document.body.removeChild(tempDiv);
+                    window.getSelection().removeAllRanges();
+                }
+            }
+            
+            function showManualCopyInstructions(plainText) {
+                const textarea = document.getElementById('outputText');
+                textarea.select();
+                alert('Auto-copy failed. The text is now selected in the textarea. Press Ctrl+C (Cmd+C on Mac) to copy manually.');
+            }
+
+            // Function to download as text file
+            function downloadAsText() {
+                const outputText = document.getElementById('outputText').value;
+                const projectName = window.currentRequirements ? window.currentRequirements.summary.projectName : 'Project';
+                const sanitizedName = projectName.replace(/[^a-zA-Z0-9\-_]/g, '_');
+                const formatType = document.querySelector('input[name="outputFormat"]:checked').value;
+                
+                try {
+                    const blob = new Blob([outputText], {type: 'text/plain;charset=utf-8'});
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `EN301549-Requirements-${sanitizedName}-${formatType}.txt`;
+                    
+                    // Append to body, click, and remove
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Clean up the URL object
+                    setTimeout(() => URL.revokeObjectURL(link.href), 100);
+                    
+                    alert('Text file download started!');
+                } catch (error) {
+                    console.error('Download failed:', error);
+                    alert('Download failed. Please try copying the text instead.');
+                }
+            }
+
+            // Function to download as Word document
+            function downloadAsWord() {
+                const outputText = document.getElementById('outputText').value;
+                const projectName = window.currentRequirements ? window.currentRequirements.summary.projectName : 'Project';
+                const sanitizedName = projectName.replace(/[^a-zA-Z0-9\-_]/g, '_');
+                
+                try {
+                    // Create a proper Word document with HTML
+                    const htmlContent = `
+                    <!DOCTYPE html>
+                    <html xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+                    <head>
+                        <meta charset="utf-8">
+                        <title>EN 301 549 Procurement Requirements - ${projectName}</title>
+                        <!--[if gte mso 9]>
+                        <xml>
+                        <w:WordDocument>
+                        <w:View>Print</w:View>
+                        <w:Zoom>90</w:Zoom>
+                        <w:DoNotPromptForConvert/>
+                        <w:DoNotShowInsertionsAndDeletions/>
+                        </w:WordDocument>
+                        </xml>
+                        <![endif]-->
+                        <style>
+                            body { 
+                                font-family: 'Times New Roman', serif; 
+                                line-height: 1.6; 
+                                margin: 40px; 
+                                font-size: 12pt;
+                            }
+                            h1 { 
+                                color: #333; 
+                                font-size: 18pt; 
+                                font-weight: bold;
+                                margin-bottom: 20pt;
+                            }
+                            h2 { 
+                                color: #333; 
+                                font-size: 14pt; 
+                                font-weight: bold;
+                                margin-top: 20pt;
+                                margin-bottom: 10pt;
+                            }
+                            h3 { 
+                                color: #333; 
+                                font-size: 12pt; 
+                                font-weight: bold;
+                                margin-top: 15pt;
+                                margin-bottom: 8pt;
+                            }
+                            ul { 
+                                margin-left: 20px; 
+                                margin-bottom: 10pt;
+                            }
+                            li {
+                                margin-bottom: 3pt;
+                            }
+                            p {
+                                margin-bottom: 10pt;
+                            }
+                            .requirement-section { 
+                                margin-bottom: 30pt; 
+                            }
+                            strong {
+                                font-weight: bold;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>EN 301 549 Accessibility Requirements</h1>
+                        <h2>Project: ${projectName}</h2>
+                        <div class="requirement-section">
+                            ${convertTextToHTML(outputText)}
+                        </div>
+                    </body>
+                    </html>`;
+                    
+                    const blob = new Blob([htmlContent], {
+                        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                    });
+                    
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `EN301549-Requirements-${sanitizedName}.doc`;
+                    
+                    // Append to body, click, and remove
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Clean up the URL object
+                    setTimeout(() => URL.revokeObjectURL(link.href), 100);
+                    
+                    alert('Word document download started! The file should open in Microsoft Word.');
+                } catch (error) {
+                    console.error('Word download failed:', error);
+                    alert('Word download failed. Please try copying the HTML version instead.');
+                }
+            }
+
+            // Helper function to convert text to basic HTML
+            function convertTextToHTML(text) {
+                let html = text;
+                
+                // Split into lines for better processing
+                let lines = html.split('\n');
+                let result = [];
+                let inList = false;
+                
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i].trim();
+                    
+                    if (line === '') {
+                        // Empty line - close any open list and add paragraph break
+                        if (inList) {
+                            result.push('</ul>');
+                            inList = false;
+                        }
+                        result.push('</p><p>');
+                        continue;
+                    }
+                    
+                    // Check if it's a header (standalone line that looks like a title)
+                    if (i === 0 || (i > 0 && lines[i-1].trim() === '')) {
+                        // Check if this looks like a main header
+                        if (line.match(/^[A-Z][^.]*$/) && !line.includes('**') && !line.startsWith('•') && !line.startsWith('-')) {
+                            if (inList) {
+                                result.push('</ul>');
+                                inList = false;
+                            }
+                            result.push(`<h2>${line}</h2>`);
+                            continue;
+                        }
+                        // Check for sub-headers
+                        if (line.match(/^[A-Z].*/) && line.length < 80 && !line.includes('**') && !line.startsWith('•') && !line.startsWith('-')) {
+                            if (inList) {
+                                result.push('</ul>');
+                                inList = false;
+                            }
+                            result.push(`<h3>${line}</h3>`);
+                            continue;
+                        }
+                    }
+                    
+                    // Check if it's a bullet point
+                    if (line.startsWith('•') || line.startsWith('- ') || line.startsWith('* ')) {
+                        if (!inList) {
+                            result.push('<ul>');
+                            inList = true;
+                        }
+                        let bulletText = line.replace(/^[•\-\*]\s*/, '');
+                        // Process bold text in bullet points
+                        bulletText = bulletText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                        result.push(`<li>${bulletText}</li>`);
+                        continue;
+                    }
+                    
+                    // Regular paragraph text
+                    if (inList) {
+                        result.push('</ul>');
+                        inList = false;
+                    }
+                    
+                    // Process bold text
+                    line = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    result.push(line);
+                }
+                
+                // Close any remaining open list
+                if (inList) {
+                    result.push('</ul>');
+                }
+                
+                // Join everything and wrap in paragraphs
+                html = result.join('\n');
+                
+                // Clean up paragraph tags
+                html = html.replace(/\n<\/p><p>\n/g, '</p>\n<p>');
+                html = html.replace(/^/, '<p>');
+                html = html.replace(/$/, '</p>');
+                
+                // Fix headers inside paragraphs
+                html = html.replace(/<p>\s*<h([1-6])/g, '<h$1');
+                html = html.replace(/<\/h([1-6])>\s*<\/p>/g, '</h$1>');
+                
+                // Fix lists inside paragraphs
+                html = html.replace(/<p>\s*<ul>/g, '<ul>');
+                html = html.replace(/<\/ul>\s*<\/p>/g, '</ul>');
+                
+                // Clean up empty paragraphs
+                html = html.replace(/<p>\s*<\/p>/g, '');
+                
+                // Add line breaks for better readability in regular paragraphs
+                html = html.replace(/\n(?!<[\/]?[hul])/g, '<br>\n');
+                
+                return html;
+            }
+
+            // Function to show HTML preview
+            function showHTMLPreview() {
+                const outputText = document.getElementById('outputText').value;
+                const htmlContent = convertTextToHTML(outputText);
+                
+                // Create a new window to show the HTML
+                const previewWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
+                previewWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>HTML Preview</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+                            h2 { color: #333; border-bottom: 2px solid #ccc; padding-bottom: 5px; }
+                            h3 { color: #555; margin-top: 20px; }
+                            ul { margin-left: 20px; }
+                            li { margin-bottom: 5px; }
+                            strong { font-weight: bold; color: #000; }
+                            .html-source { background: #f4f4f4; padding: 10px; border: 1px solid #ddd; margin-top: 20px; font-family: monospace; white-space: pre-wrap; }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Formatted Output Preview</h1>
+                        <div style="border: 2px solid #007bff; padding: 20px; margin-bottom: 20px;">
+                            ${htmlContent}
+                        </div>
+                        <h2>HTML Source Code</h2>
+                        <div class="html-source">${htmlContent.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+                    </body>
+                    </html>
+                `);
+                previewWindow.document.close();
+            }
+            
+            // Make functions globally available
+            window.copyToClipboard = copyToClipboard;
+            window.copyAsHTML = copyAsHTML;
+            window.showHTMLPreview = showHTMLPreview;
+            window.downloadAsText = downloadAsText;
+            window.downloadAsWord = downloadAsWord;
+            window.updateOutputFormat = updateOutputFormat;
+            
+            // Initial setup
+            updateConditionalDisplays();
+        });
+    </script>
+</body>
+</html>
