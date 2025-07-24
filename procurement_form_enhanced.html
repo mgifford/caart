@@ -1321,25 +1321,27 @@
                 // Get the selected solicitation phase
                 const solicitationPhase = document.querySelector('input[name="solicitationPhase"]:checked')?.value;
 
-                // Enhanced Header with Open Requirements approach
-                outputText += `Accessibility Requirements for Government ICT Procurement\n\n`;
-                outputText += `These requirements establish clear accessibility expectations that meet federal compliance standards while promoting best practices for inclusive design.\n\n`;
+                // Enhanced Header with Clean Reference-Based Approach
+                outputText += `Accessibility Requirements for Information and Communication Technology (ICT) Procurement\n`;
+                outputText += `These requirements set clear accessibility expectations for all procured Information and Communication Technology (ICT), ensuring compliance with federal standards and promoting inclusive design.\n\n`;
                 
                 // Core Accessibility Standards Section
-                outputText += `CORE ACCESSIBILITY STANDARDS\n\n`;
-                outputText += `1. Legal Compliance Foundation\n`;
-                outputText += `All deliverables must comply with Section 508 of the Rehabilitation Act (29 U.S.C. §794d) as detailed at https://www.access-board.gov/ict/\n\n`;
+                outputText += `Core Accessibility Standards\n`;
+                outputText += `All ICT deliverables, development, and support services under this contract must meet these foundational standards:\n\n`;
                 
-                outputText += `2. Best Practice Standards\n`;
-                outputText += `For web-based deliverables, contractor shall target compliance with the latest WCAG recommendations (currently WCAG 2.2 Level AA) available at https://www.w3.org/TR/WCAG22/\n\n`;
+                outputText += `Legal Compliance: All deliverables shall comply with Section 508 of the Rehabilitation Act (29 U.S.C. §794d), as detailed by the U.S. Access Board.\n\n`;
+                outputText += `Reference: https://www.access-board.gov/ict/\n\n`;
                 
-                outputText += `3. Accessibility Conformance Reporting\n`;
-                outputText += `Contractor must provide Accessibility Conformance Reports (ACRs) using the OpenACR Editor (https://acreditor.section508.gov/) for all digital deliverables.\n\n`;
+                outputText += `Best Practice Standards: For all web-based ICT and electronic content, the Contractor shall meet the Web Content Accessibility Guidelines (WCAG) 2.2 Level AA recommendations.\n\n`;
+                outputText += `Reference: https://www.w3.org/TR/WCAG22/\n\n`;
+                
+                outputText += `Accessibility Conformance Reporting: The Contractor shall provide Accessibility Conformance Reports (ACRs) for all digital deliverables using the OpenACR Editor.\n\n`;
+                outputText += `Reference: https://acreditor.section508.gov/\n\n`;
+                outputText += `Submission Requirement: Both the machine-readable YAML file and the HTML version of the ACR must be included in the submission. PDFs will not be accepted.\n\n`;
 
-                outputText += `PROJECT-SPECIFIC REQUIREMENTS\n\n`;
-                outputText += `Section 508 of the Rehabilitation Act, as amended by the Workforce Investment Act of 1998 (P.L. 105-220) requires that when Federal agencies develop, procure, maintain, or use information and communication technology (ICT), it shall be accessible to people with disabilities. Federal employees and members of the public who have disabilities must have access to, and use of, information and data that is comparable to people without disabilities.\n`;
-                outputText += `\n\nItem that contains ICT: ${projectName}\n\n`;
-                outputText += `${projectName}\n`; // The second instance of the project name
+                outputText += `Project-Specific Accessibility Requirements\n`;
+                outputText += `The Contractor shall ensure that all procured ICT provides comparable access to information and data for people with disabilities, in accordance with Section 508.\n\n`;
+                outputText += `Item: ${projectName}\n\n`;
 
                 // Get form responses
                 const ictTypeProducts = document.getElementById('ictProduct').checked;
@@ -1349,18 +1351,19 @@
 
                 // Electronic Content Requirements
                 if (eContentAnswer === 'yes') {
-                    outputText += `Electronic Content Accessibility\n`;
-                    outputText += `Contractor must ensure all electronic content (forms, documents, multimedia, templates) meets WCAG 2.2 Level AA standards and Section 508 requirements detailed at https://www.access-board.gov/ict/#E205\n\n`;
+                    outputText += `1. Electronic Content & Software Accessibility\n`;
+                    outputText += `The Contractor shall ensure all electronic content (e.g., forms, documents, multimedia, templates, official communications) and all software with user interfaces (including web-based software) meet WCAG 2.2 Level AA standards and the following Section 508 requirements:\n\n`;
                     
-                    outputText += `Specific Requirements:\n`;
-                    outputText += `• All public-facing content must be fully accessible\n`;
-                    outputText += `• Official communications (notifications, decisions, announcements, surveys, forms, training materials) must meet accessibility standards\n`;
-                    outputText += `• Content must be compatible with assistive technologies\n`;
-                    outputText += `• Alternative formats must be provided when requested\n\n`;
+                    outputText += `Electronic Content: Compliance with E205 Electronic Content.\n\n`;
+                    outputText += `Reference: https://www.access-board.gov/ict/#E205\n\n`;
+                    
+                    outputText += `Software: Compliance with E207 Software.\n\n`;
+                    outputText += `Reference: https://www.access-board.gov/ict/#E207\n\n`;
+                    
+                    outputText += `Key expectation: All public-facing content must be fully accessible and compatible with assistive technologies. Alternative formats must be provided upon request. Accessibility performance must be maintained across devices and platforms.\n\n`;
                     
                     if (webContentAnswer === 'yes') {
-                        outputText += `Web Content Enhancement:\n`;
-                        outputText += `For web-delivered content, contractor should target the latest WCAG recommendations (currently 2.2) to ensure future-ready accessibility beyond minimum compliance.\n\n`;
+                        outputText += `Web Content Enhancement: For web-delivered content, contractor should target the latest WCAG recommendations to ensure future-ready accessibility beyond minimum compliance.\n\n`;
                     }
                 }
 
@@ -1384,107 +1387,44 @@
                     const hasTwoWayVoiceHardware = selectedHardwareTypes.includes('mobile') || selectedHardwareTypes.includes('videoConf') || selectedHardwareTypes.includes('kiosks'); // Kiosks can have voice comm
 
                     if (hasOperablePartsHardware) {
-                        outputText += `407 Operable Parts\n`;
-                        outputText += `407.1 General. Where provided, operable parts used in the normal operation of ICT shall conform to 407.\n`;
-                        outputText += `407.2 Contrast. Where provided, keys and controls shall contrast visually from background surfaces. Characters and symbols shall contrast visually from background surfaces with either light characters or symbols on a dark background or dark characters or symbols on a light background.\n`;
-                        outputText += `407.3 Input Controls. At least one input control conforming to 407.3 shall be provided for each function.\n`;
-                        outputText += `Exception from E407.3 Input Controls: Devices for personal use with input controls that are audibly discernable without activation and operable by touch shall not be required to conform to 407.3.\n`;
-                        outputText += `407.3.1 Tactilely Discernible. Input controls shall be operable by touch and tactilely discernible without activation.\n`;
-                        outputText += `407.3.2 Alphabetic Keys. Where provided, individual alphabetic keys shall be arranged in a QWERTY-based keyboard layout and the “F” and “J” keys shall be tactilely distinct from the other keys.\n`;
-                        outputText += `407.3.3 Numeric Keys. Where provided, numeric keys shall be arranged in a 12-key ascending or descending keypad layout. The number five key shall be tactilely distinct from the other keys. Where the ICT provides an alphabetic overlay on numeric keys, the relationships between letters and digits shall conform to ITU-T Recommendation E.161 (incorporated by reference, see 702.7.1).\n`;
-                        outputText += `407.4 Key Repeat. Where a keyboard with key repeat is provided, the delay before the key repeat feature is activated shall be fixed at, or adjustable to, 2 seconds minimum.\n`;
-                        outputText += `407.5 Timed Response. Where a timed response is required, the user shall be alerted visually, as well as by touch or sound, and shall be given the opportunity to indicate that more time is needed.\n`;
-                        outputText += `407.6 Operation. At least one mode of operation shall be operable with one hand and shall not require tight grasping, pinching, or twisting of the wrist. The force required to activate operable parts shall be 5 pounds (22.2 N) maximum.\n`;
-                        outputText += `407.7 Tickets, Fare Cards, and Keycards. Where tickets, fare cards, or keycards are provided, they shall have an orientation that is tactilely discernible if orientation is important to further use of the ticket, fare card, or keycard.\n`;
-                        outputText += `407.8 Reach Height and Depth. At least one of each type of operable part of stationary ICT shall be at a height conforming to 407.8.2 or 407.8.3 according to its position established by the vertical reference plane specified in 407.8.1 for a side reach or a forward reach. Operable parts used with speech output required by 402.2 shall not be the only type of operable part complying with 407.8 unless that part is the only operable part of its type.\n\n`;
-                        outputText += `407.8.1 Vertical Reference Plane. Operable parts shall be positioned for a side reach or a forward reach determined with respect to a vertical reference plane. The vertical reference plane shall be located in conformance to 407.8.2 or 407.8.3.407.8.1.1 Vertical Plane for Side Reach. Where a side reach is provided, the vertical reference plane shall be 48 inches (1220 mm) long minimum.\n`;
-                        outputText += `407.8.1.2 Vertical Plane for Forward Reach. Where a forward reach is provided, the vertical reference plane shall be 30 inches (760 mm) long minimum.\n`;
-                        outputText += `407.8.2 Side Reach. Operable parts of ICT providing a side reach shall conform to 407.8.2.1 or 407.8.2.2. The vertical reference plane shall be centered on the operable part and placed at the leading edge of the maximum protrusion of the ICT within the length of the vertical reference plane. Where a side reach requires a reach over a portion of the ICT, the height of that portion of the ICT shall be 34 inches (865 mm) maximum.407.8.2.1 Unobstructed Side Reach. Where the operable part is located 10 inches (255 mm) or less beyond the vertical reference plane, the operable part shall be 48 inches (1220 mm) high maximum and 15 inches (380 mm) high minimum above the floor.\n`;
-                        outputText += `407.8.2.2 Obstructed Side Reach. Where the operable part is located more than 10 inches (255 mm), but not more than 24 inches (610 mm), beyond the vertical reference plane, the height of the operable part shall be 46 inches (1170 mm) high maximum and 15 inches (380 mm) high minimum above the floor. The operable part shall not be located more than 24 inches (610 mm) beyond the vertical reference plane.\n`;
-                        outputText += `407.8.3 Forward Reach. Operable parts of ICT providing a forward reach shall conform to 407.8.3.1 or 407.8.3.2. The vertical reference plane shall be centered, and intersect with, the operable part. Where a forward reach allows a reach over a portion of the ICT, the height of that portion of the ICT shall be 34 inches (865 mm) maximum.407.8.3.1 Unobstructed Forward Reach. Where the operable part is located at the leading edge of the maximum protrusion within the length of the vertical reference plane of the ICT, the operable part shall be 48 inches (1220 mm) high maximum and 15 inches (380 mm) high minimum above the floor.\n`;
-                        outputText += `407.8.3.2 Obstructed Forward Reach. Where the operable part is located beyond the leading edge of the maximum protrusion within the length of the vertical reference plane, the operable part shall conform to 407.8.3.2. The maximum allowable forward reach to an operable part shall be 25 inches (635 mm).407.8.3.2.1 Operable Part Height for ICT with Obstructed Forward Reach. The height of the operable part shall conform to Table 407.8.3.2.1.\n`;
-                        outputText += `407.8.3.2.2 Knee and Toe Space under ICT with Obstructed Forward Reach. Knee and toe space under ICT shall be 27 inches (685 mm) high minimum, 25 inches (635 mm) deep maximum, and 30 inches (760 mm) wide minimum and shall be clear of obstructions.\n\n`;
+                        outputText += `Operable Parts: All operable parts used in the normal operation of ICT hardware must conform to Section 407 of the Revised 508 Standards.\n`;
+                        outputText += `Reference: https://www.access-board.gov/ict/#407\n\n`;
                     }
 
                     if (hasDisplayScreenHardware) {
-                        outputText += `408 Display Screens\n`;
-                        outputText += `408.1 General. Where provided, display screens shall conform to 408.\n`;
-                        outputText += `408.2 Visibility. Where stationary ICT provides one or more display screens, at least one of each type of display screen shall be visible from a point located 40 inches (1015 mm) above the floor space where the display screen is viewed.\n`;
-                        outputText += `408.3 Flashing. Where ICT emits lights in flashes, there shall be no more than three flashes in any one-second period.\n`;
-                        outputText += `Exception from E408.3 Flashing: Flashes that do not exceed the general flash and red flash thresholds defined in WCAG 2.0 (incorporated by reference, see 702.10.1) are not required to conform to 408.3.\n\n`;
+                        outputText += `Display Screens: All display screens must conform to Section 408 of the Revised 508 Standards.\n`;
+                        outputText += `Reference: https://www.access-board.gov/ict/#408\n\n`;
                     }
 
                     if (selectedHardwareTypes.includes('kiosks') || selectedHardwareTypes.includes('multiFunction') || selectedHardwareTypes.includes('printers')) { // Add other closed functionality devices
-                        outputText += `402 Closed Functionality\n`;
-                        outputText += `402.1 General. ICT with closed functionality shall be operable without requiring the user to attach or install assistive technology other than personal headsets or other audio couplers, and shall conform to 402.\n`;
-                        outputText += `402.2 Speech-Output Enabled. ICT with a display screen shall be speech-output enabled for full and independent use by individuals with vision impairments.\n`;
-                        outputText += `Exceptions from E402.2:\n`;
-                        outputText += `1. Variable message signs conforming to 402.5 shall not be required to be speech-output enabled.\n`;
-                        outputText += `2. Speech output shall not be required where ICT display screens only provide status indicators and those indicators conform to 409.\n`;
-                        outputText += `3. Where speech output cannot be supported due to constraints in available memory or processor capability, ICT shall be permitted to conform to 409 in lieu of 402.2.\n`;
-                        outputText += `4. Audible tones shall be permitted instead of speech output where the content of user input is not displayed as entered for security purposes, including, but not limited to, asterisks representing personal identification numbers.\n`;
-                        outputText += `5. Speech output shall not be required for: the machine location; date and time of transaction; customer account number; and the machine identifier or label.\n`;
-                        outputText += `6. Speech output shall not be required for advertisements and other similar information unless they convey information that can be used for the transaction being conducted.\n`;
-                        outputText += `402.2.1 Information Displayed On-Screen. Speech output shall be provided for all information displayed on-screen.\n`;
-                        outputText += `402.2.2 Transactional Outputs. Where transactional outputs are provided, the speech output shall audibly provide all information necessary to verify a transaction.\n`;
-                        outputText += `402.2.3 Speech Delivery Type and Coordination. Speech output shall be delivered through a mechanism that is readily available to all users, including, but not limited to, an industry standard connector or a telephone handset. Speech shall be recorded or digitized human, or synthesized. Speech output shall be coordinated with information displayed on the screen.\n`;
-                        outputText += `402.2.4 User Control. Speech output for any single function shall be automatically interrupted when a transaction is selected. Speech output shall be capable of being repeated and paused.\n`;
-                        outputText += `402.2.5 Braille Instructions. Where speech output is required by 402.2, braille instructions for initiating the speech mode of operation shall be provided. Braille shall be contracted and shall conform to 36 CFR part 1191, Appendix D, Section 703.3.1.\n`;
-                        outputText += `Exception from E402.2.5 Braille Instructions: Devices for personal use shall not be required to conform to 402.2.5.\n`;
-                        outputText += `402.3 Volume. ICT that delivers sound, including speech output required by 402.2, shall provide volume control and output amplification conforming to 402.3.\n`;
-                        outputText += `402.3.1 Private Listening. Where ICT provides private listening, it shall provide a mode of operation for controlling the volume. Where ICT delivers output by an audio transducer typically held up to the ear, a means for effective magnetic wireless coupling to hearing technologies shall be provided.\n`;
-                        outputText += `402.3.2 Non-private Listening. Where ICT provides non-private listening, incremental volume control shall be provided with output amplification up to a level of at least 65 dB. A function shall be provided to automatically reset the volume to the default level after every use.\n`;
-                        outputText += `402.4 Characters on Display Screens. At least one mode of characters displayed on the screen shall be in a sans serif font. Where ICT does not provide a screen enlargement feature, characters shall be 3/16 inch (4.8 mm) high minimum based on the uppercase letter “I”. Characters shall contrast with their background with either light characters on a dark background or dark characters on a light background.\n`;
-                        outputText += `402.5 Characters on Variable Message Signs. Characters on variable message signs shall conform to section 703.7 Variable Message Signs of ICC A117.1-2009 (incorporated by reference, see 702.6.1).\n\n`;
+                        outputText += `Closed Functionality: All ICT with closed functionality (e.g., kiosks, multifunction devices, printers) must conform to Section 402 of the Revised 508 Standards.\n`;
+                        outputText += `Reference: https://www.access-board.gov/ict/#402\n\n`;
                     }
 
                     if (hasTwoWayVoiceHardware) {
-                        outputText += `412 ICT with Two-Way Voice Communication\n`;
-                        outputText += `412.1 General. ICT that provides two-way voice communication shall conform to 412.\n`;
-                        outputText += `412.2 Volume Gain. ICT that provides two-way voice communication shall conform to 412.2.1 or 412.2.2.\n`;
-                        outputText += `Exception from E412.2 Volume Gain: ICT conforming to 412.2 shall not be required to conform to 402.3.\n`;
-                        outputText += `412.2.1 Volume Gain for Wireline Telephones. Volume gain conforming to 47 CFR 68.317 shall be provided on analog and digital wireline telephones.\n`;
-                        outputText += `412.2.2 Volume Gain for Non-Wireline ICT. A method for increasing volume shall be provided for non-wireline ICT.\n`;
-                        outputText += `412.3 Interference Reduction and Magnetic Coupling. Where ICT delivers output by a handset or other type of audio transducer that is typically held up to the ear, ICT shall reduce interference with hearing technologies and provide a means for effective magnetic wireless coupling in conformance with 412.3.1 or 412.3.2.\n\n`;
-                        outputText += `412.3.1 Wireless Handsets. ICT in the form of wireless handsets shall conform to ANSI/IEEE C63.19-2011 (incorporated by reference, see 702.5.1).\n`;
-                        outputText += `412.3.2 Wireline Handsets. ICT in the form of wireline handsets, including cordless handsets, shall conform to TIA-1083-B (incorporated by reference, see702.9.1).\n`;
-                        outputText += `412.4 Digital Encoding of Speech. ICT in IP-based networks shall transmit and receive speech that is digitally encoded in the manner specified by ITU-T Recommendation G.722.2 (incorporated by reference, see 702.7.2) or IETF RFC 6716 (incorporated by reference, see 702.8.1).\n`;
-                        outputText += `412.5 Real-Time Text Functionality. [Reserved].\n`;
-                        outputText += `412.6 Caller ID. Where provided, caller identification and similar telecommunications functions shall be visible and audible.\n`;
-                        outputText += `412.7 Video Communication. Where ICT provides real-time video functionality, the quality of the video shall be sufficient to support communication using sign language.\n\n`;
+                        outputText += `Two-Way Voice Communication: All ICT that provides two-way voice communication must conform to Section 412 of the Revised 508 Standards.\n`;
+                        outputText += `Reference: https://www.access-board.gov/ict/#412\n\n`;
                     }
 
                     if (selectedHardwareTypes.includes('videoConf') || selectedHardwareTypes.includes('videoDisplay')) {
-                        outputText += `413 Closed Caption Processing Technologies\n`;
-                        outputText += `413.1 General. Where ICT displays or processes video with synchronized audio, ICT shall provide closed caption processing technology that conforms to 413.1.1 or 413.1.2.\n`;
-                        outputText += `413.1.1 Decoding and Display of Closed Captions. Players and displays shall decode closed caption data and support display of captions.\n`;
-                        outputText += `413.1.2 Pass-Through of Closed Caption Data. Cabling and ancillary equipment shall pass through caption data.\n`;
-                        outputText += `414 Audio Description Processing Technologies\n`;
-                        outputText += `414.1 General. Where ICT displays or processes video with synchronized audio, ICT shall provide audio description processing technology conforming to 414.1.1 or 414.1.2.\n`;
-                        outputText += `414.1.1 Digital Television Tuners. Digital television tuners shall provide audio description processing that conforms to ATSC A/53 Digital Television Standard, Part 5 (2014) (incorporated by reference, see 702.2.1). Digital television tuners shall provide processing of audio description when encoded as a Visually Impaired (VI) associated audio service that is provided as a complete program mix containing audio description according to the ATSC A/53 standard.\n`;
-                        outputText += `414.1.2 Other ICT. ICT other than digital television tuners shall provide audio description processing.\n`;
-                        outputText += `415 User Controls for Captions and Audio Descriptions\n`;
-                        outputText += `415.1 General. Where ICT displays video with synchronized audio, ICT shall provide user controls for closed captions and audio descriptions conforming to 415.1.\n`;
-                        outputText += `Exception from E415.1 General: Devices for personal use shall not be required to conform to 415.1 provided that captions and audio descriptions can be enabled through system-wide platform settings.\n`;
-                        outputText += `415.1.1 Caption Controls. Where ICT provides operable parts for volume control, ICT shall also provide operable parts for caption selection.\n`;
-                        outputText += `415.1.2 Audio Description Controls. Where ICT provides operable parts for program selection, ICT shall also provide operable parts for the selection of audio description.\n\n`;
+                        outputText += `Video Display and Captioning: All ICT that displays or processes video with synchronized audio must conform to Sections 413, 414, and 415 of the Revised 508 Standards.\n`;
+                        outputText += `References: https://www.access-board.gov/ict/#413, https://www.access-board.gov/ict/#414, https://www.access-board.gov/ict/#415\n\n`;
                     }
                     // These generally apply if any hardware is selected, as they are broad principles.
-                    outputText += `403 Biometrics\n`;
-                    outputText += `403.1 General. Where provided, biometrics shall not be the only means for user identification or control.\n`;
-                    outputText += `Exception from E403.1 General: Where at least two biometric options that use different biological characteristics are provided, ICT shall be permitted to use biometrics as the only means for user identification or control.\n\n`;
-                    outputText += `404 Preservation of Information Provided for Accessibility\n`;
-                    outputText += `404.1 General. ICT that transmits or converts information or communication shall not remove non-proprietary information provided for accessibility or shall restore it upon delivery.\n\n`;
-                    outputText += `405 Privacy\n`;
-                    outputText += `405.1 General. The same degree of privacy of input and output shall be provided to all individuals. When speech output required by 402.2 is enabled, the screen shall not blank automatically.\n\n`;
-                    outputText += `406 Standard Connections\n`;
-                    outputText += `406.1 General. Where data connections used for input and output are provided, at least one of each type of connection shall conform to industry standard non-proprietary formats.\n\n`;
-                    outputText += `409 Status Indicators\n`;
-                    outputText += `409.1 General. Where provided, status indicators shall be discernible visually and by touch or sound.\n\n`;
-                    outputText += `410 Color Coding\n`;
-                    outputText += `410.1 General. Where provided, color coding shall not be used as the only means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.\n\n`;
-                    outputText += `411 Audible Signals\n`;
-                    outputText += `411.1 General. Where provided, audible signals or cues shall not be used as the only means of conveying information, indicating an action, or prompting a response\n\n`;
+                    outputText += `Biometrics: All biometric features must conform to Section 403 of the Revised 508 Standards.\n`;
+                    outputText += `Reference: https://www.access-board.gov/ict/#403\n\n`;
+                    outputText += `Preservation of Accessibility Information: ICT that transmits or converts information must conform to Section 404 of the Revised 508 Standards.\n`;
+                    outputText += `Reference: https://www.access-board.gov/ict/#404\n\n`;
+                    outputText += `Privacy: All ICT must provide the same degree of privacy of input and output to all individuals, conforming to Section 405 of the Revised 508 Standards.\n`;
+                    outputText += `Reference: https://www.access-board.gov/ict/#405\n\n`;
+                    outputText += `Standard Connections: Data connections for input and output must conform to Section 406 of the Revised 508 Standards.\n`;
+                    outputText += `Reference: https://www.access-board.gov/ict/#406\n\n`;
+                    outputText += `Status Indicators: Where provided, status indicators must conform to Section 409 of the Revised 508 Standards.\n`;
+                    outputText += `Reference: https://www.access-board.gov/ict/#409\n\n`;
+                    outputText += `Color Coding: Color coding must not be used as the only means of conveying information, conforming to Section 410 of the Revised 508 Standards.\n`;
+                    outputText += `Reference: https://www.access-board.gov/ict/#410\n\n`;
+                    outputText += `Audible Signals: Where provided, audible signals or cues must conform to Section 411 of the Revised 508 Standards.\n`;
+                    outputText += `Reference: https://www.access-board.gov/ict/#411\n\n`;
                 }
 
                 // Software Requirements
@@ -1534,22 +1474,9 @@
                                                          .filter(val => val !== 'none');
 
                 if (selectedSupportTypes.length > 0) {
-                    outputText += `E208 Support Documentation and Services\n`;
-                    outputText += `E208.1 General. Where an agency provides support documentation or services for ICT, such documentation and services shall conform to the requirements in Chapter 6.\n\n`;
-
-                    if (selectedSupportTypes.includes('productDoc') || selectedSupportTypes.includes('selfService')) {
-                        outputText += `602 Support Documentation\n`;
-                        outputText += `602.1 General. Documentation that supports the use of ICT shall conform to 602.\n`;
-                        outputText += `602.2 Accessibility and Compatibility Features. Documentation shall list and explain how to use the accessibility and compatibility features required by Chapters 4 and 5. Documentation shall include accessibility features that are built-in and accessibility features that provide compatibility with assistive technology.\n`;
-                        outputText += `602.3 Electronic Support Documentation. Documentation in electronic format, including Web-based self-service support, shall conform to Level A and Level AA Success Criteria and Conformance Requirements in WCAG 2.0 (incorporated by reference, see 702.10.1).\n`;
-                        outputText += `602.4 Alternate Formats for Non-Electronic Support Documentation. Where support documentation is only provided in non-electronic formats, alternate formats usable by individuals with disabilities shall be provided upon request.\n\n`;
-                    }
-                    if (selectedSupportTypes.includes('helpDesk') || selectedSupportTypes.includes('training') || selectedSupportTypes.includes('selfService')) {
-                        outputText += `603 Support Services\n`;
-                        outputText += `603.1 General. ICT support services including, but not limited to, help desks, call centers, training services, and automated self-service technical support, shall conform to 603.\n`;
-                        outputText += `603.2 Information on Accessibility and Compatibility Features. ICT support services shall include information on the accessibility and compatibility features required by 602.2.\n`;
-                        outputText += `603.3 Accommodation of Communication Needs. Support services shall be provided directly to the user or through a referral to a point of contact. Such ICT support services shall accommodate the communication needs of individuals with disabilities.\n\n`;
-                    }
+                    outputText += `Support Documentation and Services: All support documentation and services for ICT must conform to Section E208 and Chapter 6 of the Revised 508 Standards.\n`;
+                    outputText += `Reference: https://www.access-board.gov/ict/#E208\n`;
+                    outputText += `Chapter 6 Reference: https://www.access-board.gov/ict/#chapter-6-support-documentation-and-services\n\n`;
                 }
 
                 // E301 General (Functional Performance Criteria)
