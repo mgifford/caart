@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced EN 301 549 - Global ICT Accessibility Requirements</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 10px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+            margin-block-start: 0;
+            margin-block-end: 0;
+        }
+        .form-section {
+            margin-bottom: 20px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .form-section label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #e2eafc;
+            border: 1px solid #c2d9f7;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #000;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+        input:invalid:not(:placeholder-shown) {
+            border-color: red;
+        }
+        input:focus,
+        textarea:focus,
+        button:focus,
+        select:focus {
+            outline: 2px solid #005fcc;
+            outline-offset: 2px;
+        }
+        .form-section input[type="text"],
+        .form-section input[type="url"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .form-section input[type="checkbox"],
+        .form-section input[type="radio"] {
+            margin-right: 8px;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+            <label for="langSwitcher" style="font-weight: bold; margin-right: 10px;">🌐 <span id="langLabel">Language</span>:</label>
+            <select id="langSwitcher" aria-label="Language switcher" style="font-size: 1em; padding: 4px 8px;">
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+            </select>
+        </div>
+        <form id="procurementForm">
+            <div id="formSection"></div>
+            <div id="output" role="region" aria-live="polite" aria-label="Generated requirements"></div>
+        </form>
+    </div>
+
+    <script>
+        // --- TRANSLATIONS OBJECT ---
+        const translations = {
+            en: {
+                langName: "English",
+                langLabel: "Language",
+                skipLink: "Skip to main content",
+                projectName: "Project Name",
+                projectNamePlaceholder: "Enter project name...",
+                procurementPhase: "Procurement Phase",
+                procurementPhases: {
+                    projectPlanning: "Requirements Planning",
+                    marketResearch: "Market Research",
+                    tenderDevelopment: "Tender Development",
+                    evaluation: "Evaluation & Testing"
+                },
+                ictType: "ICT Type(s)",
+                ictTypes: {
+                    webSoftware: "Web Content / Software",
+                    documents: "Electronic Documents",
+                    hardware: "Hardware",
+                    telecom: "Telecommunications / Video",
+                    support: "Support & Documentation"
+                },
+                exemption: "Exemption/Exception",
+                exemptions: {
+                    none: "No Exemption",
+                    legacy: "Legacy System",
+                    commercial: "Commercial Off-the-Shelf (COTS)",
+                    other: "Other"
+                },
+                webContent: "Will this procurement include web content?",
+                yes: "Yes",
+                no: "No",
+                wcagLevel: "WCAG Level",
+                wcagLevels: {
+                    AA: "AA",
+                    AAA: "AAA"
+                },
+                publicWebsite: "Is this a public website?",
+                softwareType: "Software Application Type(s)",
+                softwareTypes: {
+                    web: "Web Application",
+                    desktop: "Desktop Application",
+                    mobile: "Mobile Application",
+                    authoring: "Authoring Tool"
+                },
+                hardwareCategory: "Hardware Category(ies)",
+                hardwareCategories: {
+                    desktop: "Desktop Computer",
+                    mobile: "Mobile Device",
+                    peripheral: "Peripheral Device",
+                    telecom: "Telecommunications Equipment"
+                },
+                closedFunctionality: "Does the hardware have closed functionality?",
+                videoType: "Video/Audio Content Type(s)",
+                videoTypes: {
+                    live: "Live Video/Audio",
+                    preRecorded: "Pre-recorded Video/Audio"
+                },
+                mediaRequirement: "Media Accessibility Requirements",
+                mediaRequirements: {
+                    captions: "Captions",
+                    audioDescription: "Audio Description",
+                    transcripts: "Transcripts"
+                },
+                supportType: "Support & Documentation Type(s)",
+                supportTypes: {
+                    documentation: "Documentation",
+                    relayServices: "Relay Services",
+                    accessibilitySupport: "Accessibility Support"
+                },
+                authoringCapability: "Authoring Tool Accessibility Capability",
+                authoringCapabilities: {
+                    accessible: "Produces accessible content by default",
+                    prompt: "Prompts for accessibility info",
+                    check: "Checks/repairs accessibility",
+                    support: "Supports accessibility throughout"
+                },
+                websiteURL: "Website URL (if applicable)",
+                saveData: "Save Form Data",
+                loadData: "Load Form Data",
+                requiredField: "This field is required.",
+                missingFields: "Some required fields are missing or incomplete. Please review the form and try again.",
+                generateRequirements: "Generate Requirements"
+            },
+            fr: {
+                langName: "Français",
+                langLabel: "Langue",
+                skipLink: "Aller au contenu principal",
+                projectName: "Nom du projet",
+                projectNamePlaceholder: "Entrez le nom du projet...",
+                procurementPhase: "Phase d'approvisionnement",
+                procurementPhases: {
+                    projectPlanning: "Planification des exigences",
+                    marketResearch: "Étude de marché",
+                    tenderDevelopment: "Élaboration de l'appel d'offres",
+                    evaluation: "Évaluation et tests"
+                },
+                ictType: "Type(s) TIC",
+                ictTypes: {
+                    webSoftware: "Contenu Web / Logiciel",
+                    documents: "Documents électroniques",
+                    hardware: "Matériel",
+                    telecom: "Télécommunications / Vidéo",
+                    support: "Soutien et documentation"
+                },
+                exemption: "Exemption/Exception",
+                exemptions: {
+                    none: "Aucune exemption",
+                    legacy: "Système hérité",
+                    commercial: "Produit commercial prêt à l'emploi (COTS)",
+                    other: "Autre"
+                },
+                webContent: "Cet achat comprend-il du contenu Web?",
+                yes: "Oui",
+                no: "Non",
+                wcagLevel: "Niveau WCAG",
+                wcagLevels: {
+                    AA: "AA",
+                    AAA: "AAA"
+                },
+                publicWebsite: "S'agit-il d'un site Web public?",
+                softwareType: "Type(s) d'application logicielle",
+                softwareTypes: {
+                    web: "Application Web",
+                    desktop: "Application de bureau",
+                    mobile: "Application mobile",
+                    authoring: "Outil d'édition"
+                },
+                hardwareCategory: "Catégorie(s) de matériel",
+                hardwareCategories: {
+                    desktop: "Ordinateur de bureau",
+                    mobile: "Appareil mobile",
+                    peripheral: "Périphérique",
+                    telecom: "Équipement de télécommunications"
+                },
+                closedFunctionality: "Le matériel a-t-il une fonctionnalité fermée?",
+                videoType: "Type(s) de contenu vidéo/audio",
+                videoTypes: {
+                    live: "Vidéo/Audio en direct",
+                    preRecorded: "Vidéo/Audio préenregistré"
+                },
+                mediaRequirement: "Exigences d'accessibilité des médias",
+                mediaRequirements: {
+                    captions: "Sous-titres",
+                    audioDescription: "Description audio",
+                    transcripts: "Transcriptions"
+                },
+                supportType: "Type(s) de soutien et documentation",
+                supportTypes: {
+                    documentation: "Documentation",
+                    relayServices: "Services de relais",
+                    accessibilitySupport: "Soutien à l'accessibilité"
+                },
+                authoringCapability: "Capacité d'accessibilité de l'outil d'édition",
+                authoringCapabilities: {
+                    accessible: "Produit du contenu accessible par défaut",
+                    prompt: "Invite à fournir des informations sur l'accessibilité",
+                    check: "Vérifie/répare l'accessibilité",
+                    support: "Soutient l'accessibilité tout au long du processus"
+                },
+                websiteURL: "URL du site Web (le cas échéant)",
+                saveData: "Enregistrer les données du formulaire",
+                loadData: "Charger les données du formulaire",
+                requiredField: "Ce champ est requis.",
+                missingFields: "Certains champs obligatoires sont manquants ou incomplets. Veuillez vérifier le formulaire et réessayer.",
+                generateRequirements: "Générer les exigences"
+            }
+        };
+
+        // --- GLOBAL STATE ---
+        let currentLang = 'en';
+
+        // --- RENDERING FUNCTIONS ---
+        function renderForm() {
+            const t = translations[currentLang];
+            document.getElementById('langLabel').textContent = t.langLabel;
+            document.getElementById('langSwitcher').value = currentLang;
+            document.documentElement.lang = currentLang;
+
+            // Start rendering the form dynamically
+            let html = '';
+            
+            // Title
+            html += `<h1>EN 301 549 - Global ICT Accessibility Requirements</h1>`;
+            
+            // Project name field
+            html += `<div class="form-section">`;
+            html += `<label for="projectName">${t.projectName} *</label>`;
+            html += `<input type="text" id="projectName" name="projectName" placeholder="${t.projectNamePlaceholder}" style="width: 100%; max-width: 400px; margin-bottom: 10px;" required>`;
+            html += `<div id="projectNameError" class="error-message">${t.requiredField}</div>`;
+            html += `</div>`;
+            
+            // Procurement phase field
+            html += `<div class="form-section">`;
+            html += `<label>${t.procurementPhase} *</label>`;
+            html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
+            Object.entries(t.procurementPhases).forEach(([key, value]) => {
+                html += `<label style="display: flex; align-items: center; margin-bottom: 5px;">`;
+                html += `<input type="radio" name="procurementPhase" value="${key}" style="margin-right: 8px;">`;
+                html += `<span>${value}</span>`;
+                html += `</label>`;
+            });
+            html += `</div></div>`;
+            
+            // ICT Type field
+            html += `<div class="form-section">`;
+            html += `<label>${t.ictType} *</label>`;
+            html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
+            Object.entries(t.ictTypes).forEach(([key, value]) => {
+                html += `<label style="display: flex; align-items: center; margin-bottom: 5px;">`;
+                html += `<input type="checkbox" name="ictType" value="${key}" style="margin-right: 8px;">`;
+                html += `<span>${value}</span>`;
+                html += `</label>`;
+            });
+            html += `</div></div>`;
+            
+            // Exemption field
+            html += `<div class="form-section">`;
+            html += `<label>${t.exemption} *</label>`;
+            html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
+            Object.entries(t.exemptions).forEach(([key, value]) => {
+                html += `<label style="display: flex; align-items: center; margin-bottom: 5px;">`;
+                html += `<input type="radio" name="exemption" value="${key}" style="margin-right: 8px;">`;
+                html += `<span>${value}</span>`;
+                html += `</label>`;
+            });
+            html += `</div></div>`;
+            
+            // Web Content field
+            html += `<div class="form-section">`;
+            html += `<label>${t.webContent} *</label>`;
+            html += `<div style="display: flex; gap: 20px;">`;
+            html += `<label style="display: flex; align-items: center;">`;
+            html += `<input type="radio" name="webContent" value="yes" style="margin-right: 8px;">`;
+            html += `<span>${t.yes}</span>`;
+            html += `</label>`;
+            html += `<label style="display: flex; align-items: center;">`;
+            html += `<input type="radio" name="webContent" value="no" style="margin-right: 8px;">`;
+            html += `<span>${t.no}</span>`;
+            html += `</label>`;
+            html += `</div></div>`;
+            
+            // WCAG Level field (conditional)
+            html += `<div class="form-section" id="wcagLevelSection" style="display: none;">`;
+            html += `<label>${t.wcagLevel} *</label>`;
+            html += `<div style="display: flex; gap: 20px;">`;
+            Object.entries(t.wcagLevels).forEach(([key, value]) => {
+                html += `<label style="display: flex; align-items: center;">`;
+                html += `<input type="radio" name="wcagLevel" value="${key}" style="margin-right: 8px;">`;
+                html += `<span>${value}</span>`;
+                html += `</label>`;
+            });
+            html += `</div></div>`;
+            
+            // Public Website field (conditional)
+            html += `<div class="form-section" id="publicWebsiteSection" style="display: none;">`;
+            html += `<label>${t.publicWebsite} *</label>`;
+            html += `<div style="display: flex; gap: 20px;">`;
+            html += `<label style="display: flex; align-items: center;">`;
+            html += `<input type="radio" name="publicWebsite" value="yes" style="margin-right: 8px;">`;
+            html += `<span>${t.yes}</span>`;
+            html += `</label>`;
+            html += `<label style="display: flex; align-items: center;">`;
+            html += `<input type="radio" name="publicWebsite" value="no" style="margin-right: 8px;">`;
+            html += `<span>${t.no}</span>`;
+            html += `</label>`;
+            html += `</div>`;
+            
+            // Website URL field (conditional)
+            html += `<div id="websiteInputContainer" style="display: none; margin-top: 10px;">`;
+            html += `<label for="websiteURL">${t.websiteURL}</label>`;
+            html += `<input type="url" id="websiteURL" name="websiteURL" style="width: 100%; max-width: 400px; margin-top: 5px;" placeholder="https://example.com">`;
+            html += `</div>`;
+            html += `</div>`;
+            
+            // Software Application Types
+            html += `<div class="form-section">`;
+            html += `<label>${t.softwareType} *</label>`;
+            html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
+            Object.entries(t.softwareTypes).forEach(([key, value]) => {
+                html += `<label style="display: flex; align-items: center; margin-bottom: 5px;">`;
+                html += `<input type="checkbox" name="softwareType" value="${key}" style="margin-right: 8px;">`;
+                html += `<span>${value}</span>`;
+                html += `</label>`;
+            });
+            html += `</div></div>`;
+            
+            // Authoring Tool Capability (conditional)
+            html += `<div class="form-section" id="authoringToolRequirements" style="display: none;">`;
+            html += `<label>${t.authoringCapability}</label>`;
+            html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
+            Object.entries(t.authoringCapabilities).forEach(([key, value]) => {
+                html += `<label style="display: flex; align-items: center; margin-bottom: 5px;">`;
+                html += `<input type="radio" name="authoringCapability" value="${key}" style="margin-right: 8px;">`;
+                html += `<span>${value}</span>`;
+                html += `</label>`;
+            });
+            html += `</div></div>`;
+            
+            // Hardware Categories
+            html += `<div class="form-section">`;
+            html += `<label>${t.hardwareCategory} *</label>`;
+            html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
+            Object.entries(t.hardwareCategories).forEach(([key, value]) => {
+                html += `<label style="display: flex; align-items: center; margin-bottom: 5px;">`;
+                html += `<input type="checkbox" name="hardwareCategory" value="${key}" style="margin-right: 8px;">`;
+                html += `<span>${value}</span>`;
+                html += `</label>`;
+            });
+            html += `</div></div>`;
+            
+            // Closed Functionality (conditional)
+            html += `<div class="form-section" id="closedFunctionalityQuestion" style="display: none;">`;
+            html += `<label>${t.closedFunctionality}</label>`;
+            html += `<div style="display: flex; gap: 20px;">`;
+            html += `<label style="display: flex; align-items: center;">`;
+            html += `<input type="radio" name="closedFunctionality" value="yes" style="margin-right: 8px;">`;
+            html += `<span>${t.yes}</span>`;
+            html += `</label>`;
+            html += `<label style="display: flex; align-items: center;">`;
+            html += `<input type="radio" name="closedFunctionality" value="no" style="margin-right: 8px;">`;
+            html += `<span>${t.no}</span>`;
+            html += `</label>`;
+            html += `</div></div>`;
+            
+            // Video/Audio Content Types
+            html += `<div class="form-section">`;
+            html += `<label>${t.videoType} *</label>`;
+            html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
+            Object.entries(t.videoTypes).forEach(([key, value]) => {
+                html += `<label style="display: flex; align-items: center; margin-bottom: 5px;">`;
+                html += `<input type="checkbox" name="videoType" value="${key}" style="margin-right: 8px;">`;
+                html += `<span>${value}</span>`;
+                html += `</label>`;
+            });
+            html += `</div></div>`;
+            
+            // Media Requirements (conditional)
+            html += `<div class="form-section" id="captioningRequirements" style="display: none;">`;
+            html += `<label>${t.mediaRequirement}</label>`;
+            html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
+            Object.entries(t.mediaRequirements).forEach(([key, value]) => {
+                html += `<label style="display: flex; align-items: center; margin-bottom: 5px;">`;
+                html += `<input type="checkbox" name="mediaRequirements" value="${key}" style="margin-right: 8px;">`;
+                html += `<span>${value}</span>`;
+                html += `</label>`;
+            });
+            html += `</div></div>`;
+            
+            // Support & Documentation Types
+            html += `<div class="form-section">`;
+            html += `<label>${t.supportType} *</label>`;
+            html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
+            Object.entries(t.supportTypes).forEach(([key, value]) => {
+                html += `<label style="display: flex; align-items: center; margin-bottom: 5px;">`;
+                html += `<input type="checkbox" name="supportType" value="${key}" style="margin-right: 8px;">`;
+                html += `<span>${value}</span>`;
+                html += `</label>`;
+            });
+            html += `</div></div>`;
+            
+            // Buttons section
+            html += `<div style="margin-top: 20px;">`;
+            html += `<button type="submit">${t.generateRequirements}</button>`;
+            html += `<button type="button" id="saveDataBtn" style="margin-left: 10px;">${t.saveData}</button>`;
+            html += `<button type="button" id="loadDataBtn" style="margin-left: 10px;">${t.loadData}</button>`;
+            html += `<input type="file" id="fileInput" style="display:none;" accept="application/json">`;
+            html += `</div>`;
+
+            document.getElementById('formSection').innerHTML = html;
+            
+            // After rendering, set up event handlers for conditional display
+            setupEventHandlers();
+        }
+
+        // --- EVENT HANDLERS AND CONDITIONAL DISPLAY ---
+        function setupEventHandlers() {
+            // Add event listeners for conditional displays
+            document.querySelectorAll('input[name="webContent"]').forEach(radio => {
+                radio.addEventListener('change', updateConditionalDisplays);
+            });
+            
+            document.querySelectorAll('input[name="publicWebsite"]').forEach(radio => {
+                radio.addEventListener('change', updateConditionalDisplays);
+            });
+            
+            document.querySelectorAll('input[name="softwareType"]').forEach(checkbox => {
+                checkbox.addEventListener('change', updateConditionalDisplays);
+            });
+            
+            document.querySelectorAll('input[name="hardwareCategory"]').forEach(checkbox => {
+                checkbox.addEventListener('change', updateConditionalDisplays);
+            });
+            
+            document.querySelectorAll('input[name="videoType"]').forEach(checkbox => {
+                checkbox.addEventListener('change', updateConditionalDisplays);
+            });
+            
+            // Set up form submission
+            document.getElementById('procurementForm').addEventListener('submit', handleFormSubmission);
+            
+            // Set up save/load functionality
+            document.getElementById('saveDataBtn').addEventListener('click', saveFormData);
+            document.getElementById('loadDataBtn').addEventListener('click', () => {
+                document.getElementById('fileInput').click();
+            });
+            document.getElementById('fileInput').addEventListener('change', loadFormData);
+            
+            // Initial conditional display update
+            updateConditionalDisplays();
+        }
+        
+        function updateConditionalDisplays() {
+            // Show WCAG and public website sections if web content is selected
+            const webContentSelected = document.querySelector('input[name="webContent"][value="yes"]')?.checked;
+            const wcagSection = document.getElementById('wcagLevelSection');
+            const publicWebsiteSection = document.getElementById('publicWebsiteSection');
+            
+            if (wcagSection) wcagSection.style.display = webContentSelected ? 'block' : 'none';
+            if (publicWebsiteSection) publicWebsiteSection.style.display = webContentSelected ? 'block' : 'none';
+            
+            // Show website URL input if public website is selected
+            const publicWebsite = document.querySelector('input[name="publicWebsite"][value="yes"]')?.checked;
+            const websiteInputContainer = document.getElementById('websiteInputContainer');
+            if (websiteInputContainer) websiteInputContainer.style.display = publicWebsite ? 'block' : 'none';
+            
+            // Show authoring tool requirements if authoring tools are selected
+            const authoringSelected = document.querySelector('input[name="softwareType"][value="authoring"]')?.checked;
+            const authoringToolRequirements = document.getElementById('authoringToolRequirements');
+            if (authoringToolRequirements) authoringToolRequirements.style.display = authoringSelected ? 'block' : 'none';
+            
+            // Show closed functionality question if hardware is selected
+            const hardwareSelected = Array.from(document.querySelectorAll('input[name="hardwareCategory"]:checked'))
+                .some(cb => cb.value !== 'none');
+            const closedFunctionalityQuestion = document.getElementById('closedFunctionalityQuestion');
+            if (closedFunctionalityQuestion) closedFunctionalityQuestion.style.display = hardwareSelected ? 'block' : 'none';
+            
+            // Show captioning requirements if video/audio is selected
+            const mediaSelected = Array.from(document.querySelectorAll('input[name="videoType"]:checked'))
+                .some(cb => cb.value !== 'none');
+            const captioningRequirements = document.getElementById('captioningRequirements');
+            if (captioningRequirements) captioningRequirements.style.display = mediaSelected ? 'block' : 'none';
+        }
+        
+        // --- LANGUAGE SWITCHER AND EVENT HANDLERS ---
+        document.addEventListener('DOMContentLoaded', function() {
+            renderForm();
+            
+            document.getElementById('langSwitcher').addEventListener('change', function(e) {
+                currentLang = e.target.value;
+                renderForm();
+                // Optionally rerender output if present
+                if (window.currentRequirements) {
+                    displayRequirements(window.currentRequirements);
+                }
+            });
+
+            // TODO: Implement remaining functionality in the next phase:
+            // - Complete form rendering with all fields
+            // - Form submission and validation
+            // - Requirements generation
+            // - Data collection and storage
+            // - Display requirements with procurement guidance
+            // - Copy/download functionality
+            // - All event handlers for dynamic form behavior
+        });
+        
+        // --- DISPLAY REQUIREMENTS ---
+        function displayRequirements(requirements) {
+            const t = translations[currentLang];
+            const outputDiv = document.getElementById('output');
+            
+            // Create output with both guidance and copy-paste sections
+            let outputHTML = '';
+            
+            // Procurement Officer Guidance Section
+            outputHTML += `<div style="background-color: #f8f9fa; border: 2px solid #6c757d; border-radius: 8px; padding: 20px; margin-bottom: 30px;">`;
+            outputHTML += `<h2 style="color: #495057; margin-top: 0;">📋 For Procurement Officers - Review & Guidance</h2>`;
+            outputHTML += `<p style="background-color: #d1ecf1; padding: 10px; border-radius: 5px; margin-bottom: 15px;">`;
+            outputHTML += `<strong>Project:</strong> ${requirements.data.projectName} | `;
+            outputHTML += `<strong>Language:</strong> ${t.langName}`;
+            outputHTML += `</p>`;
+            outputHTML += `<p style="background-color: #d4edda; padding: 10px; border-radius: 5px;">`;
+            outputHTML += `EN 301 549 compliance ensures your procurement meets international accessibility standards, reduces legal risks, and creates inclusive ICT solutions.`;
+            outputHTML += `</p>`;
+            outputHTML += `</div>`;
+            
+            // Requirements for Copy-Paste Section
+            outputHTML += `<div style="background-color: #e7f3ff; border: 3px solid #0056b3; border-radius: 8px; padding: 20px;">`;
+            outputHTML += `<h2 style="color: #0056b3; margin-top: 0;">📄 Requirements for Copy-Paste into Procurement Documents</h2>`;
+            
+            outputHTML += `<div style="background-color: #fff; border: 2px solid #ffc107; border-radius: 5px; padding: 15px; margin-bottom: 20px;">`;
+            outputHTML += `<h3 style="color: #856404; margin-top: 0;">⚠️ Important Instructions:</h3>`;
+            outputHTML += `<ul style="color: #856404; margin-bottom: 0;">`;
+            outputHTML += `<li><strong>Copy the text below</strong> - do not copy the guidance section above</li>`;
+            outputHTML += `<li><strong>Review and customize</strong> the requirements as needed for your specific procurement</li>`;
+            outputHTML += `<li><strong>Ensure legal review</strong> of requirements before including in official documents</li>`;
+            outputHTML += `</ul>`;
+            outputHTML += `</div>`;
+            
+            outputHTML += `<label for="outputText" style="font-weight: bold; color: #0056b3; display: block; margin-bottom: 10px;">`;
+            outputHTML += `📝 Review and edit the requirements below:`;
+            outputHTML += `</label>`;
+            
+            outputHTML += `<textarea id="outputText" style="width: 100%; height: 400px; padding: 15px; font-family: 'Courier New', monospace; font-size: 0.9em; border: 2px solid #0056b3; border-radius: 5px; resize: vertical; background-color: #ffffff;">${requirements.text}</textarea>`;
+            
+            outputHTML += `<div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">`;
+            outputHTML += `<button type="button" onclick="copyToClipboard()" style="background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">📋 Copy Text</button>`;
+            outputHTML += `<button type="button" onclick="downloadAsText()" style="background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">💾 Download as Text</button>`;
+            outputHTML += `</div>`;
+            
+            outputHTML += `</div>`;
+            
+            outputDiv.innerHTML = outputHTML;
+            
+            // Store for potential reuse
+            window.currentRequirements = requirements;
+        }
+        
+        // --- COPY AND DOWNLOAD FUNCTIONS ---
+        function copyToClipboard() {
+            const outputText = document.getElementById('outputText');
+            outputText.select();
+            outputText.setSelectionRange(0, 99999); // For mobile devices
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    alert('Requirements copied to clipboard!');
+                } else {
+                    throw new Error('Copy command failed');
+                }
+            } catch (err) {
+                // Fallback for modern browsers
+                navigator.clipboard.writeText(outputText.value).then(() => {
+                    alert('Requirements copied to clipboard!');
+                }).catch(() => {
+                    alert('Failed to copy to clipboard. Please select the text manually and copy with Ctrl+C (Cmd+C on Mac).');
+                });
+            }
+        }
+        
+        function downloadAsText() {
+            const outputText = document.getElementById('outputText').value;
+            const projectName = window.currentRequirements ? window.currentRequirements.data.projectName : 'Project';
+            const sanitizedName = projectName.replace(/[^a-zA-Z0-9\-_]/g, '_');
+            
+            try {
+                const blob = new Blob([outputText], {type: 'text/plain;charset=utf-8'});
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `EN301549-Requirements-${sanitizedName}.txt`;
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                setTimeout(() => URL.revokeObjectURL(link.href), 100);
+                alert('Text download started!');
+            } catch (error) {
+                console.error('Download failed:', error);
+                alert('Download failed. Please copy the text manually.');
+            }
+        }
+        
+        // Make functions globally available
+        window.copyToClipboard = copyToClipboard;
+        window.downloadAsText = downloadAsText;
+        
+        // --- FORM SUBMISSION AND VALIDATION ---
+        function handleFormSubmission(e) {
+            e.preventDefault();
+            const t = translations[currentLang];
+            
+            let hasError = false;
+            let errorMessages = [];
+            
+            // Clear previous error displays
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+            
+            // Validate Project Name
+            const projectNameInput = document.getElementById('projectName');
+            if (!projectNameInput.value.trim()) {
+                document.getElementById('projectNameError').style.display = 'block';
+                projectNameInput.style.borderColor = 'red';
+                hasError = true;
+                errorMessages.push(t.requiredField);
+            } else {
+                projectNameInput.style.borderColor = '';
+            }
+            
+            // Validate required radio/checkbox groups
+            const requiredGroups = [
+                { name: 'procurementPhase', label: t.procurementPhase },
+                { name: 'ictType', label: t.ictType },
+                { name: 'exemption', label: t.exemption },
+                { name: 'webContent', label: t.webContent },
+                { name: 'softwareType', label: t.softwareType },
+                { name: 'hardwareCategory', label: t.hardwareCategory },
+                { name: 'videoType', label: t.videoType },
+                { name: 'supportType', label: t.supportType }
+            ];
+            
+            requiredGroups.forEach(group => {
+                if (!document.querySelector(`input[name="${group.name}"]:checked`)) {
+                    hasError = true;
+                    errorMessages.push(`${group.label} is required.`);
+                }
+            });
+            
+            // Validate conditional fields
+            const webContentValue = document.querySelector('input[name="webContent"]:checked')?.value;
+            if (webContentValue === 'yes') {
+                if (!document.querySelector('input[name="wcagLevel"]:checked')) {
+                    hasError = true;
+                    errorMessages.push(`${t.wcagLevel} is required when web content is selected.`);
+                }
+                if (!document.querySelector('input[name="publicWebsite"]:checked')) {
+                    hasError = true;
+                    errorMessages.push(`${t.publicWebsite} is required when web content is selected.`);
+                }
+            }
+            
+            // Show error messages if any
+            if (hasError) {
+                showErrorMessages(errorMessages, t.missingFields);
+                return;
+            }
+            
+            // If validation passes, generate requirements
+            generateRequirements();
+        }
+        
+        function showErrorMessages(messages, headerText) {
+            let errorDiv = document.getElementById('formErrorMessages');
+            if (!errorDiv) {
+                errorDiv = document.createElement('div');
+                errorDiv.id = 'formErrorMessages';
+                errorDiv.style.cssText = 'color: red; margin: 10px 0; padding: 10px; border: 1px solid red; background-color: #ffe6e6; border-radius: 5px;';
+                errorDiv.setAttribute('role', 'alert');
+                document.getElementById('formSection').insertBefore(errorDiv, document.getElementById('formSection').firstChild);
+            }
+            
+            errorDiv.innerHTML = `<strong>${headerText}</strong><ul>${messages.map(msg => `<li>${msg}</li>`).join('')}</ul>`;
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        // --- REQUIREMENTS GENERATION ---
+        function generateRequirements() {
+            const formData = collectFormData();
+            const t = translations[currentLang];
+            
+            // Clear previous error messages
+            const errorDiv = document.getElementById('formErrorMessages');
+            if (errorDiv) errorDiv.innerHTML = '';
+            
+            // Generate basic requirements text
+            let requirementsText = `${t.generateRequirements}\n\n`;
+            requirementsText += `Project: ${formData.projectName}\n`;
+            requirementsText += `Language: ${t.langName}\n\n`;
+            
+            requirementsText += `Core Accessibility Standards\n\n`;
+            requirementsText += `All ICT deliverables must comply with EN 301 549 v3.2.1 (2021) "Accessibility requirements for ICT products and services."\n\n`;
+            
+            if (formData.webContent === 'yes') {
+                requirementsText += `Web Content Requirements\n`;
+                requirementsText += `- WCAG 2.1 Level ${formData.wcagLevel || 'AA'} conformance required\n`;
+                requirementsText += `- Public website: ${formData.publicWebsite === 'yes' ? 'Yes' : 'No'}\n`;
+                if (formData.websiteURL) {
+                    requirementsText += `- Website URL: ${formData.websiteURL}\n`;
+                }
+                requirementsText += `\n`;
+            }
+            
+            if (formData.ictTypes.length > 0) {
+                requirementsText += `ICT Types:\n`;
+                formData.ictTypes.forEach(type => {
+                    const label = t.ictTypes[type] || type;
+                    requirementsText += `- ${label}\n`;
+                });
+                requirementsText += `\n`;
+            }
+            
+            if (formData.softwareTypes.length > 0) {
+                requirementsText += `Software Applications:\n`;
+                formData.softwareTypes.forEach(type => {
+                    const label = t.softwareTypes[type] || type;
+                    requirementsText += `- ${label}\n`;
+                });
+                requirementsText += `\n`;
+            }
+            
+            if (formData.hardwareCategories.length > 0) {
+                requirementsText += `Hardware Categories:\n`;
+                formData.hardwareCategories.forEach(cat => {
+                    const label = t.hardwareCategories[cat] || cat;
+                    requirementsText += `- ${label}\n`;
+                });
+                if (formData.closedFunctionality) {
+                    requirementsText += `- Closed functionality: ${formData.closedFunctionality === 'yes' ? t.yes : t.no}\n`;
+                }
+                requirementsText += `\n`;
+            }
+            
+            if (formData.videoTypes.length > 0) {
+                requirementsText += `Video/Audio Content:\n`;
+                formData.videoTypes.forEach(type => {
+                    const label = t.videoTypes[type] || type;
+                    requirementsText += `- ${label}\n`;
+                });
+                if (formData.mediaRequirements.length > 0) {
+                    requirementsText += `Media Requirements:\n`;
+                    formData.mediaRequirements.forEach(req => {
+                        const label = t.mediaRequirements[req] || req;
+                        requirementsText += `  - ${label}\n`;
+                    });
+                }
+                requirementsText += `\n`;
+            }
+            
+            if (formData.supportTypes.length > 0) {
+                requirementsText += `Support & Documentation:\n`;
+                formData.supportTypes.forEach(type => {
+                    const label = t.supportTypes[type] || type;
+                    requirementsText += `- ${label}\n`;
+                });
+                requirementsText += `\n`;
+            }
+            
+            // Add reference information
+            requirementsText += `Reference: https://accessible.canada.ca/creating-accessibility-standards/canasc-en-301-5492024-accessibility-requirements-ict-products-and-services\n`;
+            
+            // Display the requirements
+            displayRequirements({
+                text: requirementsText,
+                data: formData
+            });
+        }
+        
+        // --- SAVE/LOAD FUNCTIONALITY ---
+        function saveFormData() {
+            const formData = collectFormData();
+            const dataStr = JSON.stringify(formData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const projectName = formData.projectName || 'Project';
+            const sanitizedProjectName = projectName.replace(/[^a-zA-Z0-9\-_]/g, '_');
+            const filename = `EN301549-${sanitizedProjectName}-${new Date().toISOString().split('T')[0]}.json`;
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = filename;
+            link.click();
+            
+            URL.revokeObjectURL(link.href);
+            alert('Form data saved successfully!');
+        }
+        
+        function loadFormData(event) {
+            const file = event.target.files[0];
+            if (file && file.type === 'application/json') {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        populateFormFromData(data);
+                        alert('Form data loaded successfully!');
+                    } catch (error) {
+                        alert('Error loading form data: Invalid JSON file');
+                    }
+                };
+                reader.readAsText(file);
+            } else {
+                alert('Please select a valid JSON file');
+            }
+            event.target.value = ''; // Clear the file input
+        }
+        
+        function populateFormFromData(data) {
+            // Clear all form fields first
+            document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+            
+            // Set project name
+            if (data.projectName) {
+                document.getElementById('projectName').value = data.projectName;
+            }
+            
+            // Set radio button selections
+            const radioGroups = ['procurementPhase', 'exemption', 'webContent', 'wcagLevel', 'publicWebsite', 'authoringCapability', 'closedFunctionality'];
+            radioGroups.forEach(groupName => {
+                if (data[groupName]) {
+                    const radio = document.querySelector(`input[name="${groupName}"][value="${data[groupName]}"]`);
+                    if (radio) radio.checked = true;
+                }
+            });
+            
+            // Set checkbox selections
+            const checkboxGroupMap = {
+                ictTypes: 'ictType',
+                softwareTypes: 'softwareType',
+                hardwareCategories: 'hardwareCategory',
+                videoTypes: 'videoType',
+                mediaRequirements: 'mediaRequirements',
+                supportTypes: 'supportType'
+            };
+            
+            Object.entries(checkboxGroupMap).forEach(([groupName, singularName]) => {
+                if (data[groupName] && Array.isArray(data[groupName])) {
+                    data[groupName].forEach(value => {
+                        const checkbox = document.querySelector(`input[name="${singularName}"][value="${value}"]`);
+                        if (checkbox) checkbox.checked = true;
+                    });
+                }
+            });
+            
+            // Set website URL
+            if (data.websiteURL) {
+                const websiteInput = document.getElementById('websiteURL');
+                if (websiteInput) websiteInput.value = data.websiteURL;
+            }
+            
+            // Update conditional displays
+            updateConditionalDisplays();
+            
+            // Clear any error messages
+            const errorDiv = document.getElementById('formErrorMessages');
+            if (errorDiv) errorDiv.innerHTML = '';
+        }
+        
+        function collectFormData() {
+            return {
+                projectName: document.getElementById('projectName').value.trim(),
+                procurementPhase: document.querySelector('input[name="procurementPhase"]:checked')?.value,
+                ictTypes: Array.from(document.querySelectorAll('input[name="ictType"]:checked')).map(cb => cb.value),
+                exemption: document.querySelector('input[name="exemption"]:checked')?.value,
+                webContent: document.querySelector('input[name="webContent"]:checked')?.value,
+                wcagLevel: document.querySelector('input[name="wcagLevel"]:checked')?.value,
+                publicWebsite: document.querySelector('input[name="publicWebsite"]:checked')?.value,
+                websiteURL: document.getElementById('websiteURL')?.value || '',
+                softwareTypes: Array.from(document.querySelectorAll('input[name="softwareType"]:checked')).map(cb => cb.value),
+                authoringCapability: document.querySelector('input[name="authoringCapability"]:checked')?.value,
+                hardwareCategories: Array.from(document.querySelectorAll('input[name="hardwareCategory"]:checked')).map(cb => cb.value),
+                closedFunctionality: document.querySelector('input[name="closedFunctionality"]:checked')?.value,
+                videoTypes: Array.from(document.querySelectorAll('input[name="videoType"]:checked')).map(cb => cb.value),
+                mediaRequirements: Array.from(document.querySelectorAll('input[name="mediaRequirements"]:checked')).map(cb => cb.value),
+                supportTypes: Array.from(document.querySelectorAll('input[name="supportType"]:checked')).map(cb => cb.value)
+            };
+        }
+        
+        // Make functions globally available
+        window.displayRequirements = displayRequirements;
+    </script>
+</body>
+</html>
