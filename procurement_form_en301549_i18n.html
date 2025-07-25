@@ -188,7 +188,9 @@
                 loadData: "Load Form Data",
                 requiredField: "This field is required.",
                 missingFields: "Some required fields are missing or incomplete. Please review the form and try again.",
-                generateRequirements: "Generate Requirements"
+                generateRequirements: "Generate Requirements",
+                noneOption: "None of the above",
+                noneOption: "None of the above"
             },
             fr: {
                 langName: "Français",
@@ -271,7 +273,9 @@
                 loadData: "Charger les données du formulaire",
                 requiredField: "Ce champ est requis.",
                 missingFields: "Certains champs obligatoires sont manquants ou incomplets. Veuillez vérifier le formulaire et réessayer.",
-                generateRequirements: "Générer les exigences"
+                generateRequirements: "Générer les exigences",
+                noneOption: "Aucune des options ci-dessus",
+                noneOption: "Aucune des options ci-dessus"
             }
         };
 
@@ -291,20 +295,22 @@
             // Title
             html += `<h1>EN 301 549 - Global ICT Accessibility Requirements</h1>`;
             
-            // Project name field
+            // Project name field with default value
             html += `<div class="form-section">`;
             html += `<label for="projectName">${t.projectName} *</label>`;
-            html += `<input type="text" id="projectName" name="projectName" placeholder="${t.projectNamePlaceholder}" style="width: 100%; max-width: 400px; margin-bottom: 10px;" required>`;
+            html += `<input type="text" id="projectName" name="projectName" placeholder="${t.projectNamePlaceholder}" style="width: 100%; max-width: 400px; margin-bottom: 10px;" required value="ICT Accessibility Assessment">`;
             html += `<div id="projectNameError" class="error-message">${t.requiredField}</div>`;
             html += `</div>`;
             
-            // Procurement phase field
+            // Procurement phase field with default
             html += `<div class="form-section">`;
+            html += `<h2>Procurement Phase</h2>`;
             html += `<label>${t.procurementPhase} *</label>`;
             html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
             Object.entries(t.procurementPhases).forEach(([key, value]) => {
+                const checked = key === 'tenderDevelopment' ? ' checked' : '';
                 html += `<label style="display: flex; align-items: center; margin-bottom: 5px;">`;
-                html += `<input type="radio" name="procurementPhase" value="${key}" style="margin-right: 8px;">`;
+                html += `<input type="radio" name="procurementPhase" value="${key}" style="margin-right: 8px;"${checked}>`;
                 html += `<span>${value}</span>`;
                 html += `</label>`;
             });
@@ -312,6 +318,7 @@
             
             // ICT Type field
             html += `<div class="form-section">`;
+            html += `<h2>ICT Type</h2>`;
             html += `<label>${t.ictType} *</label>`;
             html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
             Object.entries(t.ictTypes).forEach(([key, value]) => {
@@ -322,24 +329,26 @@
             });
             html += `</div></div>`;
             
-            // Exemption field
+            // Exemption field with default
             html += `<div class="form-section">`;
+            html += `<h2>Exemptions & Exceptions</h2>`;
             html += `<label>${t.exemption} *</label>`;
             html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
             Object.entries(t.exemptions).forEach(([key, value]) => {
+                const checked = key === 'none' ? ' checked' : '';
                 html += `<label style="display: flex; align-items: center; margin-bottom: 5px;">`;
-                html += `<input type="radio" name="exemption" value="${key}" style="margin-right: 8px;">`;
+                html += `<input type="radio" name="exemption" value="${key}" style="margin-right: 8px;"${checked}>`;
                 html += `<span>${value}</span>`;
                 html += `</label>`;
             });
             html += `</div></div>`;
             
-            // Web Content field
+            // Web Content field with default
             html += `<div class="form-section">`;
             html += `<label>${t.webContent} *</label>`;
             html += `<div style="display: flex; gap: 20px;">`;
             html += `<label style="display: flex; align-items: center;">`;
-            html += `<input type="radio" name="webContent" value="yes" style="margin-right: 8px;">`;
+            html += `<input type="radio" name="webContent" value="yes" style="margin-right: 8px;" checked>`;
             html += `<span>${t.yes}</span>`;
             html += `</label>`;
             html += `<label style="display: flex; align-items: center;">`;
@@ -383,6 +392,7 @@
             
             // Software Application Types
             html += `<div class="form-section">`;
+            html += `<h2>Software</h2>`;
             html += `<label>${t.softwareType} *</label>`;
             html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
             Object.entries(t.softwareTypes).forEach(([key, value]) => {
@@ -391,6 +401,10 @@
                 html += `<span>${value}</span>`;
                 html += `</label>`;
             });
+            html += `<label style="display: flex; align-items: center; margin-bottom: 5px;">`;
+            html += `<input type="checkbox" name="softwareType" value="none" style="margin-right: 8px;" checked>`;
+            html += `<span>${t.noneOption}</span>`;
+            html += `</label>`;
             html += `</div></div>`;
             
             // Authoring Tool Capability (conditional)
@@ -407,6 +421,7 @@
             
             // Hardware Categories
             html += `<div class="form-section">`;
+            html += `<h2>Hardware</h2>`;
             html += `<label>${t.hardwareCategory} *</label>`;
             html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
             Object.entries(t.hardwareCategories).forEach(([key, value]) => {
@@ -415,6 +430,10 @@
                 html += `<span>${value}</span>`;
                 html += `</label>`;
             });
+            html += `<label style="display: flex; align-items: center; margin-bottom: 5px;">`;
+            html += `<input type="checkbox" name="hardwareCategory" value="none" style="margin-right: 8px;" checked>`;
+            html += `<span>${t.noneOption}</span>`;
+            html += `</label>`;
             html += `</div></div>`;
             
             // Closed Functionality (conditional)
@@ -433,6 +452,7 @@
             
             // Video/Audio Content Types
             html += `<div class="form-section">`;
+            html += `<h2>Media & Telecommunications</h2>`;
             html += `<label>${t.videoType} *</label>`;
             html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
             Object.entries(t.videoTypes).forEach(([key, value]) => {
@@ -441,6 +461,10 @@
                 html += `<span>${value}</span>`;
                 html += `</label>`;
             });
+            html += `<label style="display: flex; align-items: center; margin-bottom: 5px;">`;
+            html += `<input type="checkbox" name="videoType" value="none" style="margin-right: 8px;" checked>`;
+            html += `<span>${t.noneOption}</span>`;
+            html += `</label>`;
             html += `</div></div>`;
             
             // Media Requirements (conditional)
@@ -457,6 +481,7 @@
             
             // Support & Documentation Types
             html += `<div class="form-section">`;
+            html += `<h2>Support Documentation & Services</h2>`;
             html += `<label>${t.supportType} *</label>`;
             html += `<div style="display: flex; flex-wrap: wrap; gap: 20px;">`;
             Object.entries(t.supportTypes).forEach(([key, value]) => {
@@ -465,6 +490,10 @@
                 html += `<span>${value}</span>`;
                 html += `</label>`;
             });
+            html += `<label style="display: flex; align-items: center; margin-bottom: 5px;">`;
+            html += `<input type="checkbox" name="supportType" value="none" style="margin-right: 8px;" checked>`;
+            html += `<span>${t.noneOption}</span>`;
+            html += `</label>`;
             html += `</div></div>`;
             
             // Buttons section
@@ -550,131 +579,552 @@
             if (captioningRequirements) captioningRequirements.style.display = mediaSelected ? 'block' : 'none';
         }
         
+        // --- URL PARAMETER HANDLING ---
+        function populateFormFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Project Name
+            if (urlParams.has('projectName')) {
+                const projectNameInput = document.getElementById('projectName');
+                if (projectNameInput) {
+                    projectNameInput.value = urlParams.get('projectName');
+                }
+            }
+
+            // Radio Buttons
+            const radioGroups = ['procurementPhase', 'exemption', 'webContent', 'wcagLevel', 'publicWebsite', 'authoringCapability', 'closedFunctionality'];
+            radioGroups.forEach(groupName => {
+                if (urlParams.has(groupName)) {
+                    const value = urlParams.get(groupName);
+                    const radio = document.querySelector(`input[name="${groupName}"][value="${value}"]`);
+                    if (radio) {
+                        radio.checked = true;
+                        radio.dispatchEvent(new Event('change'));
+                    }
+                }
+            });
+
+            // Checkboxes - handle multiple values
+            const checkboxGroups = ['ictType', 'softwareType', 'hardwareCategory', 'videoType', 'mediaRequirements', 'supportType'];
+            checkboxGroups.forEach(groupName => {
+                // First, uncheck all in the group
+                document.querySelectorAll(`input[name="${groupName}"]`).forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+
+                if (urlParams.has(groupName)) {
+                    const values = urlParams.getAll(groupName);
+                    values.forEach(value => {
+                        const checkbox = document.querySelector(`input[name="${groupName}"][value="${value}"]`);
+                        if (checkbox) {
+                            checkbox.checked = true;
+                            checkbox.dispatchEvent(new Event('change'));
+                        }
+                    });
+                }
+            });
+
+            // Website URL
+            if (urlParams.has('websiteURL')) {
+                const websiteURLInput = document.getElementById('websiteURL');
+                if (websiteURLInput) {
+                    websiteURLInput.value = urlParams.get('websiteURL');
+                }
+            }
+        }
+
+        function updateURLFromForm() {
+            const formData = collectFormData();
+            const urlParams = new URLSearchParams();
+
+            // Add project name
+            if (formData.projectName) {
+                urlParams.set('projectName', formData.projectName);
+            }
+
+            // Add radio button values
+            const radioFields = ['procurementPhase', 'exemption', 'webContent', 'wcagLevel', 'publicWebsite', 'authoringCapability', 'closedFunctionality'];
+            radioFields.forEach(field => {
+                if (formData[field]) {
+                    urlParams.set(field, formData[field]);
+                }
+            });
+
+            // Add checkbox arrays
+            const checkboxFields = [
+                { data: 'ictTypes', param: 'ictType' },
+                { data: 'softwareTypes', param: 'softwareType' },
+                { data: 'hardwareCategories', param: 'hardwareCategory' },
+                { data: 'videoTypes', param: 'videoType' },
+                { data: 'mediaRequirements', param: 'mediaRequirements' },
+                { data: 'supportTypes', param: 'supportType' }
+            ];
+
+            checkboxFields.forEach(field => {
+                if (formData[field.data] && formData[field.data].length > 0) {
+                    formData[field.data].forEach(value => {
+                        urlParams.append(field.param, value);
+                    });
+                }
+            });
+
+            // Add website URL
+            if (formData.websiteURL) {
+                urlParams.set('websiteURL', formData.websiteURL);
+            }
+
+            // Update URL without page reload
+            const newURL = window.location.pathname + '?' + urlParams.toString();
+            window.history.replaceState({}, '', newURL);
+        }
+
+        // --- "NONE OF THE ABOVE" HANDLING ---
+        function setupNoneHandling() {
+            const checkboxGroups = ['softwareType', 'hardwareCategory', 'videoType', 'supportType'];
+            
+            checkboxGroups.forEach(groupName => {
+                const noneCheckbox = document.querySelector(`input[name="${groupName}"][value="none"]`);
+                const otherCheckboxes = Array.from(document.querySelectorAll(`input[name="${groupName}"]:not([value="none"])`));
+                
+                if (noneCheckbox && otherCheckboxes.length > 0) {
+                    // When "none" is checked, uncheck all others
+                    noneCheckbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            otherCheckboxes.forEach(cb => {
+                                cb.checked = false;
+                            });
+                        }
+                        updateURLFromForm();
+                    });
+                    
+                    // When any other is checked, uncheck "none"
+                    otherCheckboxes.forEach(checkbox => {
+                        checkbox.addEventListener('change', function() {
+                            if (this.checked && noneCheckbox.checked) {
+                                noneCheckbox.checked = false;
+                            }
+                            updateURLFromForm();
+                        });
+                    });
+                }
+            });
+        }
+        
+        // --- DEFAULT VALUES SETUP ---
+        function setDefaultValues() {
+            // Set default project name if empty
+            const projectNameInput = document.getElementById('projectName');
+            if (!projectNameInput.value.trim()) {
+                projectNameInput.value = 'Default Project Name';
+            }
+
+            // Set default procurement phase
+            let procurementPhaseSelected = document.querySelector('input[name="procurementPhase"]:checked');
+            if (!procurementPhaseSelected) {
+                const defaultPhase = document.querySelector('input[name="procurementPhase"][value="tenderDevelopment"]');
+                if (defaultPhase) defaultPhase.checked = true;
+            }
+
+            // Set default exemption
+            let exemptionSelected = document.querySelector('input[name="exemption"]:checked');
+            if (!exemptionSelected) {
+                const defaultExemption = document.querySelector('input[name="exemption"][value="none"]');
+                if (defaultExemption) defaultExemption.checked = true;
+            }
+
+            // Set default web content
+            let webContentSelected = document.querySelector('input[name="webContent"]:checked');
+            if (!webContentSelected) {
+                const defaultWebContent = document.querySelector('input[name="webContent"][value="yes"]');
+                if (defaultWebContent) {
+                    defaultWebContent.checked = true;
+                    defaultWebContent.dispatchEvent(new Event('change'));
+                }
+            }
+
+            // Set default WCAG level if web content is selected
+            setTimeout(() => {
+                let wcagLevelSelected = document.querySelector('input[name="wcagLevel"]:checked');
+                if (!wcagLevelSelected && document.querySelector('input[name="webContent"][value="yes"]')?.checked) {
+                    const defaultWcagLevel = document.querySelector('input[name="wcagLevel"][value="AA"]');
+                    if (defaultWcagLevel) defaultWcagLevel.checked = true;
+                }
+            }, 100);
+        }
+
+        // --- UPDATE URL FROM FORM ---
+        function updateURLFromForm() {
+            const formData = collectFormData();
+            const params = new URLSearchParams();
+
+            // Add project name
+            if (formData.projectName) {
+                params.set('projectName', formData.projectName);
+            }
+
+            // Add radio button values
+            const radioGroups = ['procurementPhase', 'exemption', 'webContent', 'wcagLevel', 'publicWebsite', 'closedFunctionality', 'authoringCapability'];
+            radioGroups.forEach(groupName => {
+                if (formData[groupName]) {
+                    params.set(groupName, formData[groupName]);
+                }
+            });
+
+            // Add checkbox arrays
+            const checkboxGroups = ['ictTypes', 'softwareTypes', 'hardwareCategories', 'videoTypes', 'mediaRequirements', 'supportTypes'];
+            checkboxGroups.forEach(groupName => {
+                if (formData[groupName] && formData[groupName].length > 0) {
+                    formData[groupName].forEach(value => {
+                        params.append(groupName.slice(0, -1), value); // Remove 's' suffix
+                    });
+                }
+            });
+
+            // Add website URL
+            if (formData.websiteURL) {
+                params.set('websiteURL', formData.websiteURL);
+            }
+
+            // Update URL without triggering page reload
+            const newURL = `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}`;
+            window.history.replaceState({}, '', newURL);
+        }
+        
         // --- LANGUAGE SWITCHER AND EVENT HANDLERS ---
         document.addEventListener('DOMContentLoaded', function() {
             renderForm();
+            setDefaultValues(); // Set default form values
+            populateFormFromURL(); // Load URL parameters after form is rendered
+            setupNoneHandling(); // Setup "None of the above" logic
             
             document.getElementById('langSwitcher').addEventListener('change', function(e) {
                 currentLang = e.target.value;
                 renderForm();
+                populateFormFromURL(); // Reapply URL parameters after language change
+                setupNoneHandling(); // Re-setup "None of the above" logic
                 // Optionally rerender output if present
                 if (window.currentRequirements) {
                     displayRequirements(window.currentRequirements);
                 }
             });
 
-            // TODO: Implement remaining functionality in the next phase:
-            // - Complete form rendering with all fields
-            // - Form submission and validation
-            // - Requirements generation
-            // - Data collection and storage
-            // - Display requirements with procurement guidance
-            // - Copy/download functionality
-            // - All event handlers for dynamic form behavior
+            // Add form change listeners to update URL parameters
+            document.addEventListener('change', function(e) {
+                if (e.target.matches('input, select, textarea')) {
+                    setTimeout(updateURLFromForm, 100); // Small delay to ensure form data is updated
+                }
+            });
         });
+
+            // --- URL PARAMETER HANDLING ---
+        function populateFormFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Project Name
+            if (urlParams.has('projectName')) {
+                const projectNameInput = document.getElementById('projectName');
+                if (projectNameInput) {
+                    projectNameInput.value = urlParams.get('projectName');
+                }
+            }
+
+            // Radio Buttons
+            const radioGroups = ['procurementPhase', 'exemption', 'webContent', 'wcagLevel', 'publicWebsite', 'authoringCapability', 'closedFunctionality'];
+            radioGroups.forEach(groupName => {
+                if (urlParams.has(groupName)) {
+                    const value = urlParams.get(groupName);
+                    const radio = document.querySelector(`input[name="${groupName}"][value="${value}"]`);
+                    if (radio) {
+                        radio.checked = true;
+                        radio.dispatchEvent(new Event('change'));
+                    }
+                }
+            });
+
+            // Checkboxes - handle multiple values
+            const checkboxGroups = ['ictType', 'softwareType', 'hardwareCategory', 'videoType', 'mediaRequirements', 'supportType'];
+            checkboxGroups.forEach(groupName => {
+                // First, uncheck all in the group
+                document.querySelectorAll(`input[name="${groupName}"]`).forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+
+                if (urlParams.has(groupName)) {
+                    const values = urlParams.getAll(groupName);
+                    values.forEach(value => {
+                        const checkbox = document.querySelector(`input[name="${groupName}"][value="${value}"]`);
+                        if (checkbox) {
+                            checkbox.checked = true;
+                            checkbox.dispatchEvent(new Event('change'));
+                        }
+                    });
+                } else {
+                    // If parameter is missing, check 'none' option by default if it exists
+                    const noneCheckbox = document.querySelector(`input[name="${groupName}"][value="none"]`);
+                    if (noneCheckbox) {
+                        noneCheckbox.checked = true;
+                        noneCheckbox.dispatchEvent(new Event('change'));
+                    }
+                }
+            });
+
+            // Website URL
+            if (urlParams.has('websiteURL')) {
+                const websiteURLInput = document.getElementById('websiteURL');
+                if (websiteURLInput) {
+                    websiteURLInput.value = urlParams.get('websiteURL');
+                }
+            }
+        }
+
+        function updateURLFromForm() {
+            const formData = collectFormData();
+            const urlParams = new URLSearchParams();
+
+            // Add project name
+            if (formData.projectName) {
+                urlParams.set('projectName', formData.projectName);
+            }
+
+            // Add radio button values
+            const radioFields = ['procurementPhase', 'exemption', 'webContent', 'wcagLevel', 'publicWebsite', 'authoringCapability', 'closedFunctionality'];
+            radioFields.forEach(field => {
+                if (formData[field]) {
+                    urlParams.set(field, formData[field]);
+                }
+            });
+
+            // Add checkbox arrays
+            const checkboxFields = [
+                { data: 'ictTypes', param: 'ictType' },
+                { data: 'softwareTypes', param: 'softwareType' },
+                { data: 'hardwareCategories', param: 'hardwareCategory' },
+                { data: 'videoTypes', param: 'videoType' },
+                { data: 'mediaRequirements', param: 'mediaRequirements' },
+                { data: 'supportTypes', param: 'supportType' }
+            ];
+
+            checkboxFields.forEach(field => {
+                if (formData[field.data] && formData[field.data].length > 0) {
+                    formData[field.data].forEach(value => {
+                        urlParams.append(field.param, value);
+                    });
+                }
+            });
+
+            // Add website URL
+            if (formData.websiteURL) {
+                urlParams.set('websiteURL', formData.websiteURL);
+            }
+
+            // Update URL without page reload
+            const newURL = window.location.pathname + '?' + urlParams.toString();
+            window.history.replaceState({}, '', newURL);
+        }
+
+        // --- "NONE OF THE ABOVE" HANDLING ---
+        function setupNoneHandling() {
+            const checkboxGroups = ['softwareType', 'hardwareCategory', 'videoType', 'supportType'];
+            
+            checkboxGroups.forEach(groupName => {
+                const noneCheckbox = document.querySelector(`input[name="${groupName}"][value="none"]`);
+                const otherCheckboxes = Array.from(document.querySelectorAll(`input[name="${groupName}"]:not([value="none"])`));
+                
+                if (noneCheckbox && otherCheckboxes.length > 0) {
+                    // When "none" is checked, uncheck all others
+                    noneCheckbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            otherCheckboxes.forEach(cb => {
+                                cb.checked = false;
+                            });
+                        }
+                        updateURLFromForm();
+                    });
+                    
+                    // When any other is checked, uncheck "none"
+                    otherCheckboxes.forEach(checkbox => {
+                        checkbox.addEventListener('change', function() {
+                            if (this.checked && noneCheckbox.checked) {
+                                noneCheckbox.checked = false;
+                            }
+                            updateURLFromForm();
+                        });
+                    });
+                }
+            });
+        }
         
         // --- DISPLAY REQUIREMENTS ---
         function displayRequirements(requirements) {
             const t = translations[currentLang];
             const outputDiv = document.getElementById('output');
             
-            // Create output with both guidance and copy-paste sections
+            // Get procurement phase for phase-specific guidance
+            const procurementPhase = requirements.data.procurementPhase;
+            let phaseGuidance = '';
+            
+            if (procurementPhase === 'projectPlanning') {
+                phaseGuidance = currentLang === 'en' ? `
+                    <h4>Requirements Planning Phase Guidance</h4>
+                    <p>Use these requirements to:</p>
+                    <ul>
+                        <li>Establish accessibility budget and timeline expectations</li>
+                        <li>Identify required team expertise and roles</li>
+                        <li>Plan for ongoing accessibility testing and validation</li>
+                        <li>Understand compliance scope for your ICT procurement</li>
+                    </ul>` : `
+                    <h4>Conseils pour la phase de planification des exigences</h4>
+                    <p>Utilisez ces exigences pour :</p>
+                    <ul>
+                        <li>Établir les attentes budgétaires et calendaires d'accessibilité</li>
+                        <li>Identifier l'expertise et les rôles requis de l'équipe</li>
+                        <li>Planifier les tests et validations d'accessibilité en cours</li>
+                        <li>Comprendre la portée de conformité pour votre approvisionnement TIC</li>
+                    </ul>`;
+            } else if (procurementPhase === 'marketResearch') {
+                phaseGuidance = currentLang === 'en' ? `
+                    <h4>Market Research Phase Guidance</h4>
+                    <p>Include these criteria in RFI/market research to:</p>
+                    <ul>
+                        <li>Evaluate vendor accessibility capabilities and experience</li>
+                        <li>Request current Accessibility Conformance Reports (ACRs)</li>
+                        <li>Assess marketplace availability of accessible solutions</li>
+                        <li>Identify potential accessibility implementation challenges</li>
+                    </ul>` : `
+                    <h4>Conseils pour la phase d'étude de marché</h4>
+                    <p>Incluez ces critères dans la DDI/étude de marché pour :</p>
+                    <ul>
+                        <li>Évaluer les capacités et l'expérience d'accessibilité des fournisseurs</li>
+                        <li>Demander les rapports de conformité d'accessibilité (RCA) actuels</li>
+                        <li>Évaluer la disponibilité sur le marché de solutions accessibles</li>
+                        <li>Identifier les défis potentiels de mise en œuvre de l'accessibilité</li>
+                    </ul>`;
+            } else {
+                phaseGuidance = currentLang === 'en' ? `
+                    <h4>Tender Development Guidance</h4>
+                    <p>Copy the requirements below into your Statement of Work (SOW), Performance Work Statement (PWS), or Statement of Objectives (SOO).</p>
+                    <p><strong>Note:</strong> These requirements are designed to be vendor-agnostic and establish clear performance expectations. Customize based on your organization's specific needs.</p>` : `
+                    <h4>Conseils pour l'élaboration de l'appel d'offres</h4>
+                    <p>Copiez les exigences ci-dessous dans votre énoncé de travail (ÉT), énoncé de travail de performance (ÉTP), ou énoncé d'objectifs (ÉO).</p>
+                    <p><strong>Note :</strong> Ces exigences sont conçues pour être neutres vis-à-vis des fournisseurs et établir des attentes de performance claires. Personnalisez selon les besoins spécifiques de votre organisation.</p>`;
+            }
+            
+            // Create output with guidance and editable requirements
             let outputHTML = '';
             
             // Procurement Officer Guidance Section
             outputHTML += `<div style="background-color: #f8f9fa; border: 2px solid #6c757d; border-radius: 8px; padding: 20px; margin-bottom: 30px;">`;
-            outputHTML += `<h2 style="color: #495057; margin-top: 0;">📋 For Procurement Officers - Review & Guidance</h2>`;
+            outputHTML += `<h2 style="color: #495057; margin-top: 0;">📋 ${currentLang === 'en' ? 'For Procurement Officers - Review & Guidance' : 'Pour les agents d\'approvisionnement - Examen et conseils'}</h2>`;
             outputHTML += `<p style="background-color: #d1ecf1; padding: 10px; border-radius: 5px; margin-bottom: 15px;">`;
-            outputHTML += `<strong>Project:</strong> ${requirements.data.projectName} | `;
-            outputHTML += `<strong>Language:</strong> ${t.langName}`;
+            outputHTML += `<strong>${currentLang === 'en' ? 'Project' : 'Projet'}:</strong> ${requirements.data.projectName} | `;
+            outputHTML += `<strong>${currentLang === 'en' ? 'Language' : 'Langue'}:</strong> ${t.langName}`;
             outputHTML += `</p>`;
-            outputHTML += `<p style="background-color: #d4edda; padding: 10px; border-radius: 5px;">`;
-            outputHTML += `EN 301 549 compliance ensures your procurement meets international accessibility standards, reduces legal risks, and creates inclusive ICT solutions.`;
-            outputHTML += `</p>`;
+            
+            outputHTML += `<div style="background-color: #d4edda; padding: 15px; border-radius: 5px; margin-bottom: 15px;">`;
+            outputHTML += `<h4>${currentLang === 'en' ? 'Why is this important?' : 'Pourquoi est-ce important ?'}</h4>`;
+            outputHTML += `<p>${currentLang === 'en' ? 
+                'EN 301 549 compliance ensures your procurement meets international accessibility standards, reduces legal risks, and creates inclusive ICT solutions that serve all users effectively.' :
+                'La conformité EN 301 549 garantit que votre approvisionnement respecte les normes internationales d\'accessibilité, réduit les risques juridiques et crée des solutions TIC inclusives qui servent efficacement tous les utilisateurs.'}</p>`;
             outputHTML += `</div>`;
             
-            // Requirements for Copy-Paste Section
-            outputHTML += `<div style="background-color: #e7f3ff; border: 3px solid #0056b3; border-radius: 8px; padding: 20px;">`;
-            outputHTML += `<h2 style="color: #0056b3; margin-top: 0;">📄 Requirements for Copy-Paste into Procurement Documents</h2>`;
+            outputHTML += phaseGuidance;
             
-            outputHTML += `<div style="background-color: #fff; border: 2px solid #ffc107; border-radius: 5px; padding: 15px; margin-bottom: 20px;">`;
-            outputHTML += `<h3 style="color: #856404; margin-top: 0;">⚠️ Important Instructions:</h3>`;
-            outputHTML += `<ul style="color: #856404; margin-bottom: 0;">`;
-            outputHTML += `<li><strong>Copy the text below</strong> - do not copy the guidance section above</li>`;
-            outputHTML += `<li><strong>Review and customize</strong> the requirements as needed for your specific procurement</li>`;
-            outputHTML += `<li><strong>Ensure legal review</strong> of requirements before including in official documents</li>`;
+            // Government oversight responsibilities
+            outputHTML += `<div style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin-top: 15px;">`;
+            outputHTML += `<h4>${currentLang === 'en' ? 'Government Oversight Responsibilities' : 'Responsabilités de surveillance gouvernementale'}</h4>`;
+            outputHTML += `<p>${currentLang === 'en' ? 'As the procurement officer, you must ensure ongoing compliance by:' : 'En tant qu\'agent d\'approvisionnement, vous devez assurer la conformité continue en :'}</p>`;
+            outputHTML += `<ul>`;
+            if (currentLang === 'en') {
+                outputHTML += `<li>Regularly reviewing and validating ACR submissions for accuracy and completeness</li>`;
+                outputHTML += `<li>Conducting periodic accessibility audits using both automated tools and expert evaluation</li>`;
+                outputHTML += `<li>Monitoring contractor performance against accessibility milestones and deliverables</li>`;
+                outputHTML += `<li>Ensuring timely remediation of identified accessibility issues</li>`;
+                outputHTML += `<li>Documenting accessibility compliance status in all project reports and reviews</li>`;
+                outputHTML += `<li>Escalating persistent accessibility non-compliance through appropriate contract management channels</li>`;
+            } else {
+                outputHTML += `<li>Examiner et valider régulièrement les soumissions de RCA pour leur exactitude et leur exhaustivité</li>`;
+                outputHTML += `<li>Effectuer des audits d'accessibilité périodiques en utilisant des outils automatisés et une évaluation d'experts</li>`;
+                outputHTML += `<li>Surveiller la performance des contractants par rapport aux jalons et livrables d'accessibilité</li>`;
+                outputHTML += `<li>Assurer la correction rapide des problèmes d'accessibilité identifiés</li>`;
+                outputHTML += `<li>Documenter le statut de conformité d'accessibilité dans tous les rapports et examens de projet</li>`;
+                outputHTML += `<li>Escalader la non-conformité persistante d'accessibilité par les canaux appropriés de gestion de contrat</li>`;
+            }
             outputHTML += `</ul>`;
             outputHTML += `</div>`;
             
-            outputHTML += `<label for="outputText" style="font-weight: bold; color: #0056b3; display: block; margin-bottom: 10px;">`;
-            outputHTML += `📝 Review and edit the requirements below:`;
-            outputHTML += `</label>`;
-            
-            outputHTML += `<textarea id="outputText" style="width: 100%; height: 400px; padding: 15px; font-family: 'Courier New', monospace; font-size: 0.9em; border: 2px solid #0056b3; border-radius: 5px; resize: vertical; background-color: #ffffff;">${requirements.text}</textarea>`;
-            
-            outputHTML += `<div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">`;
-            outputHTML += `<button type="button" onclick="copyToClipboard()" style="background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">📋 Copy Text</button>`;
-            outputHTML += `<button type="button" onclick="downloadAsText()" style="background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">💾 Download as Text</button>`;
+            outputHTML += `<p class="important-note" style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-top: 15px; font-weight: bold;">`;
+            outputHTML += `${currentLang === 'en' ? 
+                '⚠️ Important: Do not copy these instructions into the solicitation - only copy the requirements text below.' :
+                '⚠️ Important : Ne copiez pas ces instructions dans l\'appel d\'offres - copiez uniquement le texte des exigences ci-dessous.'}`;
+            outputHTML += `</p>`;
             outputHTML += `</div>`;
             
+            // Editable Requirements Section
+            outputHTML += `<div style="background-color: #e7f3ff; border: 3px solid #0056b3; border-radius: 8px; padding: 20px;">`;
+            outputHTML += `<h2 style="color: #0056b3; margin-top: 0;">📄 ${currentLang === 'en' ? 
+                'Requirements for Copy-Paste into Procurement Documents' : 
+                'Exigences à copier-coller dans les documents d\'approvisionnement'}</h2>`;
+            
+            outputHTML += `<label for="outputText">${currentLang === 'en' ? 
+                'Review the requirements below. You can edit the text directly in the textarea.' :
+                'Examinez les exigences ci-dessous. Vous pouvez modifier le texte directement dans la zone de texte.'}</label>`;
+            outputHTML += `<textarea id="outputText" aria-describedby="output-instructions" style="width: 100%; height: 400px; padding: 10px; font-family: 'Courier New', monospace; font-size: 0.9em; border: 1px solid #ccc; border-radius: 5px; resize: vertical; margin-top: 10px;">${requirements.text}</textarea>`;
+            
+            outputHTML += `<div id="output-instructions" style="margin-top: 10px; font-size: 0.9em; color: #666;">`;
+            outputHTML += `<strong>${currentLang === 'en' ? 'Note:' : 'Note :'}</strong> ${currentLang === 'en' ? 
+                '"Update Requirements from Form" will regenerate the requirements based on your current form selections above. Any manual edits to the text will be lost.' :
+                '"Mettre à jour les exigences du formulaire" régénérera les exigences basées sur vos sélections actuelles du formulaire ci-dessus. Toutes les modifications manuelles du texte seront perdues.'}`;
+            outputHTML += `</div>`;
+            
+            // Action buttons
+            outputHTML += `<div style="margin-top: 20px; text-align: center;">`;
+            outputHTML += `<button type="button" id="copyRequirements" style="background-color: #28a745; margin-right: 10px;">📋 ${currentLang === 'en' ? 'Copy to Clipboard' : 'Copier dans le presse-papiers'}</button>`;
+            outputHTML += `<button type="button" id="downloadRequirements" style="background-color: #17a2b8; margin-right: 10px;">💾 ${currentLang === 'en' ? 'Download as Text' : 'Télécharger en tant que texte'}</button>`;
+            outputHTML += `<button type="button" id="regenerateOutput" style="background-color: #ffc107; color: #000;" title="${currentLang === 'en' ? 
+                'Re-run the form logic if you\'ve changed any selections above' : 
+                'Relancer la logique du formulaire si vous avez modifié des sélections ci-dessus'}">🔄 ${currentLang === 'en' ? 'Update Requirements from Form' : 'Mettre à jour les exigences du formulaire'}</button>`;
+            outputHTML += `</div>`;
+            outputHTML += `<div id="copyStatus" style="margin-top: 10px; color: green; display: none; text-align: center;" role="status" aria-live="polite">${currentLang === 'en' ? 'Copied to clipboard!' : 'Copié dans le presse-papiers !'}</div>`;
             outputHTML += `</div>`;
             
             outputDiv.innerHTML = outputHTML;
+            
+            // Add event listeners for buttons
+            document.getElementById('copyRequirements').addEventListener('click', function() {
+                const textArea = document.getElementById('outputText');
+                textArea.select();
+                document.execCommand('copy');
+                
+                const copyStatus = document.getElementById('copyStatus');
+                copyStatus.style.display = 'block';
+                setTimeout(() => {
+                    copyStatus.style.display = 'none';
+                }, 2000);
+            });
+            
+            document.getElementById('downloadRequirements').addEventListener('click', function() {
+                const textArea = document.getElementById('outputText');
+                const blob = new Blob([textArea.value], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                const projectName = requirements.data.projectName || 'Project';
+                const sanitizedProjectName = projectName.replace(/[^a-zA-Z0-9\-_]/g, '_');
+                a.href = url;
+                a.download = `EN301549-Requirements-${sanitizedProjectName}-${new Date().toISOString().split('T')[0]}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+            
+            document.getElementById('regenerateOutput').addEventListener('click', function() {
+                // Trigger form submission again to regenerate with current form values
+                document.getElementById('procurementForm').dispatchEvent(new Event('submit'));
+            });
             
             // Store for potential reuse
             window.currentRequirements = requirements;
         }
         
         // --- COPY AND DOWNLOAD FUNCTIONS ---
-        function copyToClipboard() {
-            const outputText = document.getElementById('outputText');
-            outputText.select();
-            outputText.setSelectionRange(0, 99999); // For mobile devices
-            
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    alert('Requirements copied to clipboard!');
-                } else {
-                    throw new Error('Copy command failed');
-                }
-            } catch (err) {
-                // Fallback for modern browsers
-                navigator.clipboard.writeText(outputText.value).then(() => {
-                    alert('Requirements copied to clipboard!');
-                }).catch(() => {
-                    alert('Failed to copy to clipboard. Please select the text manually and copy with Ctrl+C (Cmd+C on Mac).');
-                });
-            }
-        }
-        
-        function downloadAsText() {
-            const outputText = document.getElementById('outputText').value;
-            const projectName = window.currentRequirements ? window.currentRequirements.data.projectName : 'Project';
-            const sanitizedName = projectName.replace(/[^a-zA-Z0-9\-_]/g, '_');
-            
-            try {
-                const blob = new Blob([outputText], {type: 'text/plain;charset=utf-8'});
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = `EN301549-Requirements-${sanitizedName}.txt`;
-                
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                setTimeout(() => URL.revokeObjectURL(link.href), 100);
-                alert('Text download started!');
-            } catch (error) {
-                console.error('Download failed:', error);
-                alert('Download failed. Please copy the text manually.');
-            }
-        }
-        
-        // Make functions globally available
-        window.copyToClipboard = copyToClipboard;
-        window.downloadAsText = downloadAsText;
-        
         // --- FORM SUBMISSION AND VALIDATION ---
         function handleFormSubmission(e) {
             e.preventDefault();
@@ -753,6 +1203,36 @@
             errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
         
+        // --- COLLECT FORM DATA ---
+        function collectFormData() {
+            const data = {};
+            
+            // Get project name
+            data.projectName = document.getElementById('projectName')?.value || '';
+            
+            // Get radio button values
+            data.procurementPhase = document.querySelector('input[name="procurementPhase"]:checked')?.value || '';
+            data.exemption = document.querySelector('input[name="exemption"]:checked')?.value || '';
+            data.webContent = document.querySelector('input[name="webContent"]:checked')?.value || '';
+            data.wcagLevel = document.querySelector('input[name="wcagLevel"]:checked')?.value || '';
+            data.publicWebsite = document.querySelector('input[name="publicWebsite"]:checked')?.value || '';
+            data.closedFunctionality = document.querySelector('input[name="closedFunctionality"]:checked')?.value || '';
+            data.authoringCapability = document.querySelector('input[name="authoringCapability"]:checked')?.value || '';
+            
+            // Get checkbox arrays
+            data.ictTypes = Array.from(document.querySelectorAll('input[name="ictType"]:checked')).map(cb => cb.value);
+            data.softwareTypes = Array.from(document.querySelectorAll('input[name="softwareType"]:checked')).map(cb => cb.value);
+            data.hardwareCategories = Array.from(document.querySelectorAll('input[name="hardwareCategory"]:checked')).map(cb => cb.value);
+            data.videoTypes = Array.from(document.querySelectorAll('input[name="videoType"]:checked')).map(cb => cb.value);
+            data.mediaRequirements = Array.from(document.querySelectorAll('input[name="mediaRequirements"]:checked')).map(cb => cb.value);
+            data.supportTypes = Array.from(document.querySelectorAll('input[name="supportType"]:checked')).map(cb => cb.value);
+            
+            // Get website URL
+            data.websiteURL = document.getElementById('websiteURL')?.value || '';
+            
+            return data;
+        }
+        
         // --- REQUIREMENTS GENERATION ---
         function generateRequirements() {
             const formData = collectFormData();
@@ -762,81 +1242,245 @@
             const errorDiv = document.getElementById('formErrorMessages');
             if (errorDiv) errorDiv.innerHTML = '';
             
-            // Generate basic requirements text
-            let requirementsText = `${t.generateRequirements}\n\n`;
-            requirementsText += `Project: ${formData.projectName}\n`;
-            requirementsText += `Language: ${t.langName}\n\n`;
+            // Generate comprehensive requirements text in both languages
+            let requirementsText = '';
             
-            requirementsText += `Core Accessibility Standards\n\n`;
-            requirementsText += `All ICT deliverables must comply with EN 301 549 v3.2.1 (2021) "Accessibility requirements for ICT products and services."\n\n`;
-            
-            if (formData.webContent === 'yes') {
-                requirementsText += `Web Content Requirements\n`;
-                requirementsText += `- WCAG 2.1 Level ${formData.wcagLevel || 'AA'} conformance required\n`;
-                requirementsText += `- Public website: ${formData.publicWebsite === 'yes' ? 'Yes' : 'No'}\n`;
-                if (formData.websiteURL) {
-                    requirementsText += `- Website URL: ${formData.websiteURL}\n`;
+            if (currentLang === 'en') {
+                requirementsText += `EN 301 549 ACCESSIBILITY REQUIREMENTS\n`;
+                requirementsText += `========================================\n\n`;
+                requirementsText += `Project: ${formData.projectName}\n`;
+                requirementsText += `Generated: ${new Date().toLocaleDateString()}\n\n`;
+                
+                requirementsText += `CORE ACCESSIBILITY COMPLIANCE\n`;
+                requirementsText += `-----------------------------\n`;
+                requirementsText += `All ICT deliverables under this procurement must conform to:\n`;
+                requirementsText += `• EN 301 549 v3.2.1 (2021) "Accessibility requirements for ICT products and services"\n`;
+                requirementsText += `• WCAG 2.1 Level AA as referenced in EN 301 549\n`;
+                requirementsText += `• Applicable chapters of EN 301 549 based on ICT type and usage context\n\n`;
+                
+                if (formData.webContent === 'yes') {
+                    requirementsText += `WEB CONTENT ACCESSIBILITY REQUIREMENTS\n`;
+                    requirementsText += `--------------------------------------\n`;
+                    requirementsText += `• Conformance: WCAG 2.1 Level ${formData.wcagLevel || 'AA'}\n`;
+                    requirementsText += `• Applicable EN 301 549 Chapters: 9 (Web), 10 (Non-web documents)\n`;
+                    requirementsText += `• Public accessibility: ${formData.publicWebsite === 'yes' ? 'Yes - Enhanced public requirements apply' : 'Internal use - Standard requirements apply'}\n`;
+                    if (formData.websiteURL) {
+                        requirementsText += `• Target website: ${formData.websiteURL}\n`;
+                    }
+                    requirementsText += `• Required deliverables: Accessibility Conformance Report (ACR), VPAT documentation\n\n`;
                 }
-                requirementsText += `\n`;
-            }
-            
-            if (formData.ictTypes.length > 0) {
-                requirementsText += `ICT Types:\n`;
-                formData.ictTypes.forEach(type => {
-                    const label = t.ictTypes[type] || type;
-                    requirementsText += `- ${label}\n`;
-                });
-                requirementsText += `\n`;
-            }
-            
-            if (formData.softwareTypes.length > 0) {
-                requirementsText += `Software Applications:\n`;
-                formData.softwareTypes.forEach(type => {
-                    const label = t.softwareTypes[type] || type;
-                    requirementsText += `- ${label}\n`;
-                });
-                requirementsText += `\n`;
-            }
-            
-            if (formData.hardwareCategories.length > 0) {
-                requirementsText += `Hardware Categories:\n`;
-                formData.hardwareCategories.forEach(cat => {
-                    const label = t.hardwareCategories[cat] || cat;
-                    requirementsText += `- ${label}\n`;
-                });
-                if (formData.closedFunctionality) {
-                    requirementsText += `- Closed functionality: ${formData.closedFunctionality === 'yes' ? t.yes : t.no}\n`;
-                }
-                requirementsText += `\n`;
-            }
-            
-            if (formData.videoTypes.length > 0) {
-                requirementsText += `Video/Audio Content:\n`;
-                formData.videoTypes.forEach(type => {
-                    const label = t.videoTypes[type] || type;
-                    requirementsText += `- ${label}\n`;
-                });
-                if (formData.mediaRequirements.length > 0) {
-                    requirementsText += `Media Requirements:\n`;
-                    formData.mediaRequirements.forEach(req => {
-                        const label = t.mediaRequirements[req] || req;
-                        requirementsText += `  - ${label}\n`;
+                
+                if (formData.ictTypes.length > 0) {
+                    requirementsText += `ICT TYPE-SPECIFIC REQUIREMENTS\n`;
+                    requirementsText += `------------------------------\n`;
+                    formData.ictTypes.forEach(type => {
+                        const label = t.ictTypes[type] || type;
+                        requirementsText += `• ${label}: EN 301 549 applicable chapters per ICT type\n`;
                     });
+                    requirementsText += `\n`;
                 }
-                requirementsText += `\n`;
+                
+                if (formData.softwareTypes.length > 0) {
+                    requirementsText += `SOFTWARE APPLICATION REQUIREMENTS\n`;
+                    requirementsText += `---------------------------------\n`;
+                    requirementsText += `• Applicable EN 301 549 Chapters: 11 (Software)\n`;
+                    formData.softwareTypes.forEach(type => {
+                        const label = t.softwareTypes[type] || type;
+                        requirementsText += `• ${label}: Platform-specific accessibility APIs required\n`;
+                    });
+                    if (formData.authoringCapability) {
+                        const capability = t.authoringCapabilities[formData.authoringCapability] || formData.authoringCapability;
+                        requirementsText += `• Authoring tool capability: ${capability}\n`;
+                        requirementsText += `• Applicable EN 301 549 Chapter: 11.8 (Authoring tools)\n`;
+                    }
+                    requirementsText += `\n`;
+                }
+                
+                if (formData.hardwareCategories.length > 0) {
+                    requirementsText += `HARDWARE ACCESSIBILITY REQUIREMENTS\n`;
+                    requirementsText += `-----------------------------------\n`;
+                    requirementsText += `• Applicable EN 301 549 Chapters: 8 (Hardware)\n`;
+                    formData.hardwareCategories.forEach(cat => {
+                        const label = t.hardwareCategories[cat] || cat;
+                        requirementsText += `• ${label}: Physical accessibility and interface requirements\n`;
+                    });
+                    if (formData.closedFunctionality) {
+                        requirementsText += `• Closed functionality: ${formData.closedFunctionality === 'yes' ? 'Yes - Chapter 8 closed functionality requirements apply' : 'No - Standard hardware requirements apply'}\n`;
+                    }
+                    requirementsText += `\n`;
+                }
+                
+                if (formData.videoTypes.length > 0) {
+                    requirementsText += `MEDIA AND TELECOMMUNICATIONS REQUIREMENTS\n`;
+                    requirementsText += `-----------------------------------------\n`;
+                    requirementsText += `• Applicable EN 301 549 Chapters: 6 (ICT with two-way voice), 7 (ICT with video)\n`;
+                    formData.videoTypes.forEach(type => {
+                        const label = t.videoTypes[type] || type;
+                        requirementsText += `• ${label}: Real-time text, captions, and communication accessibility\n`;
+                    });
+                    if (formData.mediaRequirements.length > 0) {
+                        requirementsText += `• Required accessibility features:\n`;
+                        formData.mediaRequirements.forEach(req => {
+                            const label = t.mediaRequirements[req] || req;
+                            requirementsText += `  - ${label}\n`;
+                        });
+                    }
+                    requirementsText += `\n`;
+                }
+                
+                if (formData.supportTypes.length > 0) {
+                    requirementsText += `SUPPORT AND DOCUMENTATION REQUIREMENTS\n`;
+                    requirementsText += `--------------------------------------\n`;
+                    requirementsText += `• Applicable EN 301 549 Chapters: 12 (Documentation and support)\n`;
+                    formData.supportTypes.forEach(type => {
+                        const label = t.supportTypes[type] || type;
+                        requirementsText += `• ${label}: Accessible format and delivery required\n`;
+                    });
+                    requirementsText += `\n`;
+                }
+                
+                requirementsText += `PROCUREMENT AND VALIDATION REQUIREMENTS\n`;
+                requirementsText += `---------------------------------------\n`;
+                requirementsText += `• Vendor must provide current Accessibility Conformance Report (ACR)\n`;
+                requirementsText += `• ACR must be in OpenACR format (both HTML and YAML versions)\n`;
+                requirementsText += `• Independent accessibility testing may be required\n`;
+                requirementsText += `• Ongoing compliance monitoring throughout contract period\n`;
+                requirementsText += `• Remediation plan required for any identified non-conformance\n\n`;
+                
+                requirementsText += `EXEMPTION STATUS\n`;
+                requirementsText += `----------------\n`;
+                const exemptionLabel = t.exemptions[formData.exemption] || formData.exemption || 'Not specified';
+                requirementsText += `Exemption: ${exemptionLabel}\n\n`;
+                
+                requirementsText += `PROCUREMENT PHASE\n`;
+                requirementsText += `-----------------\n`;
+                const phaseLabel = t.procurementPhases[formData.procurementPhase] || formData.procurementPhase || 'Not specified';
+                requirementsText += `Current phase: ${phaseLabel}\n\n`;
+                
+                requirementsText += `REFERENCE STANDARDS\n`;
+                requirementsText += `-------------------\n`;
+                requirementsText += `• EN 301 549 v3.2.1 (2021): https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf\n`;
+                requirementsText += `• WCAG 2.1: https://www.w3.org/TR/WCAG21/\n`;
+                requirementsText += `• Additional guidance: https://accessible.canada.ca/\n`;
+                
+            } else {
+                requirementsText += `EXIGENCES D'ACCESSIBILITÉ EN 301 549\n`;
+                requirementsText += `=====================================\n\n`;
+                requirementsText += `Projet : ${formData.projectName}\n`;
+                requirementsText += `Généré : ${new Date().toLocaleDateString()}\n\n`;
+                
+                requirementsText += `CONFORMITÉ D'ACCESSIBILITÉ DE BASE\n`;
+                requirementsText += `----------------------------------\n`;
+                requirementsText += `Tous les livrables TIC de cet approvisionnement doivent se conformer à :\n`;
+                requirementsText += `• EN 301 549 v3.2.1 (2021) "Exigences d'accessibilité pour les produits et services TIC"\n`;
+                requirementsText += `• WCAG 2.1 Niveau AA tel que référencé dans EN 301 549\n`;
+                requirementsText += `• Chapitres applicables d'EN 301 549 basés sur le type TIC et le contexte d'usage\n\n`;
+                
+                if (formData.webContent === 'yes') {
+                    requirementsText += `EXIGENCES D'ACCESSIBILITÉ DU CONTENU WEB\n`;
+                    requirementsText += `----------------------------------------\n`;
+                    requirementsText += `• Conformité : WCAG 2.1 Niveau ${formData.wcagLevel || 'AA'}\n`;
+                    requirementsText += `• Chapitres EN 301 549 applicables : 9 (Web), 10 (Documents non-web)\n`;
+                    requirementsText += `• Accessibilité publique : ${formData.publicWebsite === 'yes' ? 'Oui - Exigences publiques renforcées s\'appliquent' : 'Usage interne - Exigences standard s\'appliquent'}\n`;
+                    if (formData.websiteURL) {
+                        requirementsText += `• Site web cible : ${formData.websiteURL}\n`;
+                    }
+                    requirementsText += `• Livrables requis : Rapport de conformité d'accessibilité (RCA), documentation VPAT\n\n`;
+                }
+                
+                if (formData.ictTypes.length > 0) {
+                    requirementsText += `EXIGENCES SPÉCIFIQUES AU TYPE TIC\n`;
+                    requirementsText += `---------------------------------\n`;
+                    formData.ictTypes.forEach(type => {
+                        const label = t.ictTypes[type] || type;
+                        requirementsText += `• ${label} : Chapitres EN 301 549 applicables par type TIC\n`;
+                    });
+                    requirementsText += `\n`;
+                }
+                
+                if (formData.softwareTypes.length > 0) {
+                    requirementsText += `EXIGENCES DES APPLICATIONS LOGICIELLES\n`;
+                    requirementsText += `--------------------------------------\n`;
+                    requirementsText += `• Chapitres EN 301 549 applicables : 11 (Logiciel)\n`;
+                    formData.softwareTypes.forEach(type => {
+                        const label = t.softwareTypes[type] || type;
+                        requirementsText += `• ${label} : APIs d'accessibilité spécifiques à la plateforme requises\n`;
+                    });
+                    if (formData.authoringCapability) {
+                        const capability = t.authoringCapabilities[formData.authoringCapability] || formData.authoringCapability;
+                        requirementsText += `• Capacité d'outil d'édition : ${capability}\n`;
+                        requirementsText += `• Chapitre EN 301 549 applicable : 11.8 (Outils d'édition)\n`;
+                    }
+                    requirementsText += `\n`;
+                }
+                
+                if (formData.hardwareCategories.length > 0) {
+                    requirementsText += `EXIGENCES D'ACCESSIBILITÉ MATÉRIELLE\n`;
+                    requirementsText += `------------------------------------\n`;
+                    requirementsText += `• Chapitres EN 301 549 applicables : 8 (Matériel)\n`;
+                    formData.hardwareCategories.forEach(cat => {
+                        const label = t.hardwareCategories[cat] || cat;
+                        requirementsText += `• ${label} : Exigences d'accessibilité physique et d'interface\n`;
+                    });
+                    if (formData.closedFunctionality) {
+                        requirementsText += `• Fonctionnalité fermée : ${formData.closedFunctionality === 'yes' ? 'Oui - Exigences de fonctionnalité fermée du Chapitre 8 s\'appliquent' : 'Non - Exigences matérielles standard s\'appliquent'}\n`;
+                    }
+                    requirementsText += `\n`;
+                }
+                
+                if (formData.videoTypes.length > 0) {
+                    requirementsText += `EXIGENCES MÉDIAS ET TÉLÉCOMMUNICATIONS\n`;
+                    requirementsText += `-------------------------------------\n`;
+                    requirementsText += `• Chapitres EN 301 549 applicables : 6 (TIC avec voix bidirectionnelle), 7 (TIC avec vidéo)\n`;
+                    formData.videoTypes.forEach(type => {
+                        const label = t.videoTypes[type] || type;
+                        requirementsText += `• ${label} : Texte en temps réel, sous-titres et accessibilité de communication\n`;
+                    });
+                    if (formData.mediaRequirements.length > 0) {
+                        requirementsText += `• Fonctionnalités d'accessibilité requises :\n`;
+                        formData.mediaRequirements.forEach(req => {
+                            const label = t.mediaRequirements[req] || req;
+                            requirementsText += `  - ${label}\n`;
+                        });
+                    }
+                    requirementsText += `\n`;
+                }
+                
+                if (formData.supportTypes.length > 0) {
+                    requirementsText += `EXIGENCES DE SOUTIEN ET DOCUMENTATION\n`;
+                    requirementsText += `------------------------------------\n`;
+                    requirementsText += `• Chapitres EN 301 549 applicables : 12 (Documentation et soutien)\n`;
+                    formData.supportTypes.forEach(type => {
+                        const label = t.supportTypes[type] || type;
+                        requirementsText += `• ${label} : Format et livraison accessibles requis\n`;
+                    });
+                    requirementsText += `\n`;
+                }
+                
+                requirementsText += `EXIGENCES D'APPROVISIONNEMENT ET VALIDATION\n`;
+                requirementsText += `-------------------------------------------\n`;
+                requirementsText += `• Le fournisseur doit fournir un Rapport de conformité d'accessibilité (RCA) actuel\n`;
+                requirementsText += `• Le RCA doit être au format OpenACR (versions HTML et YAML)\n`;
+                requirementsText += `• Des tests d'accessibilité indépendants peuvent être requis\n`;
+                requirementsText += `• Surveillance de conformité continue pendant toute la période contractuelle\n`;
+                requirementsText += `• Plan de correction requis pour toute non-conformité identifiée\n\n`;
+                
+                requirementsText += `STATUT D'EXEMPTION\n`;
+                requirementsText += `------------------\n`;
+                const exemptionLabel = t.exemptions[formData.exemption] || formData.exemption || 'Non spécifié';
+                requirementsText += `Exemption : ${exemptionLabel}\n\n`;
+                
+                requirementsText += `PHASE D'APPROVISIONNEMENT\n`;
+                requirementsText += `-------------------------\n`;
+                const phaseLabel = t.procurementPhases[formData.procurementPhase] || formData.procurementPhase || 'Non spécifié';
+                requirementsText += `Phase actuelle : ${phaseLabel}\n\n`;
+                
+                requirementsText += `NORMES DE RÉFÉRENCE\n`;
+                requirementsText += `-------------------\n`;
+                requirementsText += `• EN 301 549 v3.2.1 (2021) : https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf\n`;
+                requirementsText += `• WCAG 2.1 : https://www.w3.org/TR/WCAG21/\n`;
+                requirementsText += `• Conseils supplémentaires : https://accessible.canada.ca/\n`;
             }
-            
-            if (formData.supportTypes.length > 0) {
-                requirementsText += `Support & Documentation:\n`;
-                formData.supportTypes.forEach(type => {
-                    const label = t.supportTypes[type] || type;
-                    requirementsText += `- ${label}\n`;
-                });
-                requirementsText += `\n`;
-            }
-            
-            // Add reference information
-            requirementsText += `Reference: https://accessible.canada.ca/creating-accessibility-standards/canasc-en-301-5492024-accessibility-requirements-ict-products-and-services\n`;
             
             // Display the requirements
             displayRequirements({
@@ -936,28 +1580,168 @@
             if (errorDiv) errorDiv.innerHTML = '';
         }
         
-        function collectFormData() {
-            return {
-                projectName: document.getElementById('projectName').value.trim(),
-                procurementPhase: document.querySelector('input[name="procurementPhase"]:checked')?.value,
-                ictTypes: Array.from(document.querySelectorAll('input[name="ictType"]:checked')).map(cb => cb.value),
-                exemption: document.querySelector('input[name="exemption"]:checked')?.value,
-                webContent: document.querySelector('input[name="webContent"]:checked')?.value,
-                wcagLevel: document.querySelector('input[name="wcagLevel"]:checked')?.value,
-                publicWebsite: document.querySelector('input[name="publicWebsite"]:checked')?.value,
-                websiteURL: document.getElementById('websiteURL')?.value || '',
-                softwareTypes: Array.from(document.querySelectorAll('input[name="softwareType"]:checked')).map(cb => cb.value),
-                authoringCapability: document.querySelector('input[name="authoringCapability"]:checked')?.value,
-                hardwareCategories: Array.from(document.querySelectorAll('input[name="hardwareCategory"]:checked')).map(cb => cb.value),
-                closedFunctionality: document.querySelector('input[name="closedFunctionality"]:checked')?.value,
-                videoTypes: Array.from(document.querySelectorAll('input[name="videoType"]:checked')).map(cb => cb.value),
-                mediaRequirements: Array.from(document.querySelectorAll('input[name="mediaRequirements"]:checked')).map(cb => cb.value),
-                supportTypes: Array.from(document.querySelectorAll('input[name="supportType"]:checked')).map(cb => cb.value)
-            };
+        // --- URL PARAMETER HANDLING ---
+        function populateFormFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Project Name
+            if (urlParams.has('projectName')) {
+                const projectNameInput = document.getElementById('projectName');
+                if (projectNameInput) {
+                    projectNameInput.value = urlParams.get('projectName');
+                }
+            }
+
+            // Radio Buttons
+            const radioGroups = ['procurementPhase', 'exemption', 'webContent', 'wcagLevel', 'publicWebsite', 'authoringCapability', 'closedFunctionality'];
+            radioGroups.forEach(groupName => {
+                if (urlParams.has(groupName)) {
+                    const value = urlParams.get(groupName);
+                    const radio = document.querySelector(`input[name="${groupName}"][value="${value}"]`);
+                    if (radio) {
+                        radio.checked = true;
+                        radio.dispatchEvent(new Event('change'));
+                    }
+                }
+            });
+
+            // Checkboxes - handle multiple values
+            const checkboxGroups = ['ictType', 'softwareType', 'hardwareCategory', 'videoType', 'mediaRequirements', 'supportType'];
+            checkboxGroups.forEach(groupName => {
+                // First, uncheck all in the group
+                document.querySelectorAll(`input[name="${groupName}"]`).forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+
+                if (urlParams.has(groupName)) {
+                    const values = urlParams.getAll(groupName);
+                    values.forEach(value => {
+                        const checkbox = document.querySelector(`input[name="${groupName}"][value="${value}"]`);
+                        if (checkbox) {
+                            checkbox.checked = true;
+                            checkbox.dispatchEvent(new Event('change'));
+                        }
+                    });
+                } else {
+                    // If parameter is missing, check 'none' option by default if it exists
+                    const noneCheckbox = document.querySelector(`input[name="${groupName}"][value="none"]`);
+                    if (noneCheckbox) {
+                        noneCheckbox.checked = true;
+                        noneCheckbox.dispatchEvent(new Event('change'));
+                    }
+                }
+            });
+
+            // Website URL
+            if (urlParams.has('websiteURL')) {
+                const websiteURLInput = document.getElementById('websiteURL');
+                if (websiteURLInput) {
+                    websiteURLInput.value = urlParams.get('websiteURL');
+                }
+            }
         }
-        
-        // Make functions globally available
-        window.displayRequirements = displayRequirements;
+
+        function updateURLFromForm() {
+            const formData = collectFormData();
+            const urlParams = new URLSearchParams();
+
+            // Add project name
+            if (formData.projectName) {
+                urlParams.set('projectName', formData.projectName);
+            }
+
+            // Add radio button values
+            const radioFields = ['procurementPhase', 'exemption', 'webContent', 'wcagLevel', 'publicWebsite', 'authoringCapability', 'closedFunctionality'];
+            radioFields.forEach(field => {
+                if (formData[field]) {
+                    urlParams.set(field, formData[field]);
+                }
+            });
+
+            // Add checkbox arrays
+            const checkboxFields = [
+                { data: 'ictTypes', param: 'ictType' },
+                { data: 'softwareTypes', param: 'softwareType' },
+                { data: 'hardwareCategories', param: 'hardwareCategory' },
+                { data: 'videoTypes', param: 'videoType' },
+                { data: 'mediaRequirements', param: 'mediaRequirements' },
+                { data: 'supportTypes', param: 'supportType' }
+            ];
+
+            checkboxFields.forEach(field => {
+                if (formData[field.data] && formData[field.data].length > 0) {
+                    formData[field.data].forEach(value => {
+                        urlParams.append(field.param, value);
+                    });
+                }
+            });
+
+            // Add website URL
+            if (formData.websiteURL) {
+                urlParams.set('websiteURL', formData.websiteURL);
+            }
+
+            // Update URL without page reload
+            const newURL = window.location.pathname + '?' + urlParams.toString();
+            window.history.replaceState({}, '', newURL);
+        }
+
+        // --- "NONE OF THE ABOVE" HANDLING ---
+        function setupNoneHandling() {
+            const checkboxGroups = ['softwareType', 'hardwareCategory', 'videoType', 'supportType'];
+            
+            checkboxGroups.forEach(groupName => {
+                const noneCheckbox = document.querySelector(`input[name="${groupName}"][value="none"]`);
+                const otherCheckboxes = Array.from(document.querySelectorAll(`input[name="${groupName}"]:not([value="none"])`));
+                
+                if (noneCheckbox && otherCheckboxes.length > 0) {
+                    // When "none" is checked, uncheck all others
+                    noneCheckbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            otherCheckboxes.forEach(cb => {
+                                cb.checked = false;
+                            });
+                        }
+                        updateURLFromForm();
+                    });
+                    
+                    // When any other is checked, uncheck "none"
+                    otherCheckboxes.forEach(checkbox => {
+                        checkbox.addEventListener('change', function() {
+                            if (this.checked && noneCheckbox.checked) {
+                                noneCheckbox.checked = false;
+                            }
+                            updateURLFromForm();
+                        });
+                    });
+                }
+            });
+        }
+
+        // --- LANGUAGE SWITCHER AND EVENT HANDLERS ---
+        document.addEventListener('DOMContentLoaded', function() {
+            renderForm();
+            
+            document.getElementById('langSwitcher').addEventListener('change', function(e) {
+                currentLang = e.target.value;
+                renderForm();
+                setDefaultValues(); // Re-apply defaults after language change
+                populateFormFromURL(); // Reapply URL parameters after language change
+                setupNoneHandling(); // Re-setup "None of the above" logic
+                // Optionally rerender output if present
+                if (window.currentRequirements) {
+                    displayRequirements(window.currentRequirements);
+                }
+            });
+
+            // Add form change listeners to update URL parameters
+            document.addEventListener('change', function(e) {
+                if (e.target.matches('input, select, textarea')) {
+                    setTimeout(updateURLFromForm, 100); // Small delay to ensure form data is updated
+                }
+            });
+        });
+
     </script>
 </body>
 </html>
