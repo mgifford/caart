@@ -566,8 +566,7 @@
                         const radio = document.querySelector(`input[name="${groupName}"][value="${value}"]`);
                         if (radio) {
                             radio.checked = true;
-                            // Trigger change event to update conditional display if needed
-                            radio.dispatchEvent(new Event('change'));
+                            // DO NOT trigger change event during initial population to avoid loops
                         }
                     } else {
                         // If parameter is missing, ensure default is selected or nothing
@@ -592,8 +591,7 @@
                             const checkbox = document.querySelector(`input[name="${groupName}"][value="${value}"]`);
                             if (checkbox) {
                                 checkbox.checked = true;
-                                // Trigger change event for conditional display/none-handling
-                                checkbox.dispatchEvent(new Event('change'));
+                                // DO NOT trigger change event during initial population to avoid loops
                             }
                         });
                     } else {
@@ -601,7 +599,7 @@
                         const noneCheckbox = document.querySelector(`input[name="${groupName}"][value="none"]`);
                         if (noneCheckbox) {
                             noneCheckbox.checked = true;
-                            noneCheckbox.dispatchEvent(new Event('change')); // Trigger if it affects other things
+                            // DO NOT trigger change event during initial population to avoid loops
                         }
                     }
                 });
@@ -1870,14 +1868,19 @@
             }
 
             // --- Initial calls for form setup ---
-            populateFormFromURL(); // Call this first to apply URL parameters
-            setupNoneHandling(); // Then setup "None of the above" logic
-            updateWebContentVisibility(); // Re-evaluate visibility after populating
+            
+            // Step 1: Populate form from URL parameters (without triggering events)
+            populateFormFromURL();
+            
+            // Step 2: Setup event handlers for "None of the above" logic AFTER population
+            setupNoneHandling();
+            
+            // Step 3: Update conditional visibility based on current form state
+            updateWebContentVisibility();
             updateSoftwareQuestionsVisibility();
             updateServerInstallationVisibility();
 
-            // Manually trigger the initial form submission logic to generate output based on initial/URL state
-            form.dispatchEvent(new Event('submit'));
+            // Do NOT auto-submit the form on page load - wait for user to click submit button
         });
     </script>
 </body>
