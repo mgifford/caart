@@ -1078,8 +1078,11 @@
             
             // Action buttons
             outputHTML += `<div style="margin-top: 20px; text-align: center;">`;
-            outputHTML += `<button type="button" id="copyRequirements" style="background-color: #28a745; margin-right: 10px;">📋 ${currentLang === 'en' ? 'Copy to Clipboard' : 'Copier dans le presse-papiers'}</button>`;
+            outputHTML += `<button type="button" id="copyRequirements" style="background-color: #28a745; margin-right: 10px;">📋 ${currentLang === 'en' ? 'Copy Text' : 'Copier le texte'}</button>`;
+            outputHTML += `<button type="button" id="copyForWord" style="background-color: #0078d4; color: white; margin-right: 10px;">📝 ${currentLang === 'en' ? 'Copy for Word (HTML)' : 'Copier pour Word (HTML)'}</button>`;
+            outputHTML += `<button type="button" id="previewHTML" style="background-color: #6f42c1; color: white; margin-right: 10px;">👁️ ${currentLang === 'en' ? 'Preview HTML' : 'Aperçu HTML'}</button>`;
             outputHTML += `<button type="button" id="downloadRequirements" style="background-color: #17a2b8; margin-right: 10px;">💾 ${currentLang === 'en' ? 'Download as Text' : 'Télécharger en tant que texte'}</button>`;
+            outputHTML += `<button type="button" id="downloadWord" style="background-color: #d63384; color: white; margin-right: 10px;">📄 ${currentLang === 'en' ? 'Download as Word' : 'Télécharger en tant que Word'}</button>`;
             outputHTML += `<button type="button" id="regenerateOutput" style="background-color: #ffc107; color: #000;" title="${currentLang === 'en' ? 
                 'Re-run the form logic if you\'ve changed any selections above' : 
                 'Relancer la logique du formulaire si vous avez modifié des sélections ci-dessus'}">🔄 ${currentLang === 'en' ? 'Update Requirements from Form' : 'Mettre à jour les exigences du formulaire'}</button>`;
@@ -1101,6 +1104,141 @@
                     copyStatus.style.display = 'none';
                 }, 2000);
             });
+
+            document.getElementById('copyForWord').addEventListener('click', function() {
+                const textArea = document.getElementById('outputText');
+                const text = textArea.value;
+                
+                // Convert text to HTML format suitable for Word/Google Docs
+                let htmlContent = text
+                    // Handle headers (lines ending with all caps followed by dashes/equals)
+                    .replace(/^([A-Z\s\d]+)\n([=\-]+)\n/gm, '<h2>$1</h2>')
+                    // Handle sub-headers (lines ending with dashes but not all caps)
+                    .replace(/^([A-Za-z\s\d:]+)\n([-]+)\n/gm, '<h3>$1</h3>')
+                    // Handle bullet points (lines starting with •)
+                    .replace(/^• (.+)$/gm, '<li>$1</li>')
+                    // Handle bold text (**text**)
+                    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                    // Handle paragraphs (double newlines)
+                    .replace(/\n\n/g, '</p><p>')
+                    // Handle single newlines that aren't part of lists
+                    .replace(/\n(?!<)/g, '<br>')
+                    // Wrap in paragraph tags
+                    .replace(/^/, '<p>')
+                    .replace(/$/, '</p>');
+                
+                // Fix list items to be properly wrapped in <ul> tags
+                htmlContent = htmlContent.replace(/(<li>.*?<\/li>)/g, function(match) {
+                    // If this li is not already in a ul, wrap it
+                    return match;
+                });
+                
+                // Group consecutive list items in <ul> tags
+                htmlContent = htmlContent.replace(/(<li>.*?<\/li>)(\s*<br>\s*<li>.*?<\/li>)*/g, function(match) {
+                    const items = match.replace(/<br>\s*/g, '').trim();
+                    return '<ul>' + items + '</ul>';
+                });
+                
+                // Clean up empty paragraphs and fix structure
+                htmlContent = htmlContent
+                    .replace(/<p><\/p>/g, '')
+                    .replace(/<p><h([1-6])>/g, '<h$1>')
+                    .replace(/<\/h([1-6])><\/p>/g, '</h$1>')
+                    .replace(/<p><ul>/g, '<ul>')
+                    .replace(/<\/ul><\/p>/g, '</ul>')
+                    .replace(/(<h[1-6]>.*?<\/h[1-6]>)\s*<br>/g, '$1');
+                
+                // Apply styling
+                const styledContent = `
+                    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #000;">
+                        ${htmlContent}
+                    </div>
+                `;
+                
+                // Use the Clipboard API with HTML MIME type
+                const clipboardItem = new ClipboardItem({
+                    'text/html': new Blob([styledContent], { type: 'text/html' }),
+                    'text/plain': new Blob([text], { type: 'text/plain' })
+                });
+                
+                navigator.clipboard.write([clipboardItem]).then(() => {
+                    const copyStatus = document.getElementById('copyStatus');
+                    copyStatus.innerHTML = currentLang === 'en' ? 
+                        'Formatted content copied! Paste into Word/Google Docs for formatted text.' : 
+                        'Contenu formaté copié ! Collez dans Word/Google Docs pour du texte formaté.';
+                    copyStatus.style.display = 'block';
+                    setTimeout(() => {
+                        copyStatus.style.display = 'none';
+                    }, 3000);
+                }).catch((err) => {
+                    // Fallback for browsers that don't support ClipboardItem
+                    console.warn('ClipboardItem not supported, falling back to selection method');
+                    
+                    // Create a temporary element with the HTML content
+                    const tempElement = document.createElement('div');
+                    tempElement.innerHTML = styledContent;
+                    tempElement.style.position = 'absolute';
+                    tempElement.style.left = '-9999px';
+                    document.body.appendChild(tempElement);
+                    
+                    // Select the content
+                    const range = document.createRange();
+                    range.selectNode(tempElement);
+                    const selection = window.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    
+                    // Copy the selection (this preserves HTML formatting)
+                    document.execCommand('copy');
+                    
+                    // Clean up
+                    selection.removeAllRanges();
+                    document.body.removeChild(tempElement);
+                    
+                    const copyStatus = document.getElementById('copyStatus');
+                    copyStatus.innerHTML = currentLang === 'en' ? 
+                        'Formatted content copied! Paste into Word/Google Docs for formatted text.' : 
+                        'Contenu formaté copié ! Collez dans Word/Google Docs pour du texte formaté.';
+                    copyStatus.style.display = 'block';
+                    setTimeout(() => {
+                        copyStatus.style.display = 'none';
+                    }, 3000);
+                });
+            });
+
+            document.getElementById('previewHTML').addEventListener('click', function() {
+                const textArea = document.getElementById('outputText');
+                const text = textArea.value;
+                
+                // Convert text to HTML
+                const htmlContent = text
+                    .replace(/\n\n/g, '</p><p>')
+                    .replace(/\n/g, '<br>')
+                    .replace(/^/, '<p>')
+                    .replace(/$/, '</p>');
+                
+                const fullHTML = `
+                    <html>
+                    <head>
+                        <meta charset="utf-8">
+                        <title>EN 301 549 Requirements Preview</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px; background: white; }
+                            h1, h2, h3 { color: #0056b3; }
+                            p { margin-bottom: 12px; }
+                        </style>
+                    </head>
+                    <body>
+                        ${htmlContent}
+                    </body>
+                    </html>
+                `;
+                
+                // Open in new window
+                const previewWindow = window.open('', '_blank');
+                previewWindow.document.write(fullHTML);
+                previewWindow.document.close();
+            });
             
             document.getElementById('downloadRequirements').addEventListener('click', function() {
                 const textArea = document.getElementById('outputText');
@@ -1111,6 +1249,56 @@
                 const sanitizedProjectName = projectName.replace(/[^a-zA-Z0-9\-_]/g, '_');
                 a.href = url;
                 a.download = `EN301549-Requirements-${sanitizedProjectName}-${new Date().toISOString().split('T')[0]}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            document.getElementById('downloadWord').addEventListener('click', function() {
+                const textArea = document.getElementById('outputText');
+                const text = textArea.value;
+                
+                // Convert text to HTML format
+                const htmlContent = text
+                    .replace(/\n\n/g, '</p><p>')
+                    .replace(/\n/g, '<br>')
+                    .replace(/^/, '<p>')
+                    .replace(/$/, '</p>');
+                
+                const fullHTML = `
+                    <html xmlns:o="urn:schemas-microsoft-com:office:office"
+                          xmlns:w="urn:schemas-microsoft-com:office:word"
+                          xmlns="http://www.w3.org/TR/REC-html40">
+                    <head>
+                        <meta charset="utf-8">
+                        <title>EN 301 549 Requirements</title>
+                        <!--[if gte mso 9]>
+                        <xml>
+                            <w:WordDocument>
+                                <w:View>Print</w:View>
+                                <w:Zoom>90</w:Zoom>
+                                <w:DoNotOptimizeForBrowser/>
+                            </w:WordDocument>
+                        </xml>
+                        <![endif]-->
+                        <style>
+                            body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px; }
+                            h1, h2, h3 { color: #0056b3; }
+                            p { margin-bottom: 12px; }
+                        </style>
+                    </head>
+                    <body>
+                        ${htmlContent}
+                    </body>
+                    </html>
+                `;
+                
+                const blob = new Blob([fullHTML], { type: 'application/msword' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                const projectName = requirements.data.projectName || 'Project';
+                const sanitizedProjectName = projectName.replace(/[^a-zA-Z0-9\-_]/g, '_');
+                a.href = url;
+                a.download = `EN301549-Requirements-${sanitizedProjectName}-${new Date().toISOString().split('T')[0]}.doc`;
                 a.click();
                 URL.revokeObjectURL(url);
             });
